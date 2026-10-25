@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth'
 import { Avatar } from '../components/PostCard'
-import WhatsappSetting from '../components/WhatsappSetting'
 
 export default function Home() {
-  const { profile, logout } = useAuth()
+  const { profile } = useAuth()
   return (
     <div className="page">
       <header className="topbar">
@@ -12,7 +11,7 @@ export default function Home() {
           <Avatar profile={profile} />
           <span className="strong">{profile.full_name}</span>
         </Link>
-        <button className="link" onClick={logout}>Sohoka</button>
+        <Link to="/settings" className="link" aria-label="Settings" style={{ fontSize: 24, textDecoration: 'none' }}>⚙️</Link>
       </header>
 
       <Link to="/business" className="big-tile teal">
@@ -25,8 +24,6 @@ export default function Home() {
         <span>Akazi n'abakozi</span>
         <small>Tangaza akazi canke ushake akazi</small>
       </Link>
-
-      <WhatsappSetting />
     </div>
   )
 }

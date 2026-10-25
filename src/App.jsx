@@ -7,6 +7,7 @@ import Feed from './pages/Feed'
 import NewPost from './pages/NewPost'
 import Seller from './pages/Seller'
 import Post from './pages/Post'
+import Settings from './pages/Settings'
 
 export default function App() {
   const { session, profile, profileLoaded, recovery, clearRecovery } = useAuth()
@@ -24,6 +25,7 @@ export default function App() {
       <Route path="/" element={<Home />} />
       <Route path="/business" element={<Feed kind="product" />} />
       <Route path="/jobs" element={<Feed kind="job" />} />
+      <Route path="/settings" element={<Settings />} />
       <Route path="/new/:kind" element={<NewPost />} />
       <Route path="/seller/:id" element={<Seller />} />
       <Route path="/post/:kind/:id" element={<Post />} />
