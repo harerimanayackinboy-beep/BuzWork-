@@ -66,3 +66,15 @@ a.act{text-align:center;text-decoration:none;display:block}
 .btn.wa{background:#1a9d4b}
 .wa-box{margin-top:16px}
 .wa-box h3{margin:0 0 4px}
+
+/* Mode: umucyo / umwijima (Settings) */
+:root[data-theme="light"]{--bg:#f4f6f6;--card:#fff;--text:#14201f;--muted:#64748b;--line:#e2e8f0}
+:root[data-theme="dark"]{--bg:#0c1413;--card:#15201f;--text:#e8f0ef;--muted:#94a3b8;--line:#25332f}
+
+/* Settings */
+.menu{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.menu-item{display:flex;align-items:center;justify-content:space-between;width:100%;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font:inherit;font-weight:600;cursor:pointer;text-align:left}
+.menu-item.on{border-color:var(--teal)}
+.menu-panel{margin:-2px 0 6px}
+.seg{display:flex;gap:8px}
+.seg button{flex:1}

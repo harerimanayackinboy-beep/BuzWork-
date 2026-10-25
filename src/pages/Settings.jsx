@@ -1,11 +1,22 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
 import { Avatar } from '../components/PostCard'
 import WhatsappSetting from '../components/WhatsappSetting'
+import ThemeSetting from '../components/ThemeSetting'
+import ProfileEdit from '../components/ProfileEdit'
+
+// Hano hari gusa ibikora. Ibindi (nk'indimi) tuzabyongeramwo igihe bizaba byuzuye.
+const ITEMS = [
+  { key: 'profile', label: '✏️ Guhindura umwirondoro', Panel: ProfileEdit },
+  { key: 'whatsapp', label: '🟢 WhatsApp', Panel: WhatsappSetting },
+  { key: 'theme', label: '🌗 Mode (umucyo / umwijima)', Panel: ThemeSetting },
+]
 
 export default function Settings() {
   const nav = useNavigate()
   const { profile, logout } = useAuth()
+  const [open, setOpen] = useState(null)
 
   return (
     <div className="page">
@@ -21,9 +32,18 @@ export default function Settings() {
         <p className="muted">{profile.location}</p>
       </div>
 
-      <WhatsappSetting />
-
-      <button className="btn ghost" style={{ marginTop: 16, width: '100%' }} onClick={logout}>Sohoka</button>
+      <div className="menu">
+        {ITEMS.map(({ key, label, Panel }) => (
+          <div key={key}>
+            <button className={`menu-item ${open === key ? 'on' : ''}`} onClick={() => setOpen(open === key ? null : key)}>
+              <span>{label}</span>
+              <span>{open === key ? '▲' : '▼'}</span>
+            </button>
+            {open === key && <div className="menu-panel"><Panel /></div>}
+          </div>
+        ))}
+        <button className="menu-item" onClick={logout}><span>🚪 Sohoka</span></button>
+      </div>
     </div>
   )
 }

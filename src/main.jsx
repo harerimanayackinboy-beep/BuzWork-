@@ -4,6 +4,9 @@ import { HashRouter } from 'react-router-dom'
 import App from './App'
 import { AuthProvider } from './auth'
 import './styles.css'
+import { initTheme } from './lib/theme'
+
+initTheme()
 
 createRoot(document.getElementById('root')).render(
   <HashRouter>
