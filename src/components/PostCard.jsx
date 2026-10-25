@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { KINDS, fetchMoreImages, postUrl, FEED_IMAGES } from '../lib/posts'
 import Comments from './Comments'
 import ReportButton from './ReportButton'
+import { whatsappLink } from '../lib/whatsapp'
 
 export default function PostCard({ kind, post, onDeleted }) {
   const c = KINDS[kind]
@@ -20,6 +21,11 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [msg, setMsg] = useState('')
 
   const liked = likes.some((l) => l.user_id === user.id)
+  // Button ya WhatsApp igaragara gusa niba nyiri tangazo yashizeho numero ya WhatsApp
+  const waHref = isOwner ? null : whatsappLink(
+    post.owner?.whatsapp_number,
+    `Mwaramutse, nabonye itangazo ryanyu kuri BuzWork: ${postUrl(kind, post.id)}`,
+  )
 
   async function toggleLike() {
     if (liked) {
@@ -104,6 +110,9 @@ export default function PostCard({ kind, post, onDeleted }) {
         <button className={`act ${liked ? 'on' : ''}`} onClick={toggleLike}>👍 Like {likes.length || ''}</button>
         <button className="act" onClick={() => setShowComments(!showComments)}>💬 Comment {commentCount || ''}</button>
         <button className="act" onClick={share}>↗ Share</button>
+        {waHref && (
+          <a className="act wa" href={waHref} target="_blank" rel="noopener noreferrer">🟢 WhatsApp</a>
+        )}
       </div>
 
       {showComments && <Comments kind={kind} postId={post.id} onCount={setCommentCount} />}

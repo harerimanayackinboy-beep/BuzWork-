@@ -59,3 +59,10 @@ textarea{resize:vertical}
 .mirror{transform:scaleX(-1)}
 .profile{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
 progress{width:100%}
+
+/* WhatsApp */
+a.act{text-align:center;text-decoration:none;display:block}
+.act.wa{color:#1a9d4b;font-weight:700}
+.btn.wa{background:#1a9d4b}
+.wa-box{margin-top:16px}
+.wa-box h3{margin:0 0 4px}

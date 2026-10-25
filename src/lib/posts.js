@@ -49,13 +49,16 @@ export async function fetchPosts(kind, { cursor, ownerId, id } = {}) {
   const ids = posts.map((p) => p.id)
   const owners = [...new Set(posts.map((p) => p[c.ownerCol]))]
 
-  const [prof, imgs, likes, comments] = await Promise.all([
+  const [prof, imgs, likes, comments, wa] = await Promise.all([
     supabase.from('public_profiles').select('*').in('user_id', owners),
     supabase.from(c.imgTable).select('*').in(c.fk, ids).lt('display_order', FEED_IMAGES).order('display_order'),
     supabase.from(c.likeTable).select(`user_id,${c.fk}`).in(c.fk, ids),
     supabase.from(c.commentTable).select(`id,${c.fk}`).in(c.fk, ids),
+    // WhatsApp ni option: nimba view itaraboneka (SQL itarakorwa), nta kibazo, button ntizigaragara
+    supabase.from('public_whatsapp').select('user_id,whatsapp_number').in('user_id', owners),
   ])
   for (const r of [prof, imgs, likes, comments]) if (r.error) throw r.error
+  const waMap = Object.fromEntries((wa.error ? [] : wa.data).map((w) => [w.user_id, w.whatsapp_number]))
 
   const byId = (rows, key) =>
     rows.reduce((m, r) => ((m[r[key]] ||= []).push(r), m), {})
@@ -66,7 +69,9 @@ export async function fetchPosts(kind, { cursor, ownerId, id } = {}) {
 
   return posts.map((p) => ({
     ...p,
-    owner: profMap[p[c.ownerCol]] || null,
+    owner: profMap[p[c.ownerCol]]
+      ? { ...profMap[p[c.ownerCol]], whatsapp_number: waMap[p[c.ownerCol]] || null }
+      : null,
     images: imgMap[p.id] || [],
     likes: likeMap[p.id] || [],
     commentCount: (comMap[p.id] || []).length,

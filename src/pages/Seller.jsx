@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { fetchPosts, KINDS } from '../lib/posts'
 import PostCard, { Avatar } from '../components/PostCard'
 import ReportButton from '../components/ReportButton'
+import { whatsappLink } from '../lib/whatsapp'
 
 export default function Seller() {
   const { id } = useParams()
@@ -14,9 +15,13 @@ export default function Seller() {
   const [tab, setTab] = useState('product')
   const [posts, setPosts] = useState([])
   const [loading, setLoading] = useState(false)
+  const [wa, setWa] = useState(null)
 
   useEffect(() => {
     supabase.from('public_profiles').select('*').eq('user_id', id).maybeSingle().then(({ data }) => setP(data || null))
+    // Nimba view itaraboneka, ntibitubuza gukora: button ya WhatsApp ntizigaragara
+    supabase.from('public_whatsapp').select('whatsapp_number').eq('user_id', id).maybeSingle()
+      .then(({ data, error }) => setWa(error ? null : data?.whatsapp_number || null))
   }, [id])
 
   useEffect(() => {
@@ -39,7 +44,9 @@ export default function Seller() {
         <p className="muted">{p.location}</p>
         {p.user_id !== user.id && (
           <div className="row center">
-            <button className="btn ghost" disabled title="Iki gice ntikiraboneka">💬 Message (vuba)</button>
+            {whatsappLink(wa) && (
+              <a className="btn wa" href={whatsappLink(wa, 'Mwaramutse, nabonye profile yanyu kuri BuzWork.')} target="_blank" rel="noopener noreferrer">🟢 WhatsApp</a>
+            )}
             {p.phone_number
               ? <a className="btn" href={`tel:${p.phone_number}`}>📞 Call</a>
               : <button className="btn ghost" disabled title="Nyirayo ntiyemeye ko numero iboneka">📞 Call</button>}

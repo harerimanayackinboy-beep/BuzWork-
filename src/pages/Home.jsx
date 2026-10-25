@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../auth'
 import { Avatar } from '../components/PostCard'
+import WhatsappSetting from '../components/WhatsappSetting'
 
 export default function Home() {
   const { profile, logout } = useAuth()
@@ -24,6 +25,8 @@ export default function Home() {
         <span>Akazi n'abakozi</span>
         <small>Tangaza akazi canke ushake akazi</small>
       </Link>
+
+      <WhatsappSetting />
     </div>
   )
 }
