@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'No se pudo editar.',
   'home.newPost': 'Nueva publicación',
   'home.newPostChoose': '¿Qué quieres publicar?',
+  'home.messagesLabel': 'Mensajes',
+  'messages.title': '💬 Mensajes',
+  'messages.empty': 'Aún no hay conversaciones.',
+  'seller.message': '💬 Mensaje',
+  'chat.placeholder': 'Escribe un mensaje…',
+  'chat.loadFail': 'No se pudieron cargar los mensajes.',
+  'chat.sendFail': 'No se pudo enviar el mensaje.',
 }

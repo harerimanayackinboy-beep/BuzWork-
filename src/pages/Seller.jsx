@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { fetchPosts, KINDS } from '../lib/posts'
@@ -45,6 +45,7 @@ export default function Seller() {
         <p className="muted">{p.location}</p>
         {p.user_id !== user.id && (
           <div className="row center">
+            <Link to={`/chat/${p.user_id}`} className="btn">{t('seller.message')}</Link>
             {whatsappLink(wa) && (
               <a className="btn wa" href={whatsappLink(wa, t('seller.waText'))} target="_blank" rel="noopener noreferrer">{t('card.whatsapp')}</a>
             )}

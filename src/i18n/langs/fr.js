@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Impossible de modifier.',
   'home.newPost': 'Nouvelle annonce',
   'home.newPostChoose': 'Que veux-tu publier ?',
+  'home.messagesLabel': 'Messages',
+  'messages.title': '💬 Messages',
+  'messages.empty': 'Aucune conversation pour le moment.',
+  'seller.message': '💬 Message',
+  'chat.placeholder': 'Écris un message…',
+  'chat.loadFail': 'Impossible de charger les messages.',
+  'chat.sendFail': 'Le message n\'a pas pu être envoyé.',
 }

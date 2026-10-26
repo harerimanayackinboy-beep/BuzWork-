@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Akukwazekanga ukuhlela.',
   'home.newPost': 'Isithombe esisha',
   'home.newPostChoose': 'Yini ofuna ukuyithumela?',
+  'home.messagesLabel': 'Imiyalezo',
+  'messages.title': '💬 Imiyalezo',
+  'messages.empty': 'Awukho umbhalo osakhulunywa.',
+  'seller.message': '💬 Umlayezo',
+  'chat.placeholder': 'Bhala umlayezo…',
+  'chat.loadFail': 'Ayikwazanga ukulayisha imiyalezo.',
+  'chat.sendFail': 'Umlayezo awukwazanga ukuthunyelwa.',
 }

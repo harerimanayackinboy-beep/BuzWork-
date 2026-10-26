@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Imeshindikana kuhariri.',
   'home.newPost': 'Chapisho jipya',
   'home.newPostChoose': 'Unataka kuchapisha nini?',
+  'home.messagesLabel': 'Ujumbe',
+  'messages.title': '💬 Ujumbe',
+  'messages.empty': 'Hakuna mazungumzo bado.',
+  'seller.message': '💬 Ujumbe',
+  'chat.placeholder': 'Andika ujumbe…',
+  'chat.loadFail': 'Imeshindikana kupakia ujumbe.',
+  'chat.sendFail': 'Ujumbe haukuweza kutumwa.',
 }

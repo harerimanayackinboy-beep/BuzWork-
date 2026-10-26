@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Konnte nicht bearbeitet werden.',
   'home.newPost': 'Neuer Beitrag',
   'home.newPostChoose': 'Was möchtest du veröffentlichen?',
+  'home.messagesLabel': 'Nachrichten',
+  'messages.title': '💬 Nachrichten',
+  'messages.empty': 'Noch keine Unterhaltungen.',
+  'seller.message': '💬 Nachricht',
+  'chat.placeholder': 'Schreib eine Nachricht…',
+  'chat.loadFail': 'Nachrichten konnten nicht geladen werden.',
+  'chat.sendFail': 'Die Nachricht konnte nicht gesendet werden.',
 }

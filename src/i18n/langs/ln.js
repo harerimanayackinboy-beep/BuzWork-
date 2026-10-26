@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Ekoki kobongisama te.',
   'home.newPost': 'Boyokoli ya sika',
   'home.newPostChoose': 'Olingi kotinda nini?',
+  'home.messagesLabel': 'Maloba',
+  'messages.title': '💬 Maloba',
+  'messages.empty': 'Masolo ezali nanu te.',
+  'seller.message': '💬 Loba',
+  'chat.placeholder': 'Koma liloba…',
+  'chat.loadFail': 'Ekoki kotya maloba te.',
+  'chat.sendFail': 'Liloba ekoki kotindama te.',
 }

@@ -91,3 +91,14 @@ a.act{text-align:center;text-decoration:none;display:block}
 .sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:50}
 .sheet{background:var(--card);color:var(--text);width:100%;max-width:440px;border-radius:18px 18px 0 0;padding:20px 16px 28px;display:flex;flex-direction:column;gap:10px}
 .btn.amber2{background:var(--amber)}
+
+/* Ubutumwa (Messages / Chat) */
+.convo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.convo-preview{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw}
+.badge.dot{position:absolute;top:-6px;right:-10px;font-size:11px;padding:1px 6px;border-radius:999px;min-width:18px;text-align:center}
+.chat-page{display:flex;flex-direction:column;height:100dvh;padding-bottom:0}
+.chat-thread{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:8px 0}
+.bubble{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-radius:14px 14px 14px 4px;padding:8px 12px;max-width:78%;white-space:pre-wrap;word-break:break-word}
+.bubble.mine{align-self:flex-end;background:var(--teal);color:#fff;border-color:var(--teal);border-radius:14px 14px 4px 14px}
+.chat-input{padding:10px 0 16px;position:sticky;bottom:0;background:var(--bg)}
+.chat-input input{flex:1}

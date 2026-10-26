@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Kon nie wysig nie.',
   'home.newPost': 'Nuwe plasing',
   'home.newPostChoose': 'Wat wil jy plaas?',
+  'home.messagesLabel': 'Boodskappe',
+  'messages.title': '💬 Boodskappe',
+  'messages.empty': 'Nog geen gesprekke nie.',
+  'seller.message': '💬 Boodskap',
+  'chat.placeholder': 'Skryf \'n boodskap…',
+  'chat.loadFail': 'Kon nie die boodskappe laai nie.',
+  'chat.sendFail': 'Die boodskap kon nie gestuur word nie.',
 }

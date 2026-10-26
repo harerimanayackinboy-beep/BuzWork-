@@ -167,4 +167,11 @@ export default {
   'card.editFail': 'Ntibishobotse guhindura.',
   'home.newPost': 'Shiraho itangazo rishasha',
   'home.newPostChoose': 'Ushaka gushiraho itangazo ryo ku?',
+  'home.messagesLabel': 'Ubutumwa',
+  'messages.title': '💬 Ubutumwa',
+  'messages.empty': 'Nta mubonano uracyafise.',
+  'seller.message': '💬 Message',
+  'chat.placeholder': 'Andika ubutumwa…',
+  'chat.loadFail': 'Ubutumwa ntibushobotse kuza.',
+  'chat.sendFail': 'Ubutumwa ntibwashobotse koherezwa.',
 }

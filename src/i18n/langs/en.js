@@ -166,4 +166,11 @@ export default {
   'card.editFail': 'Could not update.',
   'home.newPost': 'New post',
   'home.newPostChoose': 'What do you want to post?',
+  'home.messagesLabel': 'Messages',
+  'messages.title': '💬 Messages',
+  'messages.empty': 'No conversations yet.',
+  'seller.message': '💬 Message',
+  'chat.placeholder': 'Write a message…',
+  'chat.loadFail': 'Could not load the messages.',
+  'chat.sendFail': 'The message could not be sent.',
 }

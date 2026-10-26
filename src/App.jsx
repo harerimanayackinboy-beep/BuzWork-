@@ -8,6 +8,8 @@ import NewPost from './pages/NewPost'
 import Seller from './pages/Seller'
 import Post from './pages/Post'
 import Settings from './pages/Settings'
+import Messages from './pages/Messages'
+import Chat from './pages/Chat'
 
 export default function App() {
   const { session, profile, profileLoaded, recovery, clearRecovery } = useAuth()
@@ -26,6 +28,8 @@ export default function App() {
       <Route path="/business" element={<Feed kind="product" />} />
       <Route path="/jobs" element={<Feed kind="job" />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/messages" element={<Messages />} />
+      <Route path="/chat/:id" element={<Chat />} />
       <Route path="/new/:kind" element={<NewPost />} />
       <Route path="/seller/:id" element={<Seller />} />
       <Route path="/post/:kind/:id" element={<Post />} />
