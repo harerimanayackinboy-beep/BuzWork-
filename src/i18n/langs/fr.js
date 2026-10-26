@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Automatique',
   'settings.themeLight': '☀️ Clair',
   'settings.themeDark': '🌙 Sombre',
+  'new.previewTitle': 'Aperçu',
+  'new.previewHelp': 'Regarde bien avant de publier, pour ne pas te tromper.',
+  'new.editAgain': '← Modifier',
+  'new.confirmPost': 'Publier',
+  'card.edit': '✏️ Modifier',
+  'card.editSave': 'Enregistrer',
+  'card.editCancel': 'Annuler',
+  'card.editFail': 'Impossible de modifier.',
 }

@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Outomaties',
   'settings.themeLight': '☀️ Lig',
   'settings.themeDark': '🌙 Donker',
+  'new.previewTitle': 'Voorskou',
+  'new.previewHelp': 'Kyk mooi voordat jy plaas, sodat jy nie \'n fout maak nie.',
+  'new.editAgain': '← Wysig',
+  'new.confirmPost': 'Plaas',
+  'card.edit': '✏️ Wysig',
+  'card.editSave': 'Stoor veranderinge',
+  'card.editCancel': 'Kanselleer',
+  'card.editFail': 'Kon nie wysig nie.',
 }

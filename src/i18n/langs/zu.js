@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Ngokuzenzakalela',
   'settings.themeLight': '☀️ Okukhanyayo',
   'settings.themeDark': '🌙 Okumnyama',
+  'new.previewTitle': 'Buyekeza',
+  'new.previewHelp': 'Buyekeza kahle ngaphambi kokuthumela, ukuze ungaphazi.',
+  'new.editAgain': '← Hlela',
+  'new.confirmPost': 'Thumela',
+  'card.edit': '✏️ Hlela',
+  'card.editSave': 'Londoloza izinguquko',
+  'card.editCancel': 'Khansela',
+  'card.editFail': 'Akukwazekanga ukuhlela.',
 }

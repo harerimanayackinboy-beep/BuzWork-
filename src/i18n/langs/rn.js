@@ -157,4 +157,12 @@ export default {
   'settings.themeAuto': '📱 Otomatike',
   'settings.themeLight': '☀️ Umucyo',
   'settings.themeDark': '🌙 Umwijima',
+  'new.previewTitle': 'Reba mbere yo gushiraho',
+  'new.previewHelp': 'Reba witonze mbere yo gushiraho, kugira ntiwipfuze ikosa.',
+  'new.editAgain': '← Hindura',
+  'new.confirmPost': 'Shiraho ku bantu',
+  'card.edit': '✏️ Hindura',
+  'card.editSave': 'Bika ihinduka',
+  'card.editCancel': 'Reka',
+  'card.editFail': 'Ntibishobotse guhindura.',
 }

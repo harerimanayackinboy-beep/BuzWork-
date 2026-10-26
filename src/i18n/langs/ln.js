@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Automatique',
   'settings.themeLight': '☀️ Pole',
   'settings.themeDark': '🌙 Molili',
+  'new.previewTitle': 'Talá liboso',
+  'new.previewHelp': 'Talá malamu liboso ya kotinda, mpo ozanga libunga te.',
+  'new.editAgain': '← Bongisa',
+  'new.confirmPost': 'Tinda',
+  'card.edit': '✏️ Bongisa',
+  'card.editSave': 'Bomba mbongwana',
+  'card.editCancel': 'Tika',
+  'card.editFail': 'Ekoki kobongisama te.',
 }

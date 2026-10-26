@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Automatic',
   'settings.themeLight': '☀️ Light',
   'settings.themeDark': '🌙 Dark',
+  'new.previewTitle': 'Preview',
+  'new.previewHelp': 'Look carefully before posting, so you don\'t publish by mistake.',
+  'new.editAgain': '← Edit',
+  'new.confirmPost': 'Post it',
+  'card.edit': '✏️ Edit',
+  'card.editSave': 'Save changes',
+  'card.editCancel': 'Cancel',
+  'card.editFail': 'Could not update.',
 }

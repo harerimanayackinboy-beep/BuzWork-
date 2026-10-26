@@ -21,6 +21,12 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [showComments, setShowComments] = useState(false)
   const [status, setStatus] = useState(post.status)
   const [msg, setMsg] = useState('')
+  const [editing, setEditing] = useState(false)
+  const [caption, setCaption] = useState(post.caption)
+  const [price, setPrice] = useState(post.price ?? '')
+  const [currency, setCurrency] = useState(post.currency || 'ZAR')
+  const [details, setDetails] = useState(post.details || '')
+  const [editBusy, setEditBusy] = useState(false)
 
   const liked = likes.some((l) => l.user_id === user.id)
   const waHref = isOwner ? null : whatsappLink(
@@ -63,6 +69,23 @@ export default function PostCard({ kind, post, onDeleted }) {
     setStatus(next)
   }
 
+  // Guhindura itangazo nyuma yo kurishiraho (urugero: wanditse ikosa)
+  async function saveEdit() {
+    setEditBusy(true)
+    const row = { caption: caption.trim() }
+    if (kind === 'product') {
+      row.price = price === '' ? null : Number(price)
+      row.currency = price === '' ? null : currency.toUpperCase()
+      row.details = details.trim() || null
+    }
+    const { error } = await supabase.from(c.table).update(row).eq('id', post.id)
+    setEditBusy(false)
+    if (error) return setMsg(t('card.editFail'))
+    post.caption = row.caption
+    if (kind === 'product') { post.price = row.price; post.currency = row.currency; post.details = row.details }
+    setEditing(false)
+  }
+
   async function remove() {
     if (!confirm(t('card.confirmDelete'))) return
     const { data: all } = await supabase.from(c.imgTable).select('storage_path').eq(c.fk, post.id)
@@ -99,12 +122,33 @@ export default function PostCard({ kind, post, onDeleted }) {
       )}
       {moreImages && <button className="link" onClick={loadMore}>{t('card.moreImages')}</button>}
 
-      <p className="caption">{post.caption}</p>
-      {kind === 'product' && (post.price != null || post.details) && (
-        <p className="muted">
-          {post.price != null && <strong>{post.price} {post.currency || ''}</strong>}
-          {post.details ? ` · ${post.details}` : ''}
-        </p>
+      {editing ? (
+        <div className="stack edit-box">
+          <textarea rows={3} maxLength={2000} value={caption} onChange={(e) => setCaption(e.target.value)} />
+          {kind === 'product' && (
+            <>
+              <div className="row">
+                <input className="grow" type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} />
+                <input style={{ maxWidth: 70 }} maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} />
+              </div>
+              <textarea rows={2} maxLength={4000} value={details} onChange={(e) => setDetails(e.target.value)} />
+            </>
+          )}
+          <div className="row">
+            <button className="btn ghost small" disabled={editBusy} onClick={() => setEditing(false)}>{t('card.editCancel')}</button>
+            <button className="btn small" disabled={editBusy} onClick={saveEdit}>{editBusy ? t('common.saving') : t('card.editSave')}</button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <p className="caption">{post.caption}</p>
+          {kind === 'product' && (post.price != null || post.details) && (
+            <p className="muted">
+              {post.price != null && <strong>{post.price} {post.currency || ''}</strong>}
+              {post.details ? ` · ${post.details}` : ''}
+            </p>
+          )}
+        </>
       )}
 
       <div className="actions">
@@ -126,6 +170,7 @@ export default function PostCard({ kind, post, onDeleted }) {
                 {status === 'taken' ? t('card.reopen') : t('card.setTaken')}
               </button>
             )}
+            {!editing && <button className="link" onClick={() => setEditing(true)}>{t('card.edit')}</button>}
             <button className="link danger" onClick={remove}>{t('common.delete')}</button>
           </>
         ) : (

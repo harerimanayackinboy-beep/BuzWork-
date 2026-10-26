@@ -156,4 +156,12 @@ export default {
   'settings.themeAuto': '📱 Kiotomatiki',
   'settings.themeLight': '☀️ Mwanga',
   'settings.themeDark': '🌙 Giza',
+  'new.previewTitle': 'Hakiki kabla',
+  'new.previewHelp': 'Angalia vizuri kabla ya kuchapisha, ili usikosee.',
+  'new.editAgain': '← Hariri',
+  'new.confirmPost': 'Chapisha',
+  'card.edit': '✏️ Hariri',
+  'card.editSave': 'Hifadhi mabadiliko',
+  'card.editCancel': 'Ghairi',
+  'card.editFail': 'Imeshindikana kuhariri.',
 }

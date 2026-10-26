@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
@@ -12,6 +12,7 @@ export default function NewPost() {
   const c = KINDS[kind]
   const { user, profile } = useAuth()
   const nav = useNavigate()
+  const [step, setStep] = useState('form') // 'form' | 'preview'
   const [caption, setCaption] = useState('')
   const [price, setPrice] = useState('')
   const [currency, setCurrency] = useState('ZAR')
@@ -22,6 +23,9 @@ export default function NewPost() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
+  // Ishusho z'akarorero (ntizishirwa kuri internet kugeza ubwo umukoresha yemeje)
+  const previewUrls = useMemo(() => files.map((f) => URL.createObjectURL(f)), [files])
+
   if (!c) return <p className="page">{t('new.unknown')}</p>
 
   function pick(e) {
@@ -31,8 +35,15 @@ export default function NewPost() {
     setFiles(chosen.slice(0, c.maxImages))
   }
 
-  async function submit(e) {
+  // Intambwe ya 1: ntishira kuri internet, ireba akarorero gusa
+  function reviewFirst(e) {
     e.preventDefault()
+    setError('')
+    setStep('preview')
+  }
+
+  // Intambwe ya 2: ni bwo itangazo rishirwa ku bantu bose nyuma yo kwemeza
+  async function publish() {
     setError('')
     setBusy(true)
     let postId
@@ -80,6 +91,42 @@ export default function NewPost() {
     }
   }
 
+  if (step === 'preview') {
+    return (
+      <div className="page narrow">
+        <header className="topbar">
+          <button className="link" onClick={() => setStep('form')}>{t('new.editAgain')}</button>
+          <h2>{t('new.previewTitle')}</h2>
+          <span />
+        </header>
+        <p className="muted small">{t('new.previewHelp')}</p>
+
+        <article className="card post">
+          {previewUrls.length > 0 && (
+            <div className={`gallery g${Math.min(previewUrls.length, 4)}`}>
+              {previewUrls.map((u) => <img key={u} src={u} alt="" />)}
+            </div>
+          )}
+          <p className="caption">{caption}</p>
+          {kind === 'product' && (price !== '' || details) && (
+            <p className="muted">
+              {price !== '' && <strong>{price} {currency}</strong>}
+              {details ? ` · ${details}` : ''}
+            </p>
+          )}
+          {location && <p className="muted small">{location}</p>}
+        </article>
+
+        {progress && <progress value={progress[0]} max={progress[1]} />}
+        <div className="row">
+          <button className="btn ghost" disabled={busy} onClick={() => setStep('form')}>{t('new.editAgain')}</button>
+          <button className="btn" disabled={busy} onClick={publish}>{busy ? t('new.posting') : t('new.confirmPost')}</button>
+        </div>
+        {error && <p className="error">{error}</p>}
+      </div>
+    )
+  }
+
   return (
     <div className="page narrow">
       <header className="topbar">
@@ -87,7 +134,7 @@ export default function NewPost() {
         <h2>{kind === 'product' ? t('new.titleProduct') : t('new.titleJob')}</h2>
         <span />
       </header>
-      <form onSubmit={submit} className="stack">
+      <form onSubmit={reviewFirst} className="stack">
         <label>{kind === 'product' ? t('new.describeProduct') : t('new.describeJob')}
           <textarea required maxLength={2000} rows={4} value={caption} onChange={(e) => setCaption(e.target.value)} />
         </label>
@@ -106,8 +153,7 @@ export default function NewPost() {
           <input type="file" accept="image/*" multiple onChange={pick} />
         </label>
         {files.length > 0 && <p className="muted small">{t('new.picked', { n: files.length })}</p>}
-        {progress && <progress value={progress[0]} max={progress[1]} />}
-        <button className="btn" disabled={busy}>{busy ? t('new.posting') : t('new.submit')}</button>
+        <button className="btn">{t('new.previewTitle')}</button>
         {error && <p className="error">{error}</p>}
       </form>
     </div>
