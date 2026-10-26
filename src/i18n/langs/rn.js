@@ -165,4 +165,6 @@ export default {
   'card.editSave': 'Bika ihinduka',
   'card.editCancel': 'Reka',
   'card.editFail': 'Ntibishobotse guhindura.',
+  'home.newPost': 'Shiraho itangazo rishasha',
+  'home.newPostChoose': 'Ushaka gushiraho itangazo ryo ku?',
 }

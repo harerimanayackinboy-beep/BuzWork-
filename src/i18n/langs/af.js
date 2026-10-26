@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Stoor veranderinge',
   'card.editCancel': 'Kanselleer',
   'card.editFail': 'Kon nie wysig nie.',
+  'home.newPost': 'Nuwe plasing',
+  'home.newPostChoose': 'Wat wil jy plaas?',
 }

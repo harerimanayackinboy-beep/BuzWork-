@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Londoloza izinguquko',
   'card.editCancel': 'Khansela',
   'card.editFail': 'Akukwazekanga ukuhlela.',
+  'home.newPost': 'Isithombe esisha',
+  'home.newPostChoose': 'Yini ofuna ukuyithumela?',
 }

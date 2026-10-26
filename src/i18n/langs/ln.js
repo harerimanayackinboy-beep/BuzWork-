@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Bomba mbongwana',
   'card.editCancel': 'Tika',
   'card.editFail': 'Ekoki kobongisama te.',
+  'home.newPost': 'Boyokoli ya sika',
+  'home.newPostChoose': 'Olingi kotinda nini?',
 }

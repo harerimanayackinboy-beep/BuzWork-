@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Guardar cambios',
   'card.editCancel': 'Cancelar',
   'card.editFail': 'No se pudo editar.',
+  'home.newPost': 'Nueva publicación',
+  'home.newPostChoose': '¿Qué quieres publicar?',
 }

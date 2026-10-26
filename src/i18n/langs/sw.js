@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Hifadhi mabadiliko',
   'card.editCancel': 'Ghairi',
   'card.editFail': 'Imeshindikana kuhariri.',
+  'home.newPost': 'Chapisho jipya',
+  'home.newPostChoose': 'Unataka kuchapisha nini?',
 }

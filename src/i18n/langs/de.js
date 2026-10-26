@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Änderungen speichern',
   'card.editCancel': 'Abbrechen',
   'card.editFail': 'Konnte nicht bearbeitet werden.',
+  'home.newPost': 'Neuer Beitrag',
+  'home.newPostChoose': 'Was möchtest du veröffentlichen?',
 }

@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Save changes',
   'card.editCancel': 'Cancel',
   'card.editFail': 'Could not update.',
+  'home.newPost': 'New post',
+  'home.newPostChoose': 'What do you want to post?',
 }

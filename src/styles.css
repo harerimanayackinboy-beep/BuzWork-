@@ -86,3 +86,8 @@ a.act{text-align:center;text-decoration:none;display:block}
 
 /* Guhindura itangazo (edit) */
 .edit-box textarea,.edit-box input{width:100%}
+
+/* Guhitamo ubwoko bw'itangazo rishasha ([+] kuri Home) */
+.sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+.sheet{background:var(--card);color:var(--text);width:100%;max-width:440px;border-radius:18px 18px 0 0;padding:20px 16px 28px;display:flex;flex-direction:column;gap:10px}
+.btn.amber2{background:var(--amber)}

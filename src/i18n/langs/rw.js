@@ -165,4 +165,6 @@ export default {
   'card.editSave': 'Bika impinduka',
   'card.editCancel': 'Reka',
   'card.editFail': 'Ntibyashobotse guhindura.',
+  'home.newPost': 'Itangazo rishya',
+  'home.newPostChoose': 'Ushaka gutangaza iki?',
 }

@@ -164,4 +164,6 @@ export default {
   'card.editSave': 'Enregistrer',
   'card.editCancel': 'Annuler',
   'card.editFail': 'Impossible de modifier.',
+  'home.newPost': 'Nouvelle annonce',
+  'home.newPostChoose': 'Que veux-tu publier ?',
 }
