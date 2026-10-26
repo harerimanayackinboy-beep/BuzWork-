@@ -13,7 +13,12 @@ export default function Home() {
   const [unread, setUnread] = useState(0)
 
   useEffect(() => {
-    countUnread(profile.user_id).then(setUnread).catch(() => {})
+    let cancelled = false
+    const check = () => countUnread(profile.user_id).then((n) => { if (!cancelled) setUnread(n) }).catch(() => {})
+    check()
+    // Dusubiramwo buri masegonda 8 kugira ikimenyetso c'ubutumwa bushasha kigaragare nta kongera gufungura app
+    const poll = setInterval(check, 8000)
+    return () => { cancelled = true; clearInterval(poll) }
   }, [profile.user_id])
 
   return (
@@ -29,11 +34,10 @@ export default function Home() {
             {unread > 0 && <span className="badge dot">{unread}</span>}
           </Link>
           <button
-            className="link"
+            className="fab-plus"
             aria-label={t('home.newPost')}
-            style={{ fontSize: 24, padding: 0 }}
             onClick={() => setChoosing(true)}
-          >➕</button>
+          >+</button>
           <Link to="/settings" className="link" aria-label={t('home.settingsLabel')} style={{ fontSize: 24, textDecoration: 'none' }}>⚙️</Link>
         </div>
       </header>
