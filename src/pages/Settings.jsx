@@ -1,28 +1,34 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../auth'
+import { useT } from '../i18n'
 import { Avatar } from '../components/PostCard'
 import WhatsappSetting from '../components/WhatsappSetting'
 import ThemeSetting from '../components/ThemeSetting'
 import ProfileEdit from '../components/ProfileEdit'
+import PhotoSetting from '../components/PhotoSetting'
+import LanguageSetting from '../components/LanguageSetting'
 
-// Hano hari gusa ibikora. Ibindi (nk'indimi) tuzabyongeramwo igihe bizaba byuzuye.
-const ITEMS = [
-  { key: 'profile', label: '✏️ Guhindura umwirondoro', Panel: ProfileEdit },
-  { key: 'whatsapp', label: '🟢 WhatsApp', Panel: WhatsappSetting },
-  { key: 'theme', label: '🌗 Mode (umucyo / umwijima)', Panel: ThemeSetting },
-]
-
+// Hano hari gusa ibikora.
 export default function Settings() {
+  const t = useT()
   const nav = useNavigate()
   const { profile, logout } = useAuth()
   const [open, setOpen] = useState(null)
 
+  const ITEMS = [
+    { key: 'profile', label: t('settings.editProfile'), Panel: ProfileEdit },
+    { key: 'photo', label: t('settings.changePhoto'), Panel: PhotoSetting },
+    { key: 'whatsapp', label: t('settings.whatsapp'), Panel: WhatsappSetting },
+    { key: 'theme', label: t('settings.theme'), Panel: ThemeSetting },
+    { key: 'language', label: t('settings.language'), Panel: LanguageSetting },
+  ]
+
   return (
     <div className="page">
       <header className="topbar">
-        <button className="link" onClick={() => nav('/')}>← Ahabanza</button>
-        <h2>⚙️ Settings</h2>
+        <button className="link" onClick={() => nav('/')}>{t('common.backHome')}</button>
+        <h2>{t('settings.title')}</h2>
         <span />
       </header>
 
@@ -42,7 +48,7 @@ export default function Settings() {
             {open === key && <div className="menu-panel"><Panel /></div>}
           </div>
         ))}
-        <button className="menu-item" onClick={logout}><span>🚪 Sohoka</span></button>
+        <button className="menu-item" onClick={logout}><span>{t('settings.logout')}</span></button>
       </div>
     </div>
   )

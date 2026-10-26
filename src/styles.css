@@ -78,3 +78,8 @@ a.act{text-align:center;text-decoration:none;display:block}
 .menu-panel{margin:-2px 0 6px}
 .seg{display:flex;gap:8px}
 .seg button{flex:1}
+
+/* Language picker */
+.lang-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lang-item{display:flex;align-items:center;gap:8px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;cursor:pointer;text-align:left}
+.lang-item.on{border-color:var(--teal);color:var(--teal);font-weight:700}

@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
+import { useT } from '../i18n'
 
 // Guhindura umwirondoro (amazina, telefone, email, aho uri, kwerekana telefone)
 export default function ProfileEdit() {
+  const t = useT()
   const { user, profile, reloadProfile } = useAuth()
   const [fullName, setFullName] = useState(profile.full_name || '')
   const [phone, setPhone] = useState(profile.phone_number || '')
@@ -18,7 +20,7 @@ export default function ProfileEdit() {
     e.preventDefault()
     setMsg(''); setError('')
     const p = phone.replace(/[\s\-()]/g, '')
-    if (!/^\+?[0-9]{7,15}$/.test(p)) return setError('Numero ya telefone ntiyanditse neza (nka +27712345678).')
+    if (!/^\+?[0-9]{7,15}$/.test(p)) return setError(t('setup.phoneBad'))
     setBusy(true)
     const { error } = await supabase
       .from('profiles')
@@ -31,23 +33,23 @@ export default function ProfileEdit() {
       })
       .eq('user_id', user.id)
     setBusy(false)
-    if (error) return setError('Ntibyashobotse kubikwa. Ongera ugerageze.')
+    if (error) return setError(t('common.saveFail'))
     setPhone(p)
     await reloadProfile()
-    setMsg('Vyabitswe ✅')
+    setMsg(t('common.saved'))
   }
 
   return (
     <form onSubmit={save} className="card stack">
-      <label>Amazina yose *<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
-      <label>Numero ya telefone *<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
-      <label>Email (si ngombwa)<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
-      <label>Aho uri (location) *<input required minLength={2} maxLength={150} value={location} onChange={(e) => setLocation(e.target.value)} /></label>
+      <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
+      <label>{t('setup.phone')}<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
+      <label>{t('setup.email')}<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
+      <label>{t('setup.location')}<input required minLength={2} maxLength={150} value={location} onChange={(e) => setLocation(e.target.value)} /></label>
       <label className="check">
         <input type="checkbox" checked={showPhone} onChange={(e) => setShowPhone(e.target.checked)} />
-        Nemeye ko abandi babona numero yanje kugira bampamagare
+        {t('setup.showPhone')}
       </label>
-      <button className="btn" disabled={busy}>{busy ? 'Ndabika…' : 'Bika'}</button>
+      <button className="btn" disabled={busy}>{busy ? t('common.saving') : t('common.save')}</button>
       {msg && <p className="ok">{msg}</p>}
       {error && <p className="error">{error}</p>}
     </form>

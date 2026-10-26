@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { checkProfilePhoto, preloadDetector } from '../lib/face'
+import { useT } from '../i18n'
 
 // Ifoto ifatirwa kuri camera gusa. Nta gallery.
 export default function CameraCapture({ onAccept }) {
+  const t = useT()
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const [started, setStarted] = useState(false)
@@ -33,7 +35,7 @@ export default function CameraCapture({ onAccept }) {
         }
       })
     } catch {
-      setError('Camera ntiyemerewe canke ntiboneka. Emera camera mu settings za browser hanyuma ugerageze kandi.')
+      setError(t('camera.denied'))
     }
   }
 
@@ -46,7 +48,7 @@ export default function CameraCapture({ onAccept }) {
     canvas.width = v.videoWidth
     canvas.height = v.videoHeight
     canvas.getContext('2d').drawImage(v, 0, 0)
-    const res = await checkProfilePhoto(canvas)
+    const res = await checkProfilePhoto(canvas, t)
     if (!res.ok) {
       setError(res.reason)
       setBusy(false)
@@ -73,10 +75,10 @@ export default function CameraCapture({ onAccept }) {
   if (preview) {
     return (
       <div className="camera">
-        <img className="camera-view" src={preview.url} alt="Ifoto yawe" />
+        <img className="camera-view" src={preview.url} alt={t('camera.photoAlt')} />
         <div className="row">
-          <button className="btn ghost" onClick={retake}>Fata indi</button>
-          <button className="btn" onClick={() => onAccept(preview.blob)}>Emeza iyi foto</button>
+          <button className="btn ghost" onClick={retake}>{t('camera.retake')}</button>
+          <button className="btn" onClick={() => onAccept(preview.blob)}>{t('camera.accept')}</button>
         </div>
       </div>
     )
@@ -86,16 +88,14 @@ export default function CameraCapture({ onAccept }) {
     <div className="camera">
       {!started ? (
         <>
-          <p className="muted">
-            Dukeneye camera yawe kugira ufate ifoto ya profile ako kanya. Ntushobora gushiramwo ifoto yo muri gallery.
-          </p>
-          <button className="btn" onClick={start}>Fungura camera</button>
+          <p className="muted">{t('camera.intro')}</p>
+          <button className="btn" onClick={start}>{t('camera.open')}</button>
         </>
       ) : (
         <>
           <video ref={videoRef} className="camera-view mirror" playsInline muted />
           <button className="btn" disabled={busy} onClick={snap}>
-            {busy ? 'Ndagenzura ifoto…' : 'Fata ifoto'}
+            {busy ? t('camera.checking') : t('camera.snap')}
           </button>
         </>
       )}

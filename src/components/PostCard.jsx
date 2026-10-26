@@ -6,8 +6,10 @@ import { KINDS, fetchMoreImages, postUrl, FEED_IMAGES } from '../lib/posts'
 import Comments from './Comments'
 import ReportButton from './ReportButton'
 import { whatsappLink } from '../lib/whatsapp'
+import { useT } from '../i18n'
 
 export default function PostCard({ kind, post, onDeleted }) {
+  const t = useT()
   const c = KINDS[kind]
   const { user } = useAuth()
   const isOwner = post[c.ownerCol] === user.id
@@ -21,10 +23,9 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [msg, setMsg] = useState('')
 
   const liked = likes.some((l) => l.user_id === user.id)
-  // Button ya WhatsApp igaragara gusa niba nyiri tangazo yashizeho numero ya WhatsApp
   const waHref = isOwner ? null : whatsappLink(
     post.owner?.whatsapp_number,
-    `Mwaramutse, nabonye itangazo ryanyu kuri BuzWork: ${postUrl(kind, post.id)}`,
+    t('card.waText', { url: postUrl(kind, post.id) }),
   )
 
   async function toggleLike() {
@@ -44,7 +45,7 @@ export default function PostCard({ kind, post, onDeleted }) {
     const url = postUrl(kind, post.id)
     try {
       if (navigator.share) await navigator.share({ title: post.caption.slice(0, 60), url })
-      else { await navigator.clipboard.writeText(url); setMsg('Link yakopewe.'); setTimeout(() => setMsg(''), 1800) }
+      else { await navigator.clipboard.writeText(url); setMsg(t('card.linkCopied')); setTimeout(() => setMsg(''), 1800) }
     } catch { /* umukoresha yaretse */ }
   }
 
@@ -58,19 +59,19 @@ export default function PostCard({ kind, post, onDeleted }) {
   async function toggleTaken() {
     const next = status === 'taken' ? 'open' : 'taken'
     const { error } = await supabase.from('jobs').update({ status: next }).eq('id', post.id)
-    if (error) return setMsg('Ntibishobotse guhinduka.')
+    if (error) return setMsg(t('card.changeFail'))
     setStatus(next)
   }
 
   async function remove() {
-    if (!confirm('Gusiba iri tangazo burundu?')) return
+    if (!confirm(t('card.confirmDelete'))) return
     const { data: all } = await supabase.from(c.imgTable).select('storage_path').eq(c.fk, post.id)
     const paths = (all || []).map((i) => i.storage_path)
     for (let i = 0; i < paths.length; i += 100) {
       await supabase.storage.from(c.bucket).remove(paths.slice(i, i + 100))
     }
     const { error } = await supabase.from(c.table).delete().eq('id', post.id)
-    if (error) return setMsg('Ntibishobotse gusibwa.')
+    if (error) return setMsg(t('common.deleteFail'))
     onDeleted?.(post.id)
   }
 
@@ -80,13 +81,13 @@ export default function PostCard({ kind, post, onDeleted }) {
         <Link to={`/seller/${post[c.ownerCol]}`} className="seller">
           <Avatar profile={post.owner} />
           <div>
-            <div className="strong">{post.owner?.full_name || 'Umukoresha'}</div>
+            <div className="strong">{post.owner?.full_name || t('common.user')}</div>
             <div className="muted small">
               {new Date(post.created_at).toLocaleDateString()} {post.location ? `· ${post.location}` : ''}
             </div>
           </div>
         </Link>
-        {kind === 'job' && status === 'taken' && <span className="badge">TAKEN ✅</span>}
+        {kind === 'job' && status === 'taken' && <span className="badge">{t('card.taken')}</span>}
       </header>
 
       {images.length > 0 && (
@@ -96,7 +97,7 @@ export default function PostCard({ kind, post, onDeleted }) {
           ))}
         </div>
       )}
-      {moreImages && <button className="link" onClick={loadMore}>Reba amafoto menshi</button>}
+      {moreImages && <button className="link" onClick={loadMore}>{t('card.moreImages')}</button>}
 
       <p className="caption">{post.caption}</p>
       {kind === 'product' && (post.price != null || post.details) && (
@@ -107,11 +108,11 @@ export default function PostCard({ kind, post, onDeleted }) {
       )}
 
       <div className="actions">
-        <button className={`act ${liked ? 'on' : ''}`} onClick={toggleLike}>👍 Like {likes.length || ''}</button>
-        <button className="act" onClick={() => setShowComments(!showComments)}>💬 Comment {commentCount || ''}</button>
-        <button className="act" onClick={share}>↗ Share</button>
+        <button className={`act ${liked ? 'on' : ''}`} onClick={toggleLike}>{t('card.like')} {likes.length || ''}</button>
+        <button className="act" onClick={() => setShowComments(!showComments)}>{t('card.comment')} {commentCount || ''}</button>
+        <button className="act" onClick={share}>{t('card.share')}</button>
         {waHref && (
-          <a className="act wa" href={waHref} target="_blank" rel="noopener noreferrer">🟢 WhatsApp</a>
+          <a className="act wa" href={waHref} target="_blank" rel="noopener noreferrer">{t('card.whatsapp')}</a>
         )}
       </div>
 
@@ -122,10 +123,10 @@ export default function PostCard({ kind, post, onDeleted }) {
           <>
             {kind === 'job' && (
               <button className="btn small ghost" onClick={toggleTaken}>
-                {status === 'taken' ? 'Subiza nk\'ifunguye' : 'Shiraho TAKEN ✅'}
+                {status === 'taken' ? t('card.reopen') : t('card.setTaken')}
               </button>
             )}
-            <button className="link danger" onClick={remove}>Siba</button>
+            <button className="link danger" onClick={remove}>{t('common.delete')}</button>
           </>
         ) : (
           <ReportButton entityType={c.reportType} entityId={post.id} />

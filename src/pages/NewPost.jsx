@@ -4,8 +4,10 @@ import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { KINDS } from '../lib/posts'
 import { compressImage, runPool } from '../lib/image'
+import { useT } from '../i18n'
 
 export default function NewPost() {
+  const t = useT()
   const { kind } = useParams()
   const c = KINDS[kind]
   const { user, profile } = useAuth()
@@ -20,11 +22,11 @@ export default function NewPost() {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  if (!c) return <p className="page">Ntibimenyekana.</p>
+  if (!c) return <p className="page">{t('new.unknown')}</p>
 
   function pick(e) {
     const chosen = [...e.target.files]
-    if (chosen.length > c.maxImages) setError(`Ushobora gushiraho amafoto ${c.maxImages} gusa.`)
+    if (chosen.length > c.maxImages) setError(t('new.maxImages', { n: c.maxImages }))
     else setError('')
     setFiles(chosen.slice(0, c.maxImages))
   }
@@ -72,7 +74,7 @@ export default function NewPost() {
       // Gusubiza inyuma: gusiba ibyari byamaze kujyaho kugira nta tangazo ridakwiye rigumaho
       if (uploaded.length) await supabase.storage.from(c.bucket).remove(uploaded)
       if (postId) await supabase.from(c.table).delete().eq('id', postId)
-      setError(err.message || 'Itangazo ntiryashobotse kujyaho. Ongera ugerageze.')
+      setError(err.message || t('new.fail'))
       setBusy(false)
       setProgress(null)
     }
@@ -81,31 +83,31 @@ export default function NewPost() {
   return (
     <div className="page narrow">
       <header className="topbar">
-        <button className="link" onClick={() => nav(-1)}>← Reka</button>
-        <h2>{kind === 'product' ? 'Itangazo ry\'ubudandaji' : 'Itangazo ry\'akazi'}</h2>
+        <button className="link" onClick={() => nav(-1)}>{t('common.cancel')}</button>
+        <h2>{kind === 'product' ? t('new.titleProduct') : t('new.titleJob')}</h2>
         <span />
       </header>
       <form onSubmit={submit} className="stack">
-        <label>{kind === 'product' ? 'Sobanura ico ugurisha *' : 'Sobanura akazi *'}
+        <label>{kind === 'product' ? t('new.describeProduct') : t('new.describeJob')}
           <textarea required maxLength={2000} rows={4} value={caption} onChange={(e) => setCaption(e.target.value)} />
         </label>
         {kind === 'product' && (
           <>
             <div className="row">
-              <label className="grow">Igiciro<input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} /></label>
-              <label>Ifaranga<input maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} /></label>
+              <label className="grow">{t('new.price')}<input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+              <label>{t('new.currency')}<input maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} /></label>
             </div>
-            <label>Ibindi bisobanuro<textarea maxLength={4000} rows={3} value={details} onChange={(e) => setDetails(e.target.value)} /></label>
+            <label>{t('new.moreDetails')}<textarea maxLength={4000} rows={3} value={details} onChange={(e) => setDetails(e.target.value)} /></label>
           </>
         )}
-        <label>Aho biri (location)<input value={location} onChange={(e) => setLocation(e.target.value)} /></label>
+        <label>{t('new.where')}<input value={location} onChange={(e) => setLocation(e.target.value)} /></label>
         <label>
-          Amafoto {kind === 'job' ? '(1 canke 2)' : ''}
+          {t('new.photos')} {kind === 'job' ? t('new.photosJob') : ''}
           <input type="file" accept="image/*" multiple onChange={pick} />
         </label>
-        {files.length > 0 && <p className="muted small">{files.length} amafoto yatoranijwe</p>}
+        {files.length > 0 && <p className="muted small">{t('new.picked', { n: files.length })}</p>}
         {progress && <progress value={progress[0]} max={progress[1]} />}
-        <button className="btn" disabled={busy}>{busy ? 'Ndashiraho…' : 'Shiraho itangazo'}</button>
+        <button className="btn" disabled={busy}>{busy ? t('new.posting') : t('new.submit')}</button>
         {error && <p className="error">{error}</p>}
       </form>
     </div>

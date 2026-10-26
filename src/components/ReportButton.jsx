@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
-
-const REASONS = ['Ubuhemu / scam', 'Ibinyoma', 'Ibitesha agaciro', 'Konti y\'ibinyoma', 'Ikindi']
+import { useT } from '../i18n'
 
 export default function ReportButton({ entityType, entityId }) {
+  const t = useT()
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
+  const REASONS = [t('report.scam'), t('report.false'), t('report.inappropriate'), t('report.fakeAccount'), t('report.other')]
   const [reason, setReason] = useState(REASONS[0])
   const [desc, setDesc] = useState('')
   const [msg, setMsg] = useState('')
@@ -20,14 +21,14 @@ export default function ReportButton({ entityType, entityId }) {
       description: desc.trim() || null,
     })
     if (error) {
-      setMsg(error.code === '23505' ? 'Wamaze gutanga raporo kuri ibi.' : 'Raporo ntiyashobotse kuja.')
+      setMsg(error.code === '23505' ? t('report.already') : t('report.fail'))
     } else {
-      setMsg('Murakoze. Raporo yawe yarakiriwe.')
+      setMsg(t('report.thanks'))
     }
     setTimeout(() => { setOpen(false); setMsg('') }, 1800)
   }
 
-  if (!open) return <button className="link" onClick={() => setOpen(true)}>Tanga raporo</button>
+  if (!open) return <button className="link" onClick={() => setOpen(true)}>{t('report.open')}</button>
   return (
     <div className="report-box">
       {msg ? <p>{msg}</p> : (
@@ -35,10 +36,10 @@ export default function ReportButton({ entityType, entityId }) {
           <select value={reason} onChange={(e) => setReason(e.target.value)}>
             {REASONS.map((r) => <option key={r}>{r}</option>)}
           </select>
-          <textarea placeholder="Sobanura (si ngombwa)" value={desc} maxLength={2000} onChange={(e) => setDesc(e.target.value)} />
+          <textarea placeholder={t('report.describe')} value={desc} maxLength={2000} onChange={(e) => setDesc(e.target.value)} />
           <div className="row">
-            <button className="btn ghost small" onClick={() => setOpen(false)}>Reka</button>
-            <button className="btn small" onClick={send}>Ohereza</button>
+            <button className="btn ghost small" onClick={() => setOpen(false)}>{t('common.cancel')}</button>
+            <button className="btn small" onClick={send}>{t('common.send')}</button>
           </div>
         </>
       )}

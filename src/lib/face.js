@@ -65,24 +65,26 @@ function measure(canvas) {
   return { brightness, sharpness }
 }
 
-// Isubiza { ok: true } canke { ok: false, reason: '...' } mu Kirundi
-export async function checkProfilePhoto(canvas) {
+// Isubiza { ok: true } canke { ok: false, reason: '...' }.
+// `t` ni function yo guhindura (useT() ivuye muri ../i18n); nimba itatanzwe, dukoresha ingingo z'ibanze.
+export async function checkProfilePhoto(canvas, t) {
+  const tr = t || ((k) => k)
   const { brightness, sharpness } = measure(canvas)
-  if (brightness < 55) return { ok: false, reason: 'Hari umwiza mwinshi. Shaka ahari umuco hanyuma wisubireko.' }
-  if (brightness > 225) return { ok: false, reason: 'Hari umuco mwinshi cane. Hindura aho uhagaze wisubireko.' }
-  if (sharpness < 40) return { ok: false, reason: 'Ifoto ntisobanutse. Fata telefone neza hanyuma wisubireko.' }
+  if (brightness < 55) return { ok: false, reason: tr('face.dark') }
+  if (brightness > 225) return { ok: false, reason: tr('face.bright') }
+  if (sharpness < 40) return { ok: false, reason: tr('face.blurry') }
 
   let detector
   try {
     detector = await getDetector()
   } catch {
-    return { ok: false, reason: 'Kugenzura mu maso ntivyakoze (reba internet) hanyuma wisubireko.' }
+    return { ok: false, reason: tr('face.detectorFail') }
   }
   const { detections } = detector.detect(canvas)
-  if (!detections.length) return { ok: false, reason: 'Mu maso ntihaboneka. Reba kuri camera hanyuma wisubireko.' }
-  if (detections.length > 1) return { ok: false, reason: 'Hari abantu barenga umwe. Ifoto ibe iyawe wenyene.' }
+  if (!detections.length) return { ok: false, reason: tr('face.noFace') }
+  if (detections.length > 1) return { ok: false, reason: tr('face.multiFace') }
   const box = detections[0].boundingBox
   const ratio = (box.width * box.height) / (canvas.width * canvas.height)
-  if (ratio < 0.06) return { ok: false, reason: 'Mu maso hari kure. Sigarira camera hanyuma wisubireko.' }
+  if (ratio < 0.06) return { ok: false, reason: tr('face.far') }
   return { ok: true }
 }

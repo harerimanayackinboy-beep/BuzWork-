@@ -4,8 +4,10 @@ import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { KINDS } from '../lib/posts'
 import ReportButton from './ReportButton'
+import { useT } from '../i18n'
 
 export default function Comments({ kind, postId, onCount }) {
+  const t = useT()
   const c = KINDS[kind]
   const { user } = useAuth()
   const [items, setItems] = useState([])
@@ -21,7 +23,7 @@ export default function Comments({ kind, postId, onCount }) {
       .eq(c.fk, postId)
       .order('created_at', { ascending: true })
       .limit(200)
-    if (error) { setError('Ibitekerezo ntibyashobotse kuza.'); setLoading(false); return }
+    if (error) { setError(t('comments.loadFail')); setLoading(false); return }
     setItems(data)
     onCount?.(data.length)
     const ids = [...new Set(data.map((d) => d.author_id))]
@@ -39,35 +41,35 @@ export default function Comments({ kind, postId, onCount }) {
     if (!body) return
     setError('')
     const { error } = await supabase.from(c.commentTable).insert({ [c.fk]: postId, author_id: user.id, body })
-    if (error) return setError('Igitekerezo ntikinjiye.')
+    if (error) return setError(t('comments.sendFail'))
     setText('')
     load()
   }
 
   async function remove(id) {
-    if (!confirm('Gusiba iki gitekerezo?')) return
+    if (!confirm(t('comments.confirmDelete'))) return
     const { error } = await supabase.from(c.commentTable).delete().eq('id', id)
-    if (error) return setError('Ntibishobotse gusibwa.')
+    if (error) return setError(t('common.deleteFail'))
     load()
   }
 
   return (
     <div className="comments">
-      {loading && <p className="muted">Ndikuzana…</p>}
+      {loading && <p className="muted">{t('common.loading')}</p>}
       {items.map((it) => (
         <div key={it.id} className="comment">
-          <Link to={`/seller/${it.author_id}`} className="strong">{names[it.author_id] || 'Umukoresha'}</Link>
+          <Link to={`/seller/${it.author_id}`} className="strong">{names[it.author_id] || t('common.user')}</Link>
           <span> {it.body}</span>
           <div className="comment-actions">
             {it.author_id === user.id
-              ? <button className="link" onClick={() => remove(it.id)}>Siba</button>
+              ? <button className="link" onClick={() => remove(it.id)}>{t('common.delete')}</button>
               : <ReportButton entityType={c.commentReportType} entityId={it.id} />}
           </div>
         </div>
       ))}
       <form onSubmit={add} className="row">
-        <input value={text} maxLength={1000} placeholder="Andika igitekerezo…" onChange={(e) => setText(e.target.value)} />
-        <button className="btn small" type="submit">Ohereza</button>
+        <input value={text} maxLength={1000} placeholder={t('comments.placeholder')} onChange={(e) => setText(e.target.value)} />
+        <button className="btn small" type="submit">{t('common.send')}</button>
       </form>
       {error && <p className="error">{error}</p>}
     </div>
