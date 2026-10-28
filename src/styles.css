@@ -46,6 +46,7 @@ textarea{resize:vertical}
 .gallery.g1{grid-template-columns:1fr}.gallery.g1 img{aspect-ratio:4/3}
 .gallery.g2,.gallery.g4,.gallery.g3{grid-template-columns:1fr 1fr}
 .caption{white-space:pre-wrap;margin:6px 0}
+.caption.clamp{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .actions{display:flex;gap:6px;border-top:1px solid var(--line);padding-top:8px}
 .act{flex:1;background:none;border:0;color:var(--muted);font:inherit;padding:8px;border-radius:8px;cursor:pointer}
 .act.on{color:var(--teal);font-weight:700}

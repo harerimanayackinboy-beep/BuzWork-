@@ -22,6 +22,8 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [status, setStatus] = useState(post.status)
   const [msg, setMsg] = useState('')
   const [editing, setEditing] = useState(false)
+  const [expanded, setExpanded] = useState(false)
+  const isLongCaption = post.caption.length > 90 || post.caption.includes('\n')
   const [caption, setCaption] = useState(post.caption)
   const [price, setPrice] = useState(post.price ?? '')
   const [currency, setCurrency] = useState(post.currency || 'ZAR')
@@ -141,7 +143,12 @@ export default function PostCard({ kind, post, onDeleted }) {
         </div>
       ) : (
         <>
-          <p className="caption">{post.caption}</p>
+          <p className={`caption ${!expanded && isLongCaption ? 'clamp' : ''}`}>{post.caption}</p>
+          {isLongCaption && (
+            <button className="link small" onClick={() => setExpanded(!expanded)}>
+              {expanded ? t('card.showLess') : t('card.showMore')}
+            </button>
+          )}
           {kind === 'product' && (post.price != null || post.details) && (
             <p className="muted">
               {post.price != null && <strong>{post.price} {post.currency || ''}</strong>}

@@ -186,4 +186,6 @@ export default {
   'settings.usernameSaved': '@username ebombami ✅',
   'settings.usernameRemoved': '@username elongwami.',
   'settings.usernameSaveFail': 'Ekoki kobombama te. Meka lisusu.',
+  'card.showMore': 'Mona mingi…',
+  'card.showLess': 'Kanga',
 }

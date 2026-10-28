@@ -186,4 +186,6 @@ export default {
   'settings.usernameSaved': '@username gestoor ✅',
   'settings.usernameRemoved': '@username verwyder.',
   'settings.usernameSaveFail': 'Kon nie stoor nie. Probeer weer.',
+  'card.showMore': 'Sien meer…',
+  'card.showLess': 'Wys minder',
 }

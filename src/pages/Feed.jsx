@@ -40,7 +40,8 @@ export default function Feed({ kind }) {
         <h2>{kind === 'product' ? t('kind.product') : t('kind.job')}</h2>
         <div className="row" style={{ gap: 12 }}>
           <Link to="/search" className="link" aria-label={t('home.searchLabel')} style={{ fontSize: 22, textDecoration: 'none' }}>🔎</Link>
-          <Link to={`/new/${kind}`} className="btn small">{t('feed.add')}</Link>
+          <Link to="/settings" className="link" aria-label={t('home.settingsLabel')} style={{ fontSize: 22, textDecoration: 'none' }}>⚙️</Link>
+          <Link to={`/new/${kind}`} className="fab-plus" aria-label={t('home.newPost')}>+</Link>
         </div>
       </header>
 

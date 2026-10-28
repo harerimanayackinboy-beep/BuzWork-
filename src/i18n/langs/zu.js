@@ -186,4 +186,6 @@ export default {
   'settings.usernameSaved': '@username igciniwe ✅',
   'settings.usernameRemoved': 'I-@username isusiwe.',
   'settings.usernameSaveFail': 'Ayikwazanga ukugcina. Zama futhi.',
+  'card.showMore': 'Bona okwengeziwe…',
+  'card.showLess': 'Vala',
 }

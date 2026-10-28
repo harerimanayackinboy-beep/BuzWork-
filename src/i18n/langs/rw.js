@@ -187,4 +187,6 @@ export default {
   'settings.usernameSaved': '@username yabitswe ✅',
   'settings.usernameRemoved': '@username yakuweho.',
   'settings.usernameSaveFail': 'Ntibyashobotse kubika. Ongera ugerageze.',
+  'card.showMore': 'Reba ibindi…',
+  'card.showLess': 'Funga',
 }

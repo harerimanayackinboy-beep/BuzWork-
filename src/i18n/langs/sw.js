@@ -186,4 +186,6 @@ export default {
   'settings.usernameSaved': '@username imehifadhiwa ✅',
   'settings.usernameRemoved': '@username imeondolewa.',
   'settings.usernameSaveFail': 'Imeshindikana kuhifadhi. Jaribu tena.',
+  'card.showMore': 'Ona zaidi…',
+  'card.showLess': 'Funga',
 }

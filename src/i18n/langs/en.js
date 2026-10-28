@@ -186,4 +186,6 @@ export default {
   'settings.usernameSaved': '@username saved ✅',
   'settings.usernameRemoved': '@username removed.',
   'settings.usernameSaveFail': 'Could not save. Try again.',
+  'card.showMore': 'See more…',
+  'card.showLess': 'See less',
 }
