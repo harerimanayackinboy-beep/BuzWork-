@@ -1,7 +1,7 @@
 // isiZulu
 export default {
   'common.loading': 'Iyalayisha…',
-  'common.back': '← Emuva',
+  'common.back': '⬅️',
   'common.backHome': '← Ekhaya',
   'common.cancel': 'Khansela',
   'common.save': 'Gcina',

@@ -1,7 +1,7 @@
 // Afrikaans
 export default {
   'common.loading': 'Laai…',
-  'common.back': '← Terug',
+  'common.back': '⬅️',
   'common.backHome': '← Tuis',
   'common.cancel': 'Kanselleer',
   'common.save': 'Stoor',

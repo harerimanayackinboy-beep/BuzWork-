@@ -1,7 +1,7 @@
 // Español
 export default {
   'common.loading': 'Cargando…',
-  'common.back': '← Atrás',
+  'common.back': '⬅️',
   'common.backHome': '← Inicio',
   'common.cancel': 'Cancelar',
   'common.save': 'Guardar',

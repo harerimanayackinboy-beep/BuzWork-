@@ -2,7 +2,7 @@
 // {n}, {url} ni ibisimbuzo: ntuzabihindure.
 export default {
   'common.loading': 'Biragenda…',
-  'common.back': '← Subira',
+  'common.back': '⬅️',
   'common.backHome': '← Ahabanza',
   'common.cancel': 'Hagarika',
   'common.save': 'Bika',

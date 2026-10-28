@@ -1,7 +1,7 @@
 // Swahili
 export default {
   'common.loading': 'Inapakia…',
-  'common.back': '← Rudi',
+  'common.back': '⬅️',
   'common.backHome': '← Nyumbani',
   'common.cancel': 'Ghairi',
   'common.save': 'Hifadhi',

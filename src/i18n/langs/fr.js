@@ -1,7 +1,7 @@
 // Français
 export default {
   'common.loading': 'Chargement…',
-  'common.back': '← Retour',
+  'common.back': '⬅️',
   'common.backHome': "← Accueil",
   'common.cancel': 'Annuler',
   'common.save': 'Enregistrer',

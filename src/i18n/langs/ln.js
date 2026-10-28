@@ -1,7 +1,7 @@
 // Lingala
 export default {
   'common.loading': 'Ezali kotambola…',
-  'common.back': '← Kozonga',
+  'common.back': '⬅️',
   'common.backHome': '← Ndako',
   'common.cancel': 'Kotika',
   'common.save': 'Kobomba',

@@ -1,7 +1,7 @@
 // English
 export default {
   'common.loading': 'Loading…',
-  'common.back': '← Back',
+  'common.back': '⬅️',
   'common.backHome': '← Home',
   'common.cancel': 'Cancel',
   'common.save': 'Save',
