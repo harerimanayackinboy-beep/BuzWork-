@@ -10,6 +10,7 @@ import Post from './pages/Post'
 import Settings from './pages/Settings'
 import Messages from './pages/Messages'
 import Chat from './pages/Chat'
+import Search from './pages/Search'
 
 export default function App() {
   const { session, profile, profileLoaded, recovery, clearRecovery } = useAuth()
@@ -29,6 +30,7 @@ export default function App() {
       <Route path="/jobs" element={<Feed kind="job" />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/messages" element={<Messages />} />
+      <Route path="/search" element={<Search />} />
       <Route path="/chat/:id" element={<Chat />} />
       <Route path="/new/:kind" element={<NewPost />} />
       <Route path="/seller/:id" element={<Seller />} />

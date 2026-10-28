@@ -4,6 +4,7 @@ import { useAuth } from '../auth'
 import { useT } from '../i18n'
 import { Avatar } from '../components/PostCard'
 import WhatsappSetting from '../components/WhatsappSetting'
+import UsernameSetting from '../components/UsernameSetting'
 import ThemeSetting from '../components/ThemeSetting'
 import ProfileEdit from '../components/ProfileEdit'
 import PhotoSetting from '../components/PhotoSetting'
@@ -20,6 +21,7 @@ export default function Settings() {
     { key: 'profile', label: t('settings.editProfile'), Panel: ProfileEdit },
     { key: 'photo', label: t('settings.changePhoto'), Panel: PhotoSetting },
     { key: 'whatsapp', label: t('settings.whatsapp'), Panel: WhatsappSetting },
+    { key: 'username', label: t('settings.username'), Panel: UsernameSetting },
     { key: 'theme', label: t('settings.theme'), Panel: ThemeSetting },
     { key: 'language', label: t('settings.language'), Panel: LanguageSetting },
   ]
@@ -35,6 +37,7 @@ export default function Settings() {
       <div className="card profile">
         <Avatar profile={profile} size={72} />
         <h3>{profile.full_name}</h3>
+        {profile.username && <p className="muted">@{profile.username}</p>}
         <p className="muted">{profile.location}</p>
       </div>
 

@@ -29,6 +29,7 @@ export default function Home() {
           <span className="strong">{profile.full_name}</span>
         </Link>
         <div className="row" style={{ gap: 16 }}>
+          <Link to="/search" className="link" aria-label={t('home.searchLabel')} style={{ fontSize: 24, textDecoration: 'none' }}>🔎</Link>
           <Link to="/messages" className="link" aria-label={t('home.messagesLabel')} style={{ fontSize: 24, textDecoration: 'none', position: 'relative' }}>
             💬
             {unread > 0 && <span className="badge dot">{unread}</span>}
