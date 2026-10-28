@@ -41,13 +41,21 @@ export default function Login() {
       if (error) throw error
       if (!data.session) setMsg(t('login.confirmSent'))
     } else {
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      let loginEmail = email.trim()
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginEmail)) {
+        const uname = loginEmail.replace(/^@/, '').toLowerCase()
+        const { data: resolved } = await supabase.rpc('email_for_username', { uname })
+        if (!resolved) throw new Error(t('login.usernameNotFound'))
+        loginEmail = resolved
+      }
+      const { error } = await supabase.auth.signInWithPassword({ email: loginEmail, password })
       if (error) throw error
     }
   })
 
   const forgot = wrap(async () => {
     if (!email) throw new Error(t('login.emailFirst'))
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) throw new Error(t('login.forgotNeedsEmail'))
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: window.location.origin + window.location.pathname,
     })
@@ -84,7 +92,13 @@ export default function Login() {
 
       {tab === 'email' ? (
         <form onSubmit={emailSubmit} className="stack">
-          <input type="email" required placeholder={t('login.email')} value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input
+            type={mode === 'signup' ? 'email' : 'text'}
+            required
+            placeholder={mode === 'signup' ? t('login.email') : t('login.emailOrUsername')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
           <button className="btn" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
           <button type="button" className="link" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>

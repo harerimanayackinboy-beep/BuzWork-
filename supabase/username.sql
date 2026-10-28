@@ -17,3 +17,17 @@ create or replace view public.search_profiles as
 
 revoke all on public.search_profiles from anon;
 grant select on public.search_profiles to authenticated;
+
+-- 3) Kwinjira (login) ukoresheje @username aho gukoresha email/telefone gusa
+--    (bikora gusa ku bakoresha barashize email mu mwirondoro wabo)
+create or replace function public.email_for_username(uname text)
+returns text
+language sql
+security definer
+set search_path = public
+as $$
+  select email from public.profiles where username = lower(uname) limit 1
+$$;
+
+revoke all on function public.email_for_username(text) from public;
+grant execute on function public.email_for_username(text) to anon, authenticated;

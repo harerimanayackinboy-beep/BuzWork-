@@ -118,7 +118,9 @@ export default function PostCard({ kind, post, onDeleted }) {
       {images.length > 0 && (
         <div className={`gallery g${Math.min(images.length, 4)}`}>
           {images.map((im) => (
-            <img key={im.id} loading="lazy" src={publicUrl(c.bucket, im.storage_path)} alt="" />
+            im.media_type === 'video'
+              ? <video key={im.id} src={publicUrl(c.bucket, im.storage_path)} controls />
+              : <img key={im.id} loading="lazy" src={publicUrl(c.bucket, im.storage_path)} alt="" />
           ))}
         </div>
       )}

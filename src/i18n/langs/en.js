@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Could not save. Try again.',
   'card.showMore': 'See more…',
   'card.showLess': 'See less',
+  'login.emailOrUsername': 'Email or @username',
+  'login.usernameNotFound': 'That @username was not found, or has no email linked to it.',
+  'login.forgotNeedsEmail': 'Type your email (not your @username) to reset your password.',
+  'new.oneVideo': 'You can only add one video.',
+  'new.videoTooBig': 'The video cannot be larger than 50MB.',
+  'new.mediaHint': 'you can also add one video',
 }

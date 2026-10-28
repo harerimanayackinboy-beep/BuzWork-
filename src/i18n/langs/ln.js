@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Ekoki kobombama te. Meka lisusu.',
   'card.showMore': 'Mona mingi…',
   'card.showLess': 'Kanga',
+  'login.emailOrUsername': 'Email to @username',
+  'login.usernameNotFound': '@username wana emonani te, to ezali na email te oyo ekangani na yango.',
+  'login.forgotNeedsEmail': 'Koma email na yo (email ya @username te) mpo na kobongisa mot de passe.',
+  'new.oneVideo': 'Okoki kotia kaka video moko.',
+  'new.videoTooBig': 'Video ekoki koleka 50MB te.',
+  'new.mediaHint': 'okoki mpe kotia video moko',
 }

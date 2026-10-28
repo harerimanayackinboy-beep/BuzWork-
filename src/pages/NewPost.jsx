@@ -30,6 +30,9 @@ export default function NewPost() {
 
   function pick(e) {
     const chosen = [...e.target.files]
+    const videos = chosen.filter((f) => f.type.startsWith('video/'))
+    if (videos.length > 1) return setError(t('new.oneVideo'))
+    if (videos.some((f) => f.size > 50 * 1024 * 1024)) return setError(t('new.videoTooBig'))
     if (chosen.length > c.maxImages) setError(t('new.maxImages', { n: c.maxImages }))
     else setError('')
     setFiles(chosen.slice(0, c.maxImages))
@@ -65,12 +68,22 @@ export default function NewPost() {
           files,
           4,
           async (file, i) => {
-            const blob = await compressImage(file)
-            const path = `${user.id}/${postId}/${i}-${Date.now()}.jpg`
-            const { error } = await supabase.storage.from(c.bucket).upload(path, blob, { contentType: 'image/jpeg' })
+            const isVideo = file.type.startsWith('video/')
+            let blob, ext, contentType
+            if (isVideo) {
+              blob = file
+              ext = (file.name.split('.').pop() || 'mp4').toLowerCase()
+              contentType = file.type || 'video/mp4'
+            } else {
+              blob = await compressImage(file)
+              ext = 'jpg'
+              contentType = 'image/jpeg'
+            }
+            const path = `${user.id}/${postId}/${i}-${Date.now()}.${ext}`
+            const { error } = await supabase.storage.from(c.bucket).upload(path, blob, { contentType })
             if (error) throw error
             uploaded.push(path)
-            return { [c.fk]: postId, storage_path: path, display_order: i }
+            return { [c.fk]: postId, storage_path: path, display_order: i, media_type: isVideo ? 'video' : 'image' }
           },
           (d, t) => setProgress([d, t])
         ).then(async (rows) => {
@@ -104,7 +117,9 @@ export default function NewPost() {
         <article className="card post">
           {previewUrls.length > 0 && (
             <div className={`gallery g${Math.min(previewUrls.length, 4)}`}>
-              {previewUrls.map((u) => <img key={u} src={u} alt="" />)}
+              {files.map((f, i) => f.type.startsWith('video/')
+                ? <video key={previewUrls[i]} src={previewUrls[i]} controls muted />
+                : <img key={previewUrls[i]} src={previewUrls[i]} alt="" />)}
             </div>
           )}
           <p className="caption">{caption}</p>
@@ -149,8 +164,8 @@ export default function NewPost() {
         )}
         <label>{t('new.where')}<input value={location} onChange={(e) => setLocation(e.target.value)} /></label>
         <label>
-          {t('new.photos')} {kind === 'job' ? t('new.photosJob') : ''}
-          <input type="file" accept="image/*" multiple onChange={pick} />
+          {t('new.photos')} {kind === 'job' ? t('new.photosJob') : ''} — {t('new.mediaHint')}
+          <input type="file" accept="image/*,video/*" multiple onChange={pick} />
         </label>
         {files.length > 0 && <p className="muted small">{t('new.picked', { n: files.length })}</p>}
         <button className="btn">{t('new.previewTitle')}</button>

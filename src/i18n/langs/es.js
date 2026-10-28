@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'No se pudo guardar. Inténtalo de nuevo.',
   'card.showMore': 'Ver más…',
   'card.showLess': 'Ver menos',
+  'login.emailOrUsername': 'Correo o @username',
+  'login.usernameNotFound': 'Ese @username no se encontró, o no tiene un correo vinculado.',
+  'login.forgotNeedsEmail': 'Escribe tu correo (no tu @username) para restablecer la contraseña.',
+  'new.oneVideo': 'Solo puedes añadir un vídeo.',
+  'new.videoTooBig': 'El vídeo no puede superar los 50MB.',
+  'new.mediaHint': 'también puedes añadir un vídeo',
 }

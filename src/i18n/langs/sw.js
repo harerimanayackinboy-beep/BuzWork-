@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Imeshindikana kuhifadhi. Jaribu tena.',
   'card.showMore': 'Ona zaidi…',
   'card.showLess': 'Funga',
+  'login.emailOrUsername': 'Barua pepe au @username',
+  'login.usernameNotFound': 'Hiyo @username haikupatikana, au haina barua pepe iliyounganishwa.',
+  'login.forgotNeedsEmail': 'Andika barua pepe yako (si @username) ili kubadilisha nenosiri.',
+  'new.oneVideo': 'Unaweza kuweka video moja tu.',
+  'new.videoTooBig': 'Video haiwezi kuzidi 50MB.',
+  'new.mediaHint': 'unaweza pia kuweka video moja',
 }

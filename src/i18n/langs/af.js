@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Kon nie stoor nie. Probeer weer.',
   'card.showMore': 'Sien meer…',
   'card.showLess': 'Wys minder',
+  'login.emailOrUsername': 'E-pos of @username',
+  'login.usernameNotFound': 'Daardie @username is nie gevind nie, of het geen e-pos gekoppel nie.',
+  'login.forgotNeedsEmail': 'Tik jou e-pos (nie jou @username nie) om jou wagwoord te herstel.',
+  'new.oneVideo': 'Jy kan net een video byvoeg.',
+  'new.videoTooBig': 'Die video kan nie groter as 50MB wees nie.',
+  'new.mediaHint': 'jy kan ook een video byvoeg',
 }

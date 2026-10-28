@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Ayikwazanga ukugcina. Zama futhi.',
   'card.showMore': 'Bona okwengeziwe…',
   'card.showLess': 'Vala',
+  'login.emailOrUsername': 'I-imeyili noma i-@username',
+  'login.usernameNotFound': 'Leyo @username ayitholakalanga, noma ayinayo imeyili exhumene nayo.',
+  'login.forgotNeedsEmail': 'Bhala i-imeyili yakho (hhayi i-@username) ukuze usethe kabusha iphasiwedi.',
+  'new.oneVideo': 'Ungafaka ividiyo eyodwa kuphela.',
+  'new.videoTooBig': 'Ividiyo ayikwazi ukudlula ku-50MB.',
+  'new.mediaHint': 'ungase ufake nevidiyo eyodwa',
 }

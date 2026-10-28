@@ -42,8 +42,8 @@ textarea{resize:vertical}
 .avatar.ph{background:var(--line)}
 .badge{background:#16a34a;color:#fff;border-radius:8px;padding:3px 8px;font-size:13px;font-weight:700}
 .gallery{display:grid;gap:4px;border-radius:10px;overflow:hidden;margin-bottom:6px}
-.gallery img{width:100%;height:100%;object-fit:cover;aspect-ratio:1;background:var(--line)}
-.gallery.g1{grid-template-columns:1fr}.gallery.g1 img{aspect-ratio:4/3}
+.gallery img,.gallery video{width:100%;height:100%;object-fit:cover;aspect-ratio:1;background:#000}
+.gallery.g1{grid-template-columns:1fr}.gallery.g1 img,.gallery.g1 video{aspect-ratio:4/3}
 .gallery.g2,.gallery.g4,.gallery.g3{grid-template-columns:1fr 1fr}
 .caption{white-space:pre-wrap;margin:6px 0}
 .caption.clamp{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}

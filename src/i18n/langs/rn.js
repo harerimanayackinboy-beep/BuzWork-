@@ -189,4 +189,10 @@ export default {
   'settings.usernameSaveFail': 'Ntibyashobotse kubika. Ongera ugerageze.',
   'card.showMore': 'Raba ibindi…',
   'card.showLess': 'Funga',
+  'login.emailOrUsername': 'Email canke @username',
+  'login.usernameNotFound': 'Iyo @username ntiboneka canke nta email ifitaniye nayo.',
+  'login.forgotNeedsEmail': 'Andika email yawe (si @username) kugira uhindure ijambo ry\'ibanga.',
+  'new.oneVideo': 'Ushobora gushiraho video imwe gusa.',
+  'new.videoTooBig': 'Video ntirengeza 50MB.',
+  'new.mediaHint': 'ushobora no gushiraho video imwe',
 }

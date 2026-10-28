@@ -188,4 +188,10 @@ export default {
   'settings.usernameSaveFail': 'Impossible d\'enregistrer. Réessaie.',
   'card.showMore': 'Voir plus…',
   'card.showLess': 'Voir moins',
+  'login.emailOrUsername': 'Email ou @username',
+  'login.usernameNotFound': 'Ce @username est introuvable, ou n\'a pas d\'email lié.',
+  'login.forgotNeedsEmail': 'Tape ton email (pas ton @username) pour réinitialiser le mot de passe.',
+  'new.oneVideo': 'Tu ne peux ajouter qu\'une seule vidéo.',
+  'new.videoTooBig': 'La vidéo ne peut pas dépasser 50MB.',
+  'new.mediaHint': 'tu peux aussi ajouter une vidéo',
 }
