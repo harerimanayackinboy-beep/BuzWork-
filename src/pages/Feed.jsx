@@ -38,7 +38,10 @@ export default function Feed({ kind }) {
       <header className="topbar">
         <button className="link" onClick={() => nav(-1)}>{t('common.back')}</button>
         <h2>{kind === 'product' ? t('kind.product') : t('kind.job')}</h2>
-        <Link to={`/new/${kind}`} className="btn small">{t('feed.add')}</Link>
+        <div className="row" style={{ gap: 12 }}>
+          <Link to="/search" className="link" aria-label={t('home.searchLabel')} style={{ fontSize: 22, textDecoration: 'none' }}>🔎</Link>
+          <Link to={`/new/${kind}`} className="btn small">{t('feed.add')}</Link>
+        </div>
       </header>
 
       {posts.map((p) => (
