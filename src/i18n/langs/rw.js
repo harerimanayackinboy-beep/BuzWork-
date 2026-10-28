@@ -207,4 +207,11 @@ export default {
   'settings.deleteConfirm1': 'Urashaka koko gusiba konti yawe burundu?',
   'settings.deleteConfirm2': 'Ni ukuri? Ntibizasubizwa inyuma.',
   'settings.deleteFail': 'Ntibyashobotse gusiba konti. Ongera ugerageze.',
+  'setup.detectGeo': '📍 Emeza aho uri',
+  'setup.geoSet': 'Aho uri byafashwe ✅',
+  'setup.geoFail': 'Ntibyashobotse kumenya aho uri. Reba ko wemeye uruhushya rwa \'location\'.',
+  'feed.nearby': 'Hafi yanjye',
+  'feed.withinKm': 'Mu ntera ya {n} km',
+  'feed.geoFail': 'Ntibyashobotse kumenya aho uri ubu. Reba uruhushya rwa \'location\' kuri telefoni yawe.',
+  'feed.nearbyEmpty': 'Nta tangazo ryabonetse muri iyo ntera. Gerageza intera nini.',
 }

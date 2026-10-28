@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Olingi mpenza kolongola compte na yo libela?',
   'settings.deleteConfirm2': 'Oza na ntembe te? Ekozonga lisusu te.',
   'settings.deleteFail': 'Ekoki kolongolama te. Meka lisusu.',
+  'setup.detectGeo': '📍 Luka esika nazali',
+  'setup.geoSet': 'Esika ebombami ✅',
+  'setup.geoFail': 'Ekoki koluka esika na yo te. Tala soki opesi ndingisa ya \'location\'.',
+  'feed.nearby': 'Pene na ngai',
+  'feed.withinKm': 'Na kati ya km {n}',
+  'feed.geoFail': 'Ekoki koluka esika na yo sikoyo te. Tala ndingisa ya \'location\' na telefone na yo.',
+  'feed.nearbyEmpty': 'Post moko te emonani na mosika wana. Meka mosika monene.',
 }

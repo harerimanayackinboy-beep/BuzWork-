@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchPosts, KINDS, PAGE_SIZE } from '../lib/posts'
+import { distanceKm, getMyPosition } from '../lib/geo'
 import PostCard from '../components/PostCard'
 import { useT } from '../i18n'
+
+const RADII = [5, 10, 25, 50, 100]
 
 export default function Feed({ kind }) {
   const t = useT()
@@ -13,6 +16,36 @@ export default function Feed({ kind }) {
   const [more, setMore] = useState(true)
   const [error, setError] = useState('')
   const loadingRef = useRef(false)
+
+  const [nearbyOn, setNearbyOn] = useState(false)
+  const [radiusKm, setRadiusKm] = useState(25)
+  const [myPos, setMyPos] = useState(null)
+  const [geoBusy, setGeoBusy] = useState(false)
+  const [geoError, setGeoError] = useState('')
+
+  async function toggleNearby() {
+    if (nearbyOn) { setNearbyOn(false); return }
+    setGeoError('')
+    setGeoBusy(true)
+    try {
+      const pos = myPos || (await getMyPosition())
+      setMyPos(pos)
+      setNearbyOn(true)
+    } catch {
+      setGeoError(t('feed.geoFail'))
+    }
+    setGeoBusy(false)
+  }
+
+  const visiblePosts = useMemo(() => {
+    if (!nearbyOn || !myPos) return posts
+    return posts.filter((p) => {
+      const lat = p.owner?.lat
+      const lng = p.owner?.lng
+      if (lat == null || lng == null) return false
+      return distanceKm(myPos.lat, myPos.lng, lat, lng) <= radiusKm
+    })
+  }, [posts, nearbyOn, myPos, radiusKm])
 
   async function load(reset = false) {
     if (loadingRef.current) return
@@ -45,12 +78,25 @@ export default function Feed({ kind }) {
         </div>
       </header>
 
+      <div className="row" style={{ gap: 8, margin: '0 0 10px', flexWrap: 'wrap' }}>
+        <button className={`btn small ${nearbyOn ? '' : 'ghost'}`} disabled={geoBusy} onClick={toggleNearby}>
+          {geoBusy ? t('common.loading') : `📍 ${t('feed.nearby')}`}
+        </button>
+        {nearbyOn && (
+          <select value={radiusKm} onChange={(e) => setRadiusKm(Number(e.target.value))} style={{ width: 'auto' }}>
+            {RADII.map((km) => <option key={km} value={km}>{t('feed.withinKm', { n: km })}</option>)}
+          </select>
+        )}
+      </div>
+      {geoError && <p className="error small">{geoError}</p>}
+
       <div className="feed-full">
-        {posts.map((p) => (
+        {visiblePosts.map((p) => (
           <PostCard key={p.id} kind={kind} post={p} onDeleted={(id) => setPosts(posts.filter((x) => x.id !== id))} />
         ))}
       </div>
-      {!loading && !posts.length && !error && <p className="muted center">{t('feed.empty')}</p>}
+      {!loading && nearbyOn && posts.length > 0 && !visiblePosts.length && <p className="muted center">{t('feed.nearbyEmpty')}</p>}
+      {!loading && !nearbyOn && !posts.length && !error && <p className="muted center">{t('feed.empty')}</p>}
       {error && <p className="error center">{error}</p>}
       {loading && <p className="muted center">{t('common.loading')}</p>}
       {!loading && more && posts.length > 0 && <button className="btn ghost" onClick={() => load()}>{t('feed.more')}</button>}

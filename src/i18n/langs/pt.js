@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Queres mesmo apagar a tua conta definitivamente?',
   'settings.deleteConfirm2': 'Tens a certeza? Não pode ser desfeito.',
   'settings.deleteFail': 'Não foi possível apagar a conta. Tenta novamente.',
+  'setup.detectGeo': '📍 Detetar a minha localização',
+  'setup.geoSet': 'Localização guardada ✅',
+  'setup.geoFail': 'Não foi possível detetar a tua localização. Verifica se permitiste a \'localização\'.',
+  'feed.nearby': 'Perto de mim',
+  'feed.withinKm': 'Num raio de {n} km',
+  'feed.geoFail': 'Não foi possível detetar a tua localização agora. Verifica a permissão de \'localização\' no telemóvel.',
+  'feed.nearbyEmpty': 'Nenhum anúncio encontrado nesse raio. Tenta um raio maior.',
 }

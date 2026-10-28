@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': '¿Realmente quieres eliminar tu cuenta de forma permanente?',
   'settings.deleteConfirm2': '¿Estás seguro? No se puede deshacer.',
   'settings.deleteFail': 'No se pudo eliminar la cuenta. Inténtalo de nuevo.',
+  'setup.detectGeo': '📍 Detectar mi ubicación',
+  'setup.geoSet': 'Ubicación guardada ✅',
+  'setup.geoFail': 'No se pudo detectar tu ubicación. Verifica que permitiste el acceso a \'ubicación\'.',
+  'feed.nearby': 'Cerca de mí',
+  'feed.withinKm': 'En un radio de {n} km',
+  'feed.geoFail': 'No se pudo detectar tu ubicación ahora. Revisa el permiso de \'ubicación\' en tu teléfono.',
+  'feed.nearbyEmpty': 'No se encontraron publicaciones en ese radio. Prueba un radio mayor.',
 }

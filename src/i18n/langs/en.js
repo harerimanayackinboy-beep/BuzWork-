@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Do you really want to delete your account permanently?',
   'settings.deleteConfirm2': 'Are you sure? This cannot be undone.',
   'settings.deleteFail': 'Could not delete the account. Try again.',
+  'setup.detectGeo': '📍 Detect my location',
+  'setup.geoSet': 'Location set ✅',
+  'setup.geoFail': 'Could not detect your location. Check that you allowed \'location\' access.',
+  'feed.nearby': 'Near me',
+  'feed.withinKm': 'Within {n} km',
+  'feed.geoFail': 'Could not detect your location right now. Check the \'location\' permission on your phone.',
+  'feed.nearbyEmpty': 'No posts found in that range. Try a bigger radius.',
 }

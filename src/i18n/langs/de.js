@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Möchtest du dein Konto wirklich dauerhaft löschen?',
   'settings.deleteConfirm2': 'Bist du sicher? Kann nicht rückgängig gemacht werden.',
   'settings.deleteFail': 'Konto konnte nicht gelöscht werden. Versuch es erneut.',
+  'setup.detectGeo': '📍 Meinen Standort ermitteln',
+  'setup.geoSet': 'Standort gespeichert ✅',
+  'setup.geoFail': 'Konnte deinen Standort nicht ermitteln. Prüfe, ob du den Zugriff auf \'Standort\' erlaubt hast.',
+  'feed.nearby': 'In meiner Nähe',
+  'feed.withinKm': 'Im Umkreis von {n} km',
+  'feed.geoFail': 'Konnte deinen Standort gerade nicht ermitteln. Prüfe die \'Standort\'-Berechtigung auf deinem Handy.',
+  'feed.nearbyEmpty': 'Keine Beiträge in diesem Umkreis gefunden. Versuch einen größeren Umkreis.',
 }

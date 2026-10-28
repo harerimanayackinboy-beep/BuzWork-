@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Ingabe ufuna ngempela ukususa i-akhawunti yakho unomphela?',
   'settings.deleteConfirm2': 'Uqinisekile? Akukwazi ukuhlehliswa.',
   'settings.deleteFail': 'Ayikwazanga ukususa i-akhawunti. Zama futhi.',
+  'setup.detectGeo': '📍 Thola indawo yami',
+  'setup.geoSet': 'Indawo igciniwe ✅',
+  'setup.geoFail': 'Ayikwazanga ukuthola indawo yakho. Hlola ukuthi uvumele i-\'location\'.',
+  'feed.nearby': 'Eduze nami',
+  'feed.withinKm': 'Phakathi kwe-km {n}',
+  'feed.geoFail': 'Ayikwazanga ukuthola indawo yakho manje. Hlola imvume ye-\'location\' efonini yakho.',
+  'feed.nearbyEmpty': 'Azikho izaziso ezitholakele kuleyo bubanzi. Zama ibanga elikhulu.',
 }

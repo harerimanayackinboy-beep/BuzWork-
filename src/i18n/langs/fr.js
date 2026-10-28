@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Veux-tu vraiment supprimer ton compte définitivement ?',
   'settings.deleteConfirm2': 'Es-tu sûr(e) ? Action irréversible.',
   'settings.deleteFail': 'Impossible de supprimer le compte. Réessaie.',
+  'setup.detectGeo': '📍 Détecter ma position',
+  'setup.geoSet': 'Position enregistrée ✅',
+  'setup.geoFail': 'Impossible de détecter ta position. Vérifie que tu as autorisé la \'localisation\'.',
+  'feed.nearby': 'Près de moi',
+  'feed.withinKm': 'Dans un rayon de {n} km',
+  'feed.geoFail': 'Impossible de détecter ta position maintenant. Vérifie la permission \'localisation\' sur ton téléphone.',
+  'feed.nearbyEmpty': 'Aucune annonce trouvée dans ce rayon. Essaie un rayon plus grand.',
 }

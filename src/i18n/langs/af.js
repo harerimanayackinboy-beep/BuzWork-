@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Wil jy regtig jou rekening permanent verwyder?',
   'settings.deleteConfirm2': 'Is jy seker? Kan nie ontdaan word nie.',
   'settings.deleteFail': 'Kon nie die rekening verwyder nie. Probeer weer.',
+  'setup.detectGeo': '📍 Bepaal my ligging',
+  'setup.geoSet': 'Ligging gestoor ✅',
+  'setup.geoFail': 'Kon nie jou ligging bepaal nie. Kyk of jy \'ligging\' toegang toegelaat het.',
+  'feed.nearby': 'Naby my',
+  'feed.withinKm': 'Binne {n} km',
+  'feed.geoFail': 'Kon nie nou jou ligging bepaal nie. Kyk na die \'ligging\' toestemming op jou foon.',
+  'feed.nearbyEmpty': 'Geen plasings in daardie omtrek gevind nie. Probeer \'n groter omtrek.',
 }

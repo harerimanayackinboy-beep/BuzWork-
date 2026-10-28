@@ -5,6 +5,7 @@ import { useT } from '../i18n'
 import CameraCapture from '../components/CameraCapture'
 import { compressImage } from '../lib/image'
 import { normWhatsapp, isValidWhatsapp } from '../lib/whatsapp'
+import { getMyPosition } from '../lib/geo'
 
 export default function ProfileSetup() {
   const t = useT()
@@ -15,10 +16,22 @@ export default function ProfileSetup() {
   const [location, setLocation] = useState(profile?.location || '')
   const [whatsapp, setWhatsapp] = useState(profile?.whatsapp_number || '')
   const [showPhone, setShowPhone] = useState(profile?.show_phone || false)
+  const [geo, setGeo] = useState(profile?.lat != null ? { lat: profile.lat, lng: profile.lng } : null)
+  const [geoBusy, setGeoBusy] = useState(false)
   const [photo, setPhoto] = useState(null)
   const [step, setStep] = useState(profile ? 'photo' : 'info')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
+
+  async function detectGeo() {
+    setGeoBusy(true)
+    try {
+      setGeo(await getMyPosition())
+    } catch {
+      setError(t('setup.geoFail'))
+    }
+    setGeoBusy(false)
+  }
 
   function next(e) {
     e.preventDefault()
@@ -48,6 +61,7 @@ export default function ProfileSetup() {
         show_phone: showPhone,
         profile_photo_path: uploadedPath,
         ...(whatsapp.trim() ? { whatsapp_number: normWhatsapp(whatsapp) } : {}),
+        ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
       })
       if (error) throw error
       await reloadProfile()
@@ -72,6 +86,12 @@ export default function ProfileSetup() {
             <input type="checkbox" checked={showPhone} onChange={(e) => setShowPhone(e.target.checked)} />
             {t('setup.showPhone')}
           </label>
+          <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+            <button type="button" className="btn ghost small" disabled={geoBusy} onClick={detectGeo}>
+              {geoBusy ? t('common.loading') : t('setup.detectGeo')}
+            </button>
+            {geo && <span className="muted small">{t('setup.geoSet')}</span>}
+          </div>
           <button className="btn">{t('setup.continuePhoto')}</button>
           {error && <p className="error">{error}</p>}
         </form>

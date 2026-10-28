@@ -206,4 +206,11 @@ export default {
   'settings.deleteConfirm1': 'Je, unataka kweli kufuta akaunti yako kabisa?',
   'settings.deleteConfirm2': 'Una uhakika? Haiwezi kurejeshwa.',
   'settings.deleteFail': 'Imeshindikana kufuta akaunti. Jaribu tena.',
+  'setup.detectGeo': '📍 Tambua mahali nilipo',
+  'setup.geoSet': 'Mahali pamehifadhiwa ✅',
+  'setup.geoFail': 'Imeshindikana kutambua mahali ulipo. Hakikisha umeruhusu \'location\'.',
+  'feed.nearby': 'Karibu nami',
+  'feed.withinKm': 'Ndani ya km {n}',
+  'feed.geoFail': 'Imeshindikana kutambua mahali ulipo sasa. Angalia ruhusa ya \'location\' kwenye simu yako.',
+  'feed.nearbyEmpty': 'Hakuna matangazo yaliyopatikana katika eneo hilo. Jaribu eneo kubwa zaidi.',
 }
