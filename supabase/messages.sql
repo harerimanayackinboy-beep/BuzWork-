@@ -26,3 +26,8 @@ create policy "messages: sender can insert" on public.messages
 drop policy if exists "messages: recipient can mark read" on public.messages;
 create policy "messages: recipient can mark read" on public.messages
   for update using (auth.uid() = recipient_id) with check (auth.uid() = recipient_id);
+
+-- Kugira uwohereje ashobore gusiba ubutumwa yandikishe
+drop policy if exists "messages: sender can delete" on public.messages;
+create policy "messages: sender can delete" on public.messages
+  for delete using (auth.uid() = sender_id);

@@ -49,6 +49,11 @@ export async function sendMessage(myId, otherId, body) {
   return data
 }
 
+export async function deleteMessage(id) {
+  const { error } = await supabase.from('messages').delete().eq('id', id)
+  if (error) throw error
+}
+
 export async function markThreadRead(myId, otherId) {
   await supabase
     .from('messages')

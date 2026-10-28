@@ -9,6 +9,8 @@ import ThemeSetting from '../components/ThemeSetting'
 import ProfileEdit from '../components/ProfileEdit'
 import PhotoSetting from '../components/PhotoSetting'
 import LanguageSetting from '../components/LanguageSetting'
+import FeedbackForm from '../components/FeedbackForm'
+import AccountDelete from '../components/AccountDelete'
 
 // Hano hari gusa ibikora.
 export default function Settings() {
@@ -24,6 +26,8 @@ export default function Settings() {
     { key: 'username', label: t('settings.username'), Panel: UsernameSetting },
     { key: 'theme', label: t('settings.theme'), Panel: ThemeSetting },
     { key: 'language', label: t('settings.language'), Panel: LanguageSetting },
+    { key: 'feedback', label: t('settings.feedback'), Panel: FeedbackForm },
+    { key: 'delete', label: t('settings.deleteAccount'), Panel: AccountDelete },
   ]
 
   return (

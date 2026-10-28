@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { useT } from '../i18n'
-import { fetchThread, sendMessage, markThreadRead } from '../lib/messages'
+import { fetchThread, sendMessage, markThreadRead, deleteMessage } from '../lib/messages'
 
 export default function Chat() {
   const t = useT()
@@ -63,6 +63,12 @@ export default function Chat() {
     setBusy(false)
   }
 
+  async function removeMessage(id) {
+    if (!confirm(t('chat.confirmDelete'))) return
+    setMessages((prev) => prev.filter((m) => m.id !== id))
+    try { await deleteMessage(id) } catch { setError(t('common.deleteFail')) }
+  }
+
   return (
     <div className="page narrow chat-page">
       <header className="topbar">
@@ -81,6 +87,9 @@ export default function Chat() {
               <div key={m.id} className={`bubble ${m.sender_id === user.id ? 'mine' : ''}`}>
                 <p>{m.body}</p>
                 <span className="muted small">{new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                {m.sender_id === user.id && !String(m.id).startsWith('tmp-') && (
+                  <button className="bubble-del" aria-label={t('common.delete')} onClick={() => removeMessage(m.id)}>✕</button>
+                )}
               </div>
             ))}
             <div ref={bottomRef} />

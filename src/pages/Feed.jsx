@@ -45,9 +45,11 @@ export default function Feed({ kind }) {
         </div>
       </header>
 
-      {posts.map((p) => (
-        <PostCard key={p.id} kind={kind} post={p} onDeleted={(id) => setPosts(posts.filter((x) => x.id !== id))} />
-      ))}
+      <div className="feed-full">
+        {posts.map((p) => (
+          <PostCard key={p.id} kind={kind} post={p} onDeleted={(id) => setPosts(posts.filter((x) => x.id !== id))} />
+        ))}
+      </div>
       {!loading && !posts.length && !error && <p className="muted center">{t('feed.empty')}</p>}
       {error && <p className="error center">{error}</p>}
       {loading && <p className="muted center">{t('common.loading')}</p>}
