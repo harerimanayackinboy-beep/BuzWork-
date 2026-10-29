@@ -1,105 +1,201 @@
-import { useEffect, useRef, useState } from 'react'
-import { checkProfilePhoto, preloadDetector } from '../lib/face'
+import { useState, useEffect } from 'react'
+import { supabase } from '../supabase'
+import { useAuth } from '../auth'
 import { useT } from '../i18n'
+import CameraCapture from '../components/CameraCapture'
+import { compressImage } from '../lib/image'
+import { getMyPosition } from '../lib/geo'
 
-// Ifoto ifatirwa kuri camera gusa. Nta gallery.
-export default function CameraCapture({ onAccept }) {
+export default function ProfileSetup() {
   const t = useT()
-  const videoRef = useRef(null)
-  const streamRef = useRef(null)
-  const [started, setStarted] = useState(false)
-  const [error, setError] = useState('')
+  const { user, profile, reloadProfile, logout } = useAuth()
+  const [fullName, setFullName] = useState(profile?.full_name || user.user_metadata?.full_name || '')
+  const [phone, setPhone] = useState(profile?.phone_number || user.phone ? `+${(profile?.phone_number || user.phone).replace(/^\+/, '')}` : '')
+  const [email, setEmail] = useState(profile?.email || user.email || '')
+  const [location, setLocation] = useState(profile?.location || '')
+  const [showPhone, setShowPhone] = useState(profile?.show_phone || false)
+  const [geo, setGeo] = useState(profile?.lat != null ? { lat: profile.lat, lng: profile.lng } : null)
+  const [geoBusy, setGeoBusy] = useState(false)
+  const [step, setStep] = useState(profile ? 'photo' : 'info')
   const [busy, setBusy] = useState(false)
-  const [preview, setPreview] = useState(null) // { blob, url }
+  const [error, setError] = useState('')
 
-  const stop = () => {
-    streamRef.current?.getTracks().forEach((t) => t.stop())
-    streamRef.current = null
-  }
-  useEffect(() => stop, [])
+  // --- Location autocomplete ---
+  // picked = umukoresha yahisemo ikibanza nyakuri mu rutonde (cyangwa yakoresheje Detect)
+  const [picked, setPicked] = useState(profile?.lat != null && !!profile?.location)
+  const [results, setResults] = useState([])
+  const [searching, setSearching] = useState(false)
 
-  async function start() {
-    setError('')
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 960 } },
-        audio: false,
-      })
-      streamRef.current = stream
-      setStarted(true)
-      preloadDetector()
-      requestAnimationFrame(() => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream
-          videoRef.current.play().catch(() => {})
-        }
-      })
-    } catch {
-      setError(t('camera.denied'))
-    }
-  }
-
-  async function snap() {
-    const v = videoRef.current
-    if (!v || !v.videoWidth) return
-    setBusy(true)
-    setError('')
-    const canvas = document.createElement('canvas')
-    canvas.width = v.videoWidth
-    canvas.height = v.videoHeight
-    canvas.getContext('2d').drawImage(v, 0, 0)
-    const res = await checkProfilePhoto(canvas, t)
-    if (!res.ok) {
-      setError(res.reason)
-      setBusy(false)
+  useEffect(() => {
+    if (picked) return
+    const q = location.trim()
+    if (q.length < 3) {
+      setResults([])
       return
     }
-    canvas.toBlob(
-      (blob) => {
-        stop()
-        setPreview({ blob, url: URL.createObjectURL(blob) })
-        setBusy(false)
-      },
-      'image/jpeg',
-      0.9
-    )
+    const timer = setTimeout(async () => {
+      try {
+        setSearching(true)
+        const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q)}&limit=5`)
+        const data = await res.json()
+        setResults(
+          data.features.map((f) => {
+            const p = f.properties
+            const label = [p.name, p.city, p.state, p.country]
+              .filter(Boolean)
+              .filter((v, i, a) => a.indexOf(v) === i)
+              .join(', ')
+            return { label, lat: f.geometry.coordinates[1], lng: f.geometry.coordinates[0] }
+          })
+        )
+      } catch {
+        setResults([])
+      }
+      setSearching(false)
+    }, 400)
+    return () => clearTimeout(timer)
+  }, [location, picked])
+
+  function onLocationType(value) {
+    setLocation(value)
+    setPicked(false) // iyo ahinduye inyandiko, ikibanza cahiswemo gisibangana
+    setGeo(null)
   }
 
-  function retake() {
-    if (preview) URL.revokeObjectURL(preview.url)
-    setPreview(null)
-    setStarted(false)
-    start()
+  function choosePlace(place) {
+    setLocation(place.label)
+    setGeo({ lat: place.lat, lng: place.lng })
+    setPicked(true)
+    setResults([])
+    setError('')
   }
 
-  if (preview) {
-    return (
-      <div className="camera">
-        <img className="camera-view" src={preview.url} alt={t('camera.photoAlt')} />
-        <div className="row">
-          <button className="btn ghost" onClick={retake}>{t('camera.retake')}</button>
-          <button className="btn" onClick={() => onAccept(preview.blob)}>{t('camera.accept')}</button>
-        </div>
-      </div>
-    )
+  async function detectGeo() {
+    setGeoBusy(true)
+    setError('')
+    try {
+      const pos = await getMyPosition()
+      let label = ''
+      try {
+        const res = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${pos.lat}&lon=${pos.lng}`
+        )
+        const d = await res.json()
+        label = d.display_name || ''
+      } catch {}
+      choosePlace({ label: label || `${pos.lat.toFixed(4)}, ${pos.lng.toFixed(4)}`, lat: pos.lat, lng: pos.lng })
+    } catch {
+      setError(t('setup.geoFail'))
+    }
+    setGeoBusy(false)
+  }
+
+  function next(e) {
+    e.preventDefault()
+    const p = phone.replace(/[\s\-()]/g, '')
+    if (!/^\+?[0-9]{7,15}$/.test(p)) return setError(t('setup.phoneBad'))
+    if (!picked || !geo) return setError(t('setup.locationPick'))
+    setPhone(p)
+    setError('')
+    setStep('photo')
+  }
+
+  async function save(blob) {
+    setBusy(true)
+    setError('')
+    let uploadedPath
+    try {
+      const small = await compressImage(blob, 800, 0.85)
+      uploadedPath = `${user.id}/${Date.now()}.jpg`
+      const up = await supabase.storage.from('profile-photos').upload(uploadedPath, small, { contentType: 'image/jpeg' })
+      if (up.error) throw up.error
+      const { error } = await supabase.from('profiles').upsert({
+        user_id: user.id,
+        full_name: fullName.trim(),
+        phone_number: phone,
+        email: email.trim() || null,
+        location: location.trim().slice(0, 150),
+        show_phone: showPhone,
+        profile_photo_path: uploadedPath,
+        ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
+      })
+      if (error) throw error
+      await reloadProfile()
+    } catch (err) {
+      if (uploadedPath) await supabase.storage.from('profile-photos').remove([uploadedPath])
+      setError(err.message || t('common.saveFail'))
+      setBusy(false)
+    }
   }
 
   return (
-    <div className="camera">
-      {!started ? (
-        <>
-          <p className="muted">{t('camera.intro')}</p>
-          <button className="btn" onClick={start}>{t('camera.open')}</button>
-        </>
+    <div className="page narrow">
+      <h1>{t('setup.title')}</h1>
+      {step === 'info' ? (
+        <form onSubmit={next} className="stack">
+          <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
+          <label>{t('setup.phone')}<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
+          <label>{t('setup.email')}<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
+
+          <label style={{ position: 'relative', display: 'block' }}>
+            {t('setup.location')}
+            <input
+              required
+              minLength={2}
+              maxLength={150}
+              autoComplete="off"
+              value={location}
+              onChange={(e) => onLocationType(e.target.value)}
+            />
+            {searching && <small>{t('common.loading')}</small>}
+            {results.length > 0 && (
+              <ul
+                style={{
+                  position: 'absolute', left: 0, right: 0, zIndex: 10,
+                  background: '#fff', border: '1px solid #ddd', borderRadius: 8,
+                  margin: 0, padding: 0, listStyle: 'none',
+                }}
+              >
+                {results.map((r, i) => (
+                  <li
+                    key={i}
+                    onClick={() => choosePlace(r)}
+                    style={{ padding: 12, borderBottom: '1px solid #eee', cursor: 'pointer' }}
+                  >
+                    📍 {r.label}
+                  </li>
+                ))}
+              </ul>
+            )}
+            {!picked && !searching && location.trim().length >= 3 && results.length === 0 && (
+              <small style={{ color: 'crimson' }}>{t('setup.locationPick')}</small>
+            )}
+          </label>
+
+          <label className="check">
+            <input type="checkbox" checked={showPhone} onChange={(e) => setShowPhone(e.target.checked)} />
+            {t('setup.showPhone')}
+          </label>
+          <div className="row" style={{ gap: 8, alignItems: 'center' }}>
+            <button type="button" className="btn ghost small" disabled={geoBusy} onClick={detectGeo}>
+              {geoBusy ? t('common.loading') : t('setup.detectGeo')}
+            </button>
+            {picked && geo && <span className="muted small">✓ {t('setup.geoOk')}</span>}
+          </div>
+          {error && <p className="error">{error}</p>}
+          <button className="btn" type="submit">{t('setup.continue')}</button>
+          <button type="button" className="link" onClick={logout}>{t('common.logout')}</button>
+        </form>
       ) : (
-        <>
-          <video ref={videoRef} className="camera-view mirror" playsInline muted />
-          <button className="btn" disabled={busy} onClick={snap}>
-            {busy ? t('camera.checking') : t('camera.snap')}
-          </button>
-        </>
+        <div className="stack">
+          <CameraCapture onAccept={save} />
+          {busy && <p>{t('common.loading')}</p>}
+          {error && <p className="error">{error}</p>}
+          {!profile && (
+            <button type="button" className="link" onClick={() => setStep('info')}>{t('common.back')}</button>
+          )}
+        </div>
       )}
-      {error && <p className="error">{error}</p>}
     </div>
   )
 }
