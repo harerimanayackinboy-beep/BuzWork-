@@ -3,12 +3,30 @@ import { supabase } from '../supabase'
 import { useI18n, useT, LANGS } from '../i18n'
 
 const css = `
-.lang-select{position:relative;display:flex;justify-content:center;margin-bottom:12px}
-.lang-btn{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #d5e3df;border-radius:20px;padding:10px 18px;font-size:15px;font-weight:bold;color:#0b7a6e;cursor:pointer}
-.lang-menu{position:absolute;top:100%;margin-top:6px;z-index:20;background:#fff;border:1px solid #d5e3df;border-radius:14px;box-shadow:0 6px 20px #00000020;min-width:200px;max-height:300px;overflow-y:auto;padding:6px}
+.lg-page{min-height:100vh;background:#f5f8f7;color:#123b38}
+.lg-hero{background:linear-gradient(145deg,#087568,#004e47);padding:18px 18px 74px;border-radius:0 0 32px 32px;text-align:center;color:#fff}
+.lang-select{position:relative;display:flex;justify-content:center;margin-bottom:22px}
+.lang-btn{display:flex;align-items:center;gap:6px;background:#ffffff25;border:1px solid #ffffff50;border-radius:20px;padding:9px 18px;font-size:15px;font-weight:bold;color:#fff;cursor:pointer}
+.lang-menu{position:absolute;top:100%;margin-top:6px;z-index:20;background:#fff;border:1px solid #d5e3df;border-radius:14px;box-shadow:0 6px 20px #00000030;min-width:200px;max-height:300px;overflow-y:auto;padding:6px}
 .lang-item{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:12px 14px;font-size:15px;color:#123b38;cursor:pointer}
 .lang-item:hover{background:#eef6f4}
-.lang-item.on{background:#0b7a6e;color:#fff;font-weight:bold}
+.lang-item.on{background:#087568;color:#fff;font-weight:bold}
+.lg-logo{font-size:42px;font-weight:800;margin:0;color:#fff;letter-spacing:.5px}
+.lg-logo span{color:#f5b301}
+.lg-tag{color:#bce9df;margin:8px 0 0;font-size:15px}
+.lg-card{background:#fff;margin:-46px 16px 24px;border-radius:22px;padding:20px 16px;box-shadow:0 8px 24px #003d3520;position:relative}
+.lg-google{width:100%;min-height:50px;border:1px solid #d5e3df;background:#fff;border-radius:14px;font-size:16px;font-weight:bold;color:#123b38;cursor:pointer}
+.lg-or{display:flex;align-items:center;gap:10px;color:#7a8f8b;font-size:14px;margin:16px 0}
+.lg-or:before,.lg-or:after{content:'';flex:1;height:1px;background:#e0e9e6}
+.lg-form{display:flex;flex-direction:column;gap:12px}
+.lg-form input{width:100%;min-height:50px;border:1px solid #d5e3df;border-radius:14px;padding:0 14px;font-size:16px;background:#f9fbfa;color:#123b38}
+.lg-form input:focus{outline:none;border-color:#087568;box-shadow:0 0 0 3px #08756830}
+.lg-submit{min-height:50px;border:0;border-radius:14px;background:#087568;color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
+.lg-submit:disabled,.lg-google:disabled{opacity:.6}
+.lg-link{background:none;border:0;color:#087568;font-size:15px;padding:6px 0;cursor:pointer;text-align:left}
+.lg-link.strong{font-weight:bold}
+.lg-ok{color:#087568;margin:12px 0 0}
+.lg-error{color:#c0392b;margin:12px 0 0}
 `
 
 export default function Login() {
@@ -69,53 +87,57 @@ export default function Login() {
   })
 
   return (
-    <div className="page narrow">
+    <div className="lg-page">
       <style>{css}</style>
 
-      <div className="lang-select">
-        <button type="button" className="lang-btn" onClick={() => setLangOpen(!langOpen)}>
-          {LANGS[lang]?.label || lang} <span>▾</span>
-        </button>
-        {langOpen && (
-          <div className="lang-menu">
-            {Object.entries(LANGS).map(([code, l]) => (
-              <button
-                key={code}
-                type="button"
-                className={`lang-item ${lang === code ? 'on' : ''}`}
-                onClick={() => { setLang(code); setLangOpen(false) }}
-              >
-                {l.label}
-              </button>
-            ))}
-          </div>
-        )}
+      <div className="lg-hero">
+        <div className="lang-select">
+          <button type="button" className="lang-btn" onClick={() => setLangOpen(!langOpen)}>
+            {LANGS[lang]?.label || lang} <span>▾</span>
+          </button>
+          {langOpen && (
+            <div className="lang-menu">
+              {Object.entries(LANGS).map(([code, l]) => (
+                <button
+                  key={code}
+                  type="button"
+                  className={`lang-item ${lang === code ? 'on' : ''}`}
+                  onClick={() => { setLang(code); setLangOpen(false) }}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <h1 className="lg-logo">Biz<span>Work</span></h1>
+        <p className="lg-tag">{t('login.tagline')}</p>
       </div>
 
-      <h1 className="logo">BizWork</h1>
-      <p className="muted center">{t('login.tagline')}</p>
+      <div className="lg-card">
+        <button className="lg-google" onClick={google} disabled={busy}>{t('login.google')}</button>
+        <div className="lg-or">{t('login.or')}</div>
 
-      <button className="btn google" onClick={google} disabled={busy}>{t('login.google')}</button>
-      <div className="or">{t('login.or')}</div>
+        <form onSubmit={emailSubmit} className="lg-form">
+          <input
+            type={mode === 'signup' ? 'email' : 'text'}
+            required
+            placeholder={mode === 'signup' ? t('login.email') : t('login.emailOrUsername')}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button className="lg-submit" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
+          <button type="button" className="lg-link strong" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
+            {mode === 'signup' ? t('login.haveAccount') : t('login.noAccount')}
+          </button>
+          {mode === 'login' && <button type="button" className="lg-link" onClick={forgot}>{t('login.forgot')}</button>}
+        </form>
 
-      <form onSubmit={emailSubmit} className="stack">
-        <input
-          type={mode === 'signup' ? 'email' : 'text'}
-          required
-          placeholder={mode === 'signup' ? t('login.email') : t('login.emailOrUsername')}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
-        <button className="btn" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
-        <button type="button" className="link" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
-          {mode === 'signup' ? t('login.haveAccount') : t('login.noAccount')}
-        </button>
-        {mode === 'login' && <button type="button" className="link" onClick={forgot}>{t('login.forgot')}</button>}
-      </form>
-
-      {msg && <p className="ok">{msg}</p>}
-      {error && <p className="error">{error}</p>}
+        {msg && <p className="lg-ok">{msg}</p>}
+        {error && <p className="lg-error">{error}</p>}
+      </div>
     </div>
   )
 }
@@ -140,4 +162,4 @@ export function ResetPassword({ onDone }) {
       </form>
     </div>
   )
-    }
+}
