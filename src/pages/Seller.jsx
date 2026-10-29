@@ -33,6 +33,14 @@ export default function Seller() {
   if (p === undefined) return <div className="page"><p className="muted center">{t('common.loading')}</p></div>
   if (p === null) return <div className="page"><button className="link" onClick={() => nav(-1)}>{t('common.back')}</button><p>{t('seller.notFound')}</p></div>
 
+  async function share() {
+    const url = `${window.location.origin}${window.location.pathname}#/seller/${p.user_id}`
+    try {
+      if (navigator.share) await navigator.share({ title: p.full_name, url })
+      else await navigator.clipboard.writeText(url)
+    } catch { /* umukoresha yaretse */ }
+  }
+
   return (
     <div className="page">
       <header className="topbar">
@@ -45,15 +53,18 @@ export default function Seller() {
         {p.username && <p className="muted">@{p.username}</p>}
         <p className="muted">{p.location}</p>
         {p.user_id !== user.id && (
-          <div className="row center">
-            <Link to={`/chat/${p.user_id}`} className="btn">{t('seller.message')}</Link>
-            {whatsappLink(wa) && (
-              <a className="btn wa" href={whatsappLink(wa, t('seller.waText'))} target="_blank" rel="noopener noreferrer">{t('card.whatsapp')}</a>
-            )}
-            {p.phone_number
-              ? <a className="btn" href={`tel:${p.phone_number}`}>{t('seller.call')}</a>
-              : <button className="btn ghost" disabled title={t('seller.callDisabled')}>{t('seller.call')}</button>}
-          </div>
+          <>
+            <div className="row center">
+              <Link to={`/chat/${p.user_id}`} className="btn icon" aria-label={t('seller.message')} title={t('seller.message')}>💬</Link>
+              {whatsappLink(wa) && (
+                <a className="btn icon wa" href={whatsappLink(wa, t('seller.waText'))} target="_blank" rel="noopener noreferrer" aria-label={t('card.whatsapp')} title={t('card.whatsapp')}>🟢</a>
+              )}
+              {p.phone_number
+                ? <a className="btn icon" href={`tel:${p.phone_number}`} aria-label={t('seller.call')} title={t('seller.call')}>📞</a>
+                : <button className="btn icon ghost" disabled aria-label={t('seller.call')} title={t('seller.callDisabled')}>📞</button>}
+            </div>
+            <button className="link" onClick={share}>{t('card.share')}</button>
+          </>
         )}
         {p.user_id !== user.id && <ReportButton entityType="profile" entityId={p.user_id} />}
       </div>
