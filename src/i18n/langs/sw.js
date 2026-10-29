@@ -54,6 +54,9 @@ export default {
   'setup.continuePhoto': 'Endelea kwenye picha',
   'setup.lastStep': 'Hatua ya mwisho: piga picha yako kwa kamera.',
   'setup.backStep': 'Rudi nyuma',
+  'setup.continue': 'Endelea',
+  'setup.locationPick': 'Andika mahali ulipo, au tumia "Thibitisha mahali nilipo" ili ionekane sawasawa.',
+  'setup.geoOk': 'imethibitishwa',
 
   'camera.denied': 'Kamera haikuruhusiwa au haipatikani. Ruhusu kamera kwenye mipangilio ya kivinjari chako kisha jaribu tena.',
   'camera.retake': 'Piga tena',

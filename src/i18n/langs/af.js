@@ -54,6 +54,9 @@ export default {
   'setup.continuePhoto': 'Gaan voort na foto',
   'setup.lastStep': "Laaste stap: neem jou foto met die kamera.",
   'setup.backStep': 'Gaan terug',
+  'setup.continue': 'Gaan voort',
+  'setup.locationPick': 'Tik waar jy is, of gebruik "Bevestig my ligging" vir groter akkuraatheid.',
+  'setup.geoOk': 'bevestig',
 
   'camera.denied': "Die kamera is nie toegelaat nie of is nie beskikbaar nie. Laat die kamera in jou blaaier se instellings toe en probeer weer.",
   'camera.retake': 'Neem weer',

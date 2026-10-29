@@ -55,6 +55,9 @@ export default {
   'setup.continuePhoto': 'Komeza ujye ku ifoto',
   'setup.lastStep': 'Intambwe ya nyuma: fata ifoto yawe ukoresheje kamera.',
   'setup.backStep': 'Subira inyuma',
+  'setup.continue': 'Komeza',
+  'setup.locationPick': 'Andika aho uherereye, cyangwa ukoreshe "Emeza aho uri" kugira ngo hagaragare neza.',
+  'setup.geoOk': 'byemejwe',
 
   'camera.denied': 'Kamera ntiyemerewe cyangwa ntibonetse. Emera gukoresha kamera muri parametero za mushakisha hanyuma ongera ugerageze.',
   'camera.retake': 'Ongera ufate indi',

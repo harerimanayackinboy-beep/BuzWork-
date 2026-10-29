@@ -95,7 +95,13 @@ export default function ProfileSetup() {
     e.preventDefault()
     const p = phone.replace(/[\s\-()]/g, '')
     if (!/^\+?[0-9]{7,15}$/.test(p)) return setError(t('setup.phoneBad'))
-    if (!picked || !geo) return setError(t('setup.locationPick'))
+    // Aho uri (location): niba umukoresha yahisemo ikibanza ku rutonde cyangwa
+    // akoresheje "Emeza aho uri" (detect), turabona geo (lat/lng) nk'umugati.
+    // Ariko ntidusaba ko ari ngombwa kugira ngo akomeze kwiyandikisha — iyo
+    // internet cyangwa location ya telefoni bitagenda neza, umukoresha
+    // ntiyagombye gufungirwa hanze y'app. Inyandiko yanditse mu mwanya ni
+    // ihagije: geo irakenewe gusa kugira "Hafi yanje" ibashe gukora.
+    if (location.trim().length < 2) return setError(t('setup.locationPick'))
     setPhone(p)
     setError('')
     setStep('photo')

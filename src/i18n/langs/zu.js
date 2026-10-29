@@ -54,6 +54,9 @@ export default {
   'setup.continuePhoto': 'Qhubeka ufoto',
   'setup.lastStep': 'Isinyathelo sokugcina: thatha ifoto yakho ngekhamera.',
   'setup.backStep': 'Buyela emuva',
+  'setup.continue': 'Qhubeka',
+  'setup.locationPick': 'Bhala lapho ukhona, noma usebenzise "Qinisekisa indawo yami" ukuze ibonakale kahle.',
+  'setup.geoOk': 'kuqinisekisiwe',
 
   'camera.denied': 'Ikhamera ayivunyelwe noma ayitholakali. Vumela ikhamera emasethingini ebhrawuza yakho bese uzama futhi.',
   'camera.retake': 'Phinda uthathe',

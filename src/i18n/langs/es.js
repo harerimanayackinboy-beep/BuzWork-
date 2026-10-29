@@ -54,6 +54,9 @@ export default {
   'setup.continuePhoto': 'Continuar a la foto',
   'setup.lastStep': 'Último paso: toma tu foto con la cámara.',
   'setup.backStep': 'Volver',
+  'setup.continue': 'Continuar',
+  'setup.locationPick': 'Escribe dónde estás, o usa "Confirmar mi ubicación" para mayor precisión.',
+  'setup.geoOk': 'confirmada',
 
   'camera.denied': 'No se permitió la cámara o no está disponible. Permite la cámara en la configuración de tu navegador e inténtalo de nuevo.',
   'camera.retake': 'Repetir foto',

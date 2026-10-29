@@ -54,6 +54,9 @@ export default {
   'setup.continuePhoto': 'Kokende na photo',
   'setup.lastStep': 'Etape ya suka: zwá photo na yo na caméra.',
   'setup.backStep': 'Kozonga nsima',
+  'setup.continue': 'Kokoba',
+  'setup.locationPick': 'Koma esika ozali, to salela "Emeza esika nazali" mpo emonana malamu.',
+  'setup.geoOk': 'endimami',
 
   'camera.denied': 'Caméra endimami te to ezali te. Pesá nzela na caméra na paramètres ya navigateur na yo mpe meka lisusu.',
   'camera.retake': 'Kozwa lisusu',
