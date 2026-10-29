@@ -220,3 +220,42 @@
 .profile-setup .camera-view.mirror {
   transform: scaleX(-1);
 }
+
+/* Umwijima: iyo telefone iri muri dark mode */
+@media (prefers-color-scheme: dark) {
+  .profile-setup {
+    --ps-primary: #2bb3a3;
+    --ps-primary-dark: #4fd1c1;
+    --ps-mint: #14312d;
+    --ps-text: #e8f3f0;
+    --ps-muted: #9fb2ad;
+    --ps-border: #243a36;
+    --ps-error: #ff8a80;
+    --ps-error-bg: #3a1a18;
+    background: radial-gradient(circle at 100% 0%, #0f2a26 0, transparent 45%), #0a1412;
+  }
+  .profile-setup form.stack,
+  .profile-setup .camera,
+  .ps-suggest {
+    background: #111f1c;
+    box-shadow: none;
+  }
+  .profile-setup input[type='text'],
+  .profile-setup input[type='tel'],
+  .profile-setup input[type='email'],
+  .profile-setup input:not([type]) {
+    background: #172623;
+  }
+  .profile-setup input:focus {
+    background: #1b2d29;
+  }
+  .profile-setup .btn {
+    color: #04201c;
+  }
+  .profile-setup .btn.ghost {
+    color: var(--ps-text);
+  }
+  .profile-setup .btn.ghost:hover {
+    background: #1c433d;
+  }
+}
