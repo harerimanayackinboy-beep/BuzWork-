@@ -4,7 +4,6 @@ import { useAuth } from '../auth'
 import { useT } from '../i18n'
 import CameraCapture from '../components/CameraCapture'
 import { compressImage } from '../lib/image'
-import { normWhatsapp, isValidWhatsapp } from '../lib/whatsapp'
 import { getMyPosition } from '../lib/geo'
 
 export default function ProfileSetup() {
@@ -14,7 +13,6 @@ export default function ProfileSetup() {
   const [phone, setPhone] = useState(profile?.phone_number || user.phone ? `+${(profile?.phone_number || user.phone).replace(/^\+/, '')}` : '')
   const [email, setEmail] = useState(profile?.email || user.email || '')
   const [location, setLocation] = useState(profile?.location || '')
-  const [whatsapp, setWhatsapp] = useState(profile?.whatsapp_number || '')
   const [showPhone, setShowPhone] = useState(profile?.show_phone || false)
   const [geo, setGeo] = useState(profile?.lat != null ? { lat: profile.lat, lng: profile.lng } : null)
   const [geoBusy, setGeoBusy] = useState(false)
@@ -37,7 +35,6 @@ export default function ProfileSetup() {
     e.preventDefault()
     const p = phone.replace(/[\s\-()]/g, '')
     if (!/^\+?[0-9]{7,15}$/.test(p)) return setError(t('setup.phoneBad'))
-    if (whatsapp.trim() && !isValidWhatsapp(whatsapp)) return setError(t('setup.waBad'))
     setPhone(p)
     setError('')
     setStep('photo')
@@ -60,7 +57,6 @@ export default function ProfileSetup() {
         location: location.trim(),
         show_phone: showPhone,
         profile_photo_path: uploadedPath,
-        ...(whatsapp.trim() ? { whatsapp_number: normWhatsapp(whatsapp) } : {}),
         ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
       })
       if (error) throw error
@@ -79,7 +75,6 @@ export default function ProfileSetup() {
         <form onSubmit={next} className="stack">
           <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
           <label>{t('setup.phone')}<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
-          <label>{t('setup.whatsapp')}<input type="tel" placeholder="+25779123456" value={whatsapp} onChange={(e) => setWhatsapp(e.target.value)} /></label>
           <label>{t('setup.email')}<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
           <label>{t('setup.location')}<input required minLength={2} maxLength={150} value={location} onChange={(e) => setLocation(e.target.value)} /></label>
           <label className="check">
@@ -90,20 +85,4 @@ export default function ProfileSetup() {
             <button type="button" className="btn ghost small" disabled={geoBusy} onClick={detectGeo}>
               {geoBusy ? t('common.loading') : t('setup.detectGeo')}
             </button>
-            {geo && <span className="muted small">{t('setup.geoSet')}</span>}
-          </div>
-          <button className="btn">{t('setup.continuePhoto')}</button>
-          {error && <p className="error">{error}</p>}
-        </form>
-      ) : (
-        <div className="stack">
-          <p className="muted">{t('setup.lastStep')}</p>
-          {busy ? <p>{t('common.saving')}</p> : <CameraCapture onAccept={(b) => { setPhoto(b); save(b) }} />}
-          {error && <p className="error">{error}</p>}
-          {!profile && <button className="link" onClick={() => setStep('info')}>{t('setup.backStep')}</button>}
-        </div>
-      )}
-      <button className="link" onClick={logout}>{t('common.logout')}</button>
-    </div>
-  )
-}
+            {geo && <span clas
