@@ -1,0 +1,222 @@
+/* Ibara zose ziri hano. Hindura aha gusa kugira ngo uhindure isura yose. */
+.profile-setup {
+  --ps-primary: #0f766e;
+  --ps-primary-dark: #0b5c56;
+  --ps-mint: #d9f0ea;
+  --ps-sun: #f4b942;
+  --ps-text: #10231f;
+  --ps-muted: #5b6b67;
+  --ps-border: #d3dfdb;
+  --ps-error: #b42318;
+  --ps-error-bg: #fdecea;
+
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--ps-mint) 0, transparent 45%),
+    #f3f7f5;
+  color: var(--ps-text);
+}
+
+.profile-setup h1 {
+  margin: 0 0 12px;
+  font-size: 1.9rem;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Intambwe 2: amakuru, hanyuma ifoto */
+.ps-steps {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.ps-steps span {
+  flex: 1;
+  height: 5px;
+  border-radius: 99px;
+  background: var(--ps-border);
+  transition: background 0.25s;
+}
+.ps-steps span.on {
+  background: var(--ps-primary);
+}
+
+/* Agakarita kera karimo form na camera */
+.profile-setup form.stack,
+.profile-setup .camera {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px;
+  background: #fff;
+  border: 1px solid var(--ps-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(15, 118, 110, 0.08);
+}
+
+.profile-setup label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ps-muted);
+}
+
+.profile-setup input[type='text'],
+.profile-setup input[type='tel'],
+.profile-setup input[type='email'],
+.profile-setup input:not([type]) {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--ps-text);
+  background: #f8fbfa;
+  border: 1.5px solid var(--ps-border);
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.profile-setup input:focus {
+  background: #fff;
+  border-color: var(--ps-primary);
+  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15);
+}
+
+/* Checkbox */
+.profile-setup label.check {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  font-weight: 400;
+  color: var(--ps-text);
+}
+.profile-setup input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--ps-primary);
+}
+
+/* Urutonde rw'ibibanza */
+.ps-suggest {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  margin: 6px 0 0;
+  padding: 4px;
+  list-style: none;
+  background: #fff;
+  border: 1px solid var(--ps-border);
+  border-radius: 14px;
+  box-shadow: 0 12px 28px rgba(16, 35, 31, 0.14);
+}
+.ps-suggest li {
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--ps-text);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.ps-suggest li:hover,
+.ps-suggest li:active {
+  background: var(--ps-mint);
+}
+.ps-hint {
+  font-weight: 500;
+  color: var(--ps-error);
+}
+
+/* Buto */
+.profile-setup .btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--ps-primary);
+  border: 0;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.05s;
+}
+.profile-setup .btn:hover {
+  background: var(--ps-primary-dark);
+}
+.profile-setup .btn:active {
+  transform: scale(0.98);
+}
+.profile-setup .btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.profile-setup .btn:focus-visible,
+.profile-setup .link:focus-visible {
+  outline: 3px solid var(--ps-sun);
+  outline-offset: 2px;
+}
+
+/* Buto y'amabara make (Detect my location, Retake) */
+.profile-setup .btn.ghost {
+  color: var(--ps-primary-dark);
+  background: var(--ps-mint);
+}
+.profile-setup .btn.ghost:hover {
+  background: #c5e8df;
+}
+.profile-setup .btn.small {
+  width: auto;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.profile-setup .row {
+  display: flex;
+  gap: 10px;
+}
+.profile-setup .camera .row .btn {
+  flex: 1;
+}
+
+.profile-setup .link {
+  align-self: flex-start;
+  padding: 6px 0;
+  font-size: 1rem;
+  color: var(--ps-primary);
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.profile-setup .muted {
+  color: var(--ps-muted);
+}
+
+/* Ikosa */
+.profile-setup .error {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.92rem;
+  color: var(--ps-error);
+  background: var(--ps-error-bg);
+  border-radius: 10px;
+}
+
+/* Camera: ifoto mu kiziga cijejwe n'ikinyoma c'ikirango */
+.profile-setup .camera-view {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  background: #0d1f1c;
+  border: 4px solid var(--ps-mint);
+  border-radius: 22px;
+}
+.profile-setup .camera-view.mirror {
+  transform: scaleX(-1);
+}
