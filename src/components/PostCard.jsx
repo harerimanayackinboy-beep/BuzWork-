@@ -24,6 +24,8 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [editing, setEditing] = useState(false)
   const [expanded, setExpanded] = useState(false)
   const isLongCaption = post.caption.length > 90 || post.caption.includes('\n')
+  const [detailsExpanded, setDetailsExpanded] = useState(false)
+  const isLongDetails = !!post.details && (post.details.length > 90 || post.details.includes('\n'))
   const [caption, setCaption] = useState(post.caption)
   const [price, setPrice] = useState(post.price ?? '')
   const [currency, setCurrency] = useState(post.currency || 'ZAR')
@@ -152,10 +154,17 @@ export default function PostCard({ kind, post, onDeleted }) {
             </button>
           )}
           {kind === 'product' && (post.price != null || post.details) && (
-            <p className="muted">
-              {post.price != null && <strong>{post.price} {post.currency || ''}</strong>}
-              {post.details ? ` · ${post.details}` : ''}
-            </p>
+            <>
+              <p className={`muted ${!detailsExpanded && isLongDetails ? 'clamp' : ''}`}>
+                {post.price != null && <strong>{post.price} {post.currency || ''}</strong>}
+                {post.details ? ` · ${post.details}` : ''}
+              </p>
+              {isLongDetails && (
+                <button className="link small" onClick={() => setDetailsExpanded(!detailsExpanded)}>
+                  {detailsExpanded ? t('card.showLess') : t('card.showMore')}
+                </button>
+              )}
+            </>
           )}
         </>
       )}
