@@ -5,6 +5,7 @@ import { useT } from '../i18n'
 import CameraCapture from '../components/CameraCapture'
 import { compressImage } from '../lib/image'
 import { getMyPosition } from '../lib/geo'
+import './ProfileSetup.css'
 
 export default function ProfileSetup() {
   const t = useT()
@@ -16,7 +17,6 @@ export default function ProfileSetup() {
   const [showPhone, setShowPhone] = useState(profile?.show_phone || false)
   const [geo, setGeo] = useState(profile?.lat != null ? { lat: profile.lat, lng: profile.lng } : null)
   const [geoBusy, setGeoBusy] = useState(false)
-  const [photo, setPhoto] = useState(null)
   const [step, setStep] = useState(profile ? 'photo' : 'info')
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -115,7 +115,7 @@ export default function ProfileSetup() {
         full_name: fullName.trim(),
         phone_number: phone,
         email: email.trim() || null,
-        location: location.trim(),
+        location: location.trim().slice(0, 150),
         show_phone: showPhone,
         profile_photo_path: uploadedPath,
         ...(geo ? { lat: geo.lat, lng: geo.lng } : {}),
@@ -130,8 +130,12 @@ export default function ProfileSetup() {
   }
 
   return (
-    <div className="page narrow">
+    <div className="page narrow profile-setup">
       <h1>{t('setup.title')}</h1>
+      <div className="ps-steps" aria-hidden="true">
+        <span className="on" />
+        <span className={step === 'photo' ? 'on' : ''} />
+      </div>
       {step === 'info' ? (
         <form onSubmit={next} className="stack">
           <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
@@ -150,26 +154,16 @@ export default function ProfileSetup() {
             />
             {searching && <small>{t('common.loading')}</small>}
             {results.length > 0 && (
-              <ul
-                style={{
-                  position: 'absolute', left: 0, right: 0, zIndex: 10,
-                  background: '#fff', border: '1px solid #ddd', borderRadius: 8,
-                  margin: 0, padding: 0, listStyle: 'none',
-                }}
-              >
+              <ul className="ps-suggest">
                 {results.map((r, i) => (
-                  <li
-                    key={i}
-                    onClick={() => choosePlace(r)}
-                    style={{ padding: 12, borderBottom: '1px solid #eee', cursor: 'pointer' }}
-                  >
+                  <li key={i} onClick={() => choosePlace(r)}>
                     📍 {r.label}
                   </li>
                 ))}
               </ul>
             )}
             {!picked && !searching && location.trim().length >= 3 && results.length === 0 && (
-              <small style={{ color: 'crimson' }}>{t('setup.locationPick')}</small>
+              <small className="ps-hint">{t('setup.locationPick')}</small>
             )}
           </label>
 
@@ -189,7 +183,7 @@ export default function ProfileSetup() {
         </form>
       ) : (
         <div className="stack">
-          <CameraCapture onCapture={(blob) => { setPhoto(blob); save(blob) }} disabled={busy} />
+          <CameraCapture onAccept={save} />
           {busy && <p>{t('common.loading')}</p>}
           {error && <p className="error">{error}</p>}
           {!profile && (
