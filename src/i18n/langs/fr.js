@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Près de moi',
   'feed.withinKm': 'Dans un rayon de {n} km',
   'feed.geoFail': 'Impossible de détecter ta position maintenant. Vérifie la permission \'localisation\' sur ton téléphone.',
+  'feed.geoDenied': 'Ce site n\'est pas autorisé à voir ta position (permission refusée). Ouvre Chrome → Paramètres du site → Localisation, autorise ce site, puis réessaie.',
+  'feed.geoTimeout': 'Cela a pris trop de temps pour trouver ta position. Vérifie que le GPS est activé, ou essaie dans un endroit plus dégagé, puis réessaie.',
   'feed.nearbyEmpty': 'Aucune annonce trouvée dans ce rayon. Essaie un rayon plus grand.',
   'chat.options': 'Options',
   'chat.viewProfile': 'Voir le profil',

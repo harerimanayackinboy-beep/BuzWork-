@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Karibu nami',
   'feed.withinKm': 'Ndani ya km {n}',
   'feed.geoFail': 'Imeshindikana kutambua mahali ulipo sasa. Angalia ruhusa ya \'location\' kwenye simu yako.',
+  'feed.geoDenied': 'Tovuti hii imezuiwa kuona mahali ulipo (ruhusa imekataliwa). Fungua Chrome → Mipangilio ya tovuti → Location, ruhusu tovuti hii, kisha jaribu tena.',
+  'feed.geoTimeout': 'Imechukua muda mrefu kupata mahali ulipo. Hakikisha GPS imewashwa, au jaribu mahali penye anga wazi zaidi, kisha jaribu tena.',
   'feed.nearbyEmpty': 'Hakuna matangazo yaliyopatikana katika eneo hilo. Jaribu eneo kubwa zaidi.',
   'chat.options': 'Chaguo',
   'chat.viewProfile': 'Ona wasifu',

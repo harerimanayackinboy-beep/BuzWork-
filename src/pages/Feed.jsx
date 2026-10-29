@@ -31,8 +31,11 @@ export default function Feed({ kind }) {
       const pos = myPos || (await getMyPosition())
       setMyPos(pos)
       setNearbyOn(true)
-    } catch {
-      setGeoError(t('feed.geoFail'))
+    } catch (err) {
+      const reason = err?.reason
+      if (reason === 'denied') setGeoError(t('feed.geoDenied'))
+      else if (reason === 'timeout' || reason === 'unavailable') setGeoError(t('feed.geoTimeout'))
+      else setGeoError(t('feed.geoFail'))
     }
     setGeoBusy(false)
   }

@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Naby my',
   'feed.withinKm': 'Binne {n} km',
   'feed.geoFail': 'Kon nie nou jou ligging bepaal nie. Kyk na die \'ligging\' toestemming op jou foon.',
+  'feed.geoDenied': 'Hierdie werf word geblok om jou ligging te sien (toestemming geweier). Maak Chrome → Werf-instellings → Ligging oop, laat hierdie werf toe, en probeer weer.',
+  'feed.geoTimeout': 'Dit het te lank geneem om jou ligging te vind. Maak seker GPS is aan, of probeer op \'n plek met \'n oop uitsig na die lug, en probeer weer.',
   'feed.nearbyEmpty': 'Geen plasings in daardie omtrek gevind nie. Probeer \'n groter omtrek.',
   'chat.options': 'Opsies',
   'chat.viewProfile': 'Bekyk profiel',

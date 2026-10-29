@@ -200,9 +200,25 @@ export default function PostCard({ kind, post, onDeleted }) {
   )
 }
 
-export function Avatar({ profile, size = 40 }) {
+export function Avatar({ profile, size = 40, zoomable = false }) {
   const url = publicUrl('profile-photos', profile?.profile_photo_path)
-  return url
-    ? <img className="avatar" style={{ width: size, height: size }} src={url} alt="" />
-    : <div className="avatar ph" style={{ width: size, height: size }} />
+  const [open, setOpen] = useState(false)
+  if (!url) return <div className="avatar ph" style={{ width: size, height: size }} />
+  if (!zoomable) return <img className="avatar" style={{ width: size, height: size }} src={url} alt="" />
+  return (
+    <>
+      <img
+        className="avatar zoomable"
+        style={{ width: size, height: size, cursor: 'pointer' }}
+        src={url}
+        alt=""
+        onClick={() => setOpen(true)}
+      />
+      {open && (
+        <div className="lightbox" onClick={() => setOpen(false)}>
+          <img src={url} alt="" />
+        </div>
+      )}
+    </>
+  )
 }

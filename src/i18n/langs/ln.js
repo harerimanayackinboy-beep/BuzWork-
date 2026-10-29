@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Pene na ngai',
   'feed.withinKm': 'Na kati ya km {n}',
   'feed.geoFail': 'Ekoki koluka esika na yo sikoyo te. Tala ndingisa ya \'location\' na telefone na yo.',
+  'feed.geoDenied': 'Site oyo apekisami kotala esika na yo (ndingisa eboyami). Fungola Chrome → Bokokisi ya site → Location, pesa ndingisa na site oyo, na nsima meka lisusu.',
+  'feed.geoTimeout': 'Esili na tango molai mpo na koluka esika na yo. Tala soki GPS efungwami, to meka na esika oyo likolo ezali polele, na nsima meka lisusu.',
   'feed.nearbyEmpty': 'Post moko te emonani na mosika wana. Meka mosika monene.',
   'chat.options': 'Ba options',
   'chat.viewProfile': 'Tala profil',

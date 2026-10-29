@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'In meiner Nähe',
   'feed.withinKm': 'Im Umkreis von {n} km',
   'feed.geoFail': 'Konnte deinen Standort gerade nicht ermitteln. Prüfe die \'Standort\'-Berechtigung auf deinem Handy.',
+  'feed.geoDenied': 'Diese Website darf deinen Standort nicht sehen (Berechtigung verweigert). Öffne Chrome → Website-Einstellungen → Standort, erlaube diese Website und versuche es erneut.',
+  'feed.geoTimeout': 'Es hat zu lange gedauert, deinen Standort zu finden. Prüfe, ob GPS aktiviert ist, oder versuche es an einem Ort mit freiem Blick zum Himmel, dann versuche es erneut.',
   'feed.nearbyEmpty': 'Keine Beiträge in diesem Umkreis gefunden. Versuch einen größeren Umkreis.',
   'chat.options': 'Optionen',
   'chat.viewProfile': 'Profil ansehen',

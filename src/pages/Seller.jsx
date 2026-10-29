@@ -49,7 +49,7 @@ export default function Seller() {
         <span />
       </header>
       <div className="card profile">
-        <Avatar profile={p} size={96} />
+        <Avatar profile={p} size={96} zoomable />
         <h2>{p.full_name}</h2>
         {p.username && <p className="muted">@{p.username}</p>}
         <p className="muted">{p.location}</p>

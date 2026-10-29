@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Near me',
   'feed.withinKm': 'Within {n} km',
   'feed.geoFail': 'Could not detect your location right now. Check the \'location\' permission on your phone.',
+  'feed.geoDenied': 'This site is blocked from seeing your location (permission denied). Open Chrome → Site settings → Location, allow this site, then try again.',
+  'feed.geoTimeout': 'It took too long to find your location. Check that GPS is on, or try somewhere with a clearer view of the sky, then try again.',
   'feed.nearbyEmpty': 'No posts found in that range. Try a bigger radius.',
   'chat.options': 'Options',
   'chat.viewProfile': 'View profile',

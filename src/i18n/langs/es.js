@@ -212,6 +212,8 @@ export default {
   'feed.nearby': 'Cerca de mí',
   'feed.withinKm': 'En un radio de {n} km',
   'feed.geoFail': 'No se pudo detectar tu ubicación ahora. Revisa el permiso de \'ubicación\' en tu teléfono.',
+  'feed.geoDenied': 'Este sitio tiene bloqueado el acceso a tu ubicación (permiso denegado). Abre Chrome → Configuración del sitio → Ubicación, permite este sitio y vuelve a intentarlo.',
+  'feed.geoTimeout': 'Tardó demasiado en encontrar tu ubicación. Verifica que el GPS esté activado, o prueba en un lugar con mejor vista del cielo, y vuelve a intentarlo.',
   'feed.nearbyEmpty': 'No se encontraron publicaciones en ese radio. Prueba un radio mayor.',
   'chat.options': 'Opciones',
   'chat.viewProfile': 'Ver perfil',
