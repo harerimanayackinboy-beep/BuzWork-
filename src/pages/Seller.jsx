@@ -44,7 +44,19 @@ export default function Seller() {
   const [wa, setWa] = useState(null)
 
   useEffect(() => {
-    supabase.from('public_profiles').select('*').eq('user_id', id).maybeSingle().then(({ data }) => setP(data || null))
+    async function loadProfile() {
+      const { data } = await supabase.from('public_profiles').select('*').eq('user_id', id).maybeSingle()
+      if (!data) { setP(null); return }
+      let profile = data
+      if (!profile.username) {
+        try {
+          const { data: extra } = await supabase.from('profiles').select('username').eq('user_id', id).maybeSingle()
+          if (extra?.username) profile = { ...profile, username: extra.username }
+        } catch { /* nta kibazo */ }
+      }
+      setP(profile)
+    }
+    loadProfile()
     supabase.from('public_whatsapp').select('whatsapp_number').eq('user_id', id).maybeSingle()
       .then(({ data, error }) => setWa(error ? null : data?.whatsapp_number || null))
   }, [id])
@@ -118,4 +130,4 @@ export default function Seller() {
       </main>
     </div>
   )
-}
+      }
