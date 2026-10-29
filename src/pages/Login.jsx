@@ -2,9 +2,19 @@ import { useState } from 'react'
 import { supabase } from '../supabase'
 import { useI18n, useT, LANGS } from '../i18n'
 
+const css = `
+.lang-select{position:relative;display:flex;justify-content:center;margin-bottom:12px}
+.lang-btn{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #d5e3df;border-radius:20px;padding:10px 18px;font-size:15px;font-weight:bold;color:#0b7a6e;cursor:pointer}
+.lang-menu{position:absolute;top:100%;margin-top:6px;z-index:20;background:#fff;border:1px solid #d5e3df;border-radius:14px;box-shadow:0 6px 20px #00000020;min-width:200px;max-height:300px;overflow-y:auto;padding:6px}
+.lang-item{display:block;width:100%;text-align:left;background:transparent;border:0;border-radius:10px;padding:12px 14px;font-size:15px;color:#123b38;cursor:pointer}
+.lang-item:hover{background:#eef6f4}
+.lang-item.on{background:#0b7a6e;color:#fff;font-weight:bold}
+`
+
 export default function Login() {
   const t = useT()
   const { lang, setLang } = useI18n()
+  const [langOpen, setLangOpen] = useState(false)
   const [mode, setMode] = useState('login') // login | signup
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -60,17 +70,26 @@ export default function Login() {
 
   return (
     <div className="page narrow">
-      <div className="lang-row">
-        {Object.entries(LANGS).map(([code, l]) => (
-          <button
-            key={code}
-            className={`lang-pill ${lang === code ? 'on' : ''}`}
-            onClick={() => setLang(code)}
-            title={l.label}
-          >
-            {l.flag}
-          </button>
-        ))}
+      <style>{css}</style>
+
+      <div className="lang-select">
+        <button type="button" className="lang-btn" onClick={() => setLangOpen(!langOpen)}>
+          {LANGS[lang]?.label || lang} <span>▾</span>
+        </button>
+        {langOpen && (
+          <div className="lang-menu">
+            {Object.entries(LANGS).map(([code, l]) => (
+              <button
+                key={code}
+                type="button"
+                className={`lang-item ${lang === code ? 'on' : ''}`}
+                onClick={() => { setLang(code); setLangOpen(false) }}
+              >
+                {l.label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       <h1 className="logo">BizWork</h1>
@@ -121,4 +140,4 @@ export function ResetPassword({ onDone }) {
       </form>
     </div>
   )
-}
+    }
