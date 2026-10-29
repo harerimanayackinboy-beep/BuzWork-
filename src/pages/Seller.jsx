@@ -48,12 +48,14 @@ export default function Seller() {
       const { data } = await supabase.from('public_profiles').select('*').eq('user_id', id).maybeSingle()
       if (!data) { setP(null); return }
       let profile = data
-      if (!profile.username) {
-        try {
-          const { data: extra } = await supabase.from('profiles').select('username').eq('user_id', id).maybeSingle()
-          if (extra?.username) profile = { ...profile, username: extra.username }
-        } catch { /* nta kibazo */ }
-      }
+      try {
+        const { data: found } = await supabase
+          .from('search_profiles')
+          .select('username')
+          .eq('user_id', id)
+          .maybeSingle()
+        if (found?.username) profile = { ...profile, username: found.username }
+      } catch { /* nta kibazo */ }
       setP(profile)
     }
     loadProfile()
@@ -130,4 +132,4 @@ export default function Seller() {
       </main>
     </div>
   )
-      }
+}
