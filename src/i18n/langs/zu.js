@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Ingabe ufuna ngempela ukuvimba lo muntu? Ngeke akwazi ukukuthumela umlayezo.',
   'chat.blockedNotice': 'Uvimbe lo muntu. Awukwazi ukumthumela umlayezo.',
   'chat.youBlocked': 'Uvimbe lo muntu. Susa ukuvinjelwa ukuze uthumele umlayezo.',
+  'chat.selectedCount': '{n} okukhethiwe',
+  'chat.share': 'Yabelana',
+  'chat.resend': 'Thumela futhi',
 }

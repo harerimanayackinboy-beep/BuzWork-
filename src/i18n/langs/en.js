@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Really block this person? They will not be able to message you.',
   'chat.blockedNotice': 'You blocked this person. You cannot message them.',
   'chat.youBlocked': 'You blocked this person. Unblock them to send a message.',
+  'chat.selectedCount': '{n} selected',
+  'chat.share': 'Share',
+  'chat.resend': 'Resend',
 }

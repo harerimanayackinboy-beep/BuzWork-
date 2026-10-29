@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Wil jy regtig hierdie persoon blokkeer? Hulle sal nie vir jou kan boodskap stuur nie.',
   'chat.blockedNotice': 'Jy het hierdie persoon geblokkeer. Jy kan nie vir hulle boodskap stuur nie.',
   'chat.youBlocked': 'Jy het hierdie persoon geblokkeer. Ontblokkeer hulle om \'n boodskap te stuur.',
+  'chat.selectedCount': '{n} gekies',
+  'chat.share': 'Deel',
+  'chat.resend': 'Stuur weer',
 }

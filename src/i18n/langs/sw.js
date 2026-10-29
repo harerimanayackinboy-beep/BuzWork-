@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Je, unataka kweli kumzuia mtu huyu? Hataweza kukutumia ujumbe.',
   'chat.blockedNotice': 'Umemzuia mtu huyu. Huwezi kumtumia ujumbe.',
   'chat.youBlocked': 'Umemzuia mtu huyu. Ondoa kizuizi ili umtumie ujumbe.',
+  'chat.selectedCount': '{n} zimechaguliwa',
+  'chat.share': 'Shiriki',
+  'chat.resend': 'Tuma tena',
 }

@@ -19,7 +19,10 @@ export default function Chat() {
   const [busy, setBusy] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [blocked, setBlocked] = useState(false)
+  const [selecting, setSelecting] = useState(false)
+  const [selected, setSelected] = useState(() => new Set())
   const bottomRef = useRef(null)
+  const pressTimer = useRef(null)
 
   useEffect(() => {
     supabase.from('public_profiles').select('*').eq('user_id', otherId).maybeSingle().then(({ data }) => setOther(data || null))
@@ -68,10 +71,63 @@ export default function Chat() {
     setBusy(false)
   }
 
-  async function removeMessage(id) {
+  function startPress(id) {
+    if (String(id).startsWith('tmp-')) return
+    clearTimeout(pressTimer.current)
+    pressTimer.current = setTimeout(() => {
+      setSelecting(true)
+      setSelected(new Set([id]))
+    }, 450)
+  }
+  function cancelPress() {
+    clearTimeout(pressTimer.current)
+  }
+  function tapBubble(id) {
+    if (!selecting || String(id).startsWith('tmp-')) return
+    setSelected((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      if (next.size === 0) setSelecting(false)
+      return next
+    })
+  }
+  function cancelSelection() {
+    setSelecting(false)
+    setSelected(new Set())
+  }
+
+  async function deleteSelected() {
     if (!confirm(t('chat.confirmDelete'))) return
-    setMessages((prev) => prev.filter((m) => m.id !== id))
-    try { await deleteMessage(id) } catch { setError(t('common.deleteFail')) }
+    const ids = [...selected]
+    setMessages((prev) => prev.filter((m) => !selected.has(m.id)))
+    cancelSelection()
+    try { await Promise.all(ids.map((id) => deleteMessage(id))) } catch { setError(t('common.deleteFail')) }
+  }
+
+  async function resendSelected() {
+    const toSend = messages.filter((m) => selected.has(m.id)).map((m) => m.body)
+    cancelSelection()
+    for (const body of toSend) {
+      const optimistic = { id: `tmp-${Date.now()}-${Math.random()}`, sender_id: user.id, recipient_id: otherId, body, created_at: new Date().toISOString() }
+      setMessages((prev) => [...prev, optimistic])
+      try {
+        const saved = await sendMessage(user.id, otherId, body)
+        setMessages((prev) => prev.map((m) => (m.id === optimistic.id ? saved : m)))
+      } catch {
+        setMessages((prev) => prev.filter((m) => m.id !== optimistic.id))
+        setError(t('chat.sendFail'))
+      }
+    }
+  }
+
+  async function shareSelected() {
+    const text = messages.filter((m) => selected.has(m.id)).map((m) => m.body).join('\n')
+    cancelSelection()
+    try {
+      if (navigator.share) await navigator.share({ text })
+      else { await navigator.clipboard.writeText(text); setError(''); }
+    } catch { /* umukoresha yaretse */ }
   }
 
   async function removeThread() {
@@ -97,11 +153,23 @@ export default function Chat() {
 
   return (
     <div className="page narrow chat-page">
-      <header className="topbar">
-        <button className="link" onClick={() => nav(-1)}>{t('common.back')}</button>
-        <span className="strong">{other?.full_name || t('common.user')}</span>
-        <button className="link kebab" aria-label={t('chat.options')} onClick={() => setMenuOpen(true)}>⋮</button>
-      </header>
+      {selecting ? (
+        <header className="topbar">
+          <button className="link" onClick={cancelSelection}>✕</button>
+          <span className="strong">{t('chat.selectedCount', { n: selected.size })}</span>
+          <div className="row" style={{ gap: 14 }}>
+            <button className="link" aria-label={t('chat.share')} style={{ fontSize: 20 }} onClick={shareSelected}>📤</button>
+            <button className="link" aria-label={t('chat.resend')} style={{ fontSize: 20 }} onClick={resendSelected}>🔁</button>
+            <button className="link danger" aria-label={t('common.delete')} style={{ fontSize: 20 }} onClick={deleteSelected}>🗑️</button>
+          </div>
+        </header>
+      ) : (
+        <header className="topbar">
+          <button className="link" onClick={() => nav(-1)}>{t('common.back')}</button>
+          <span className="strong">{other?.full_name || t('common.user')}</span>
+          <button className="link kebab" aria-label={t('chat.options')} onClick={() => setMenuOpen(true)}>⋮</button>
+        </header>
+      )}
 
       {menuOpen && (
         <div className="sheet-overlay" onClick={() => setMenuOpen(false)}>
@@ -122,12 +190,16 @@ export default function Chat() {
         <>
           <div className="chat-thread">
             {messages.map((m) => (
-              <div key={m.id} className={`bubble ${m.sender_id === user.id ? 'mine' : ''}`}>
+              <div
+                key={m.id}
+                className={`bubble ${m.sender_id === user.id ? 'mine' : ''} ${selected.has(m.id) ? 'selected' : ''}`}
+                onPointerDown={() => startPress(m.id)}
+                onPointerUp={cancelPress}
+                onPointerLeave={cancelPress}
+                onClick={() => tapBubble(m.id)}
+              >
                 <p>{m.body}</p>
                 <span className="muted small">{new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                {!String(m.id).startsWith('tmp-') && (
-                  <button className="bubble-del" aria-label={t('common.delete')} onClick={() => removeMessage(m.id)}>✕</button>
-                )}
               </div>
             ))}
             <div ref={bottomRef} />

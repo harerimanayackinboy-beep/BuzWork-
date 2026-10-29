@@ -223,4 +223,7 @@ export default {
   'chat.confirmBlock': 'Urashaka koko kubuza uyu muntu? Ntazoshobora kukwandikira.',
   'chat.blockedNotice': 'Wabuje uyu muntu. Ntushobora kumwandikira.',
   'chat.youBlocked': 'Wabuje uyu muntu. Kura uburuzwe kugira umwandikire.',
+  'chat.selectedCount': '{n} vyahiswemo',
+  'chat.share': 'Sangira',
+  'chat.resend': 'Ongera urungike',
 }

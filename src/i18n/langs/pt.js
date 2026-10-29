@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Queres mesmo bloquear esta pessoa? Ela não poderá enviar-te mensagens.',
   'chat.blockedNotice': 'Bloqueaste esta pessoa. Não podes enviar-lhe mensagens.',
   'chat.youBlocked': 'Bloqueaste esta pessoa. Desbloqueia-a para enviar uma mensagem.',
+  'chat.selectedCount': '{n} selecionada(s)',
+  'chat.share': 'Partilhar',
+  'chat.resend': 'Reenviar',
 }

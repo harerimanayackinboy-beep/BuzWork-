@@ -222,4 +222,7 @@ export default {
   'chat.confirmBlock': 'Olingi mpenza kokanga moto oyo? Akoki kotindela yo liloba lisusu te.',
   'chat.blockedNotice': 'Okangi moto oyo. Okoki kotindela ye liloba te.',
   'chat.youBlocked': 'Okangi moto oyo. Longola kokangama mpo na kotindela ye liloba.',
+  'chat.selectedCount': '{n} eponami',
+  'chat.share': 'Kabola',
+  'chat.resend': 'Tinda lisusu',
 }
