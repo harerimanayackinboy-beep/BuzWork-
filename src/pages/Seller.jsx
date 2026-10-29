@@ -6,6 +6,7 @@ import { fetchPosts, KINDS } from '../lib/posts'
 import PostCard, { Avatar } from '../components/PostCard'
 import ReportButton from '../components/ReportButton'
 import { whatsappLink } from '../lib/whatsapp'
+import WhatsAppIcon from '../components/WhatsAppIcon'
 import { useT } from '../i18n'
 
 export default function Seller() {
@@ -57,7 +58,7 @@ export default function Seller() {
             <div className="row center">
               <Link to={`/chat/${p.user_id}`} className="btn icon" aria-label={t('seller.message')} title={t('seller.message')}>💬</Link>
               {whatsappLink(wa) && (
-                <a className="btn icon wa" href={whatsappLink(wa, t('seller.waText'))} target="_blank" rel="noopener noreferrer" aria-label={t('card.whatsapp')} title={t('card.whatsapp')}>🟢</a>
+                <a className="btn icon wa" href={whatsappLink(wa, t('seller.waText'))} target="_blank" rel="noopener noreferrer" aria-label={t('card.whatsapp')} title={t('card.whatsapp')}><WhatsAppIcon /></a>
               )}
               {p.phone_number
                 ? <a className="btn icon" href={`tel:${p.phone_number}`} aria-label={t('seller.call')} title={t('seller.call')}>📞</a>

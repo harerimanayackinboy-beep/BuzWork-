@@ -1,18 +1,13 @@
 import { useState } from 'react'
 import { supabase } from '../supabase'
-import { useT } from '../i18n'
-
-const normPhone = (p) => p.replace(/[\s\-()]/g, '')
+import { useI18n, useT, LANGS } from '../i18n'
 
 export default function Login() {
   const t = useT()
-  const [tab, setTab] = useState('email')
+  const { lang, setLang } = useI18n()
   const [mode, setMode] = useState('login') // login | signup
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [phone, setPhone] = useState('')
-  const [otp, setOtp] = useState('')
-  const [otpSent, setOtpSent] = useState(false)
   const [msg, setMsg] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -63,57 +58,42 @@ export default function Login() {
     setMsg(t('login.resetSent'))
   })
 
-  const sendOtp = wrap(async () => {
-    const p = normPhone(phone)
-    if (!/^\+[0-9]{8,15}$/.test(p)) throw new Error(t('login.phoneInvalid'))
-    const { error } = await supabase.auth.signInWithOtp({ phone: p })
-    if (error) throw error
-    setOtpSent(true)
-    setMsg(t('login.codeSent'))
-  })
-
-  const verifyOtp = wrap(async () => {
-    const { error } = await supabase.auth.verifyOtp({ phone: normPhone(phone), token: otp.trim(), type: 'sms' })
-    if (error) throw error
-  })
-
   return (
     <div className="page narrow">
+      <div className="lang-row">
+        {Object.entries(LANGS).map(([code, l]) => (
+          <button
+            key={code}
+            className={`lang-pill ${lang === code ? 'on' : ''}`}
+            onClick={() => setLang(code)}
+            title={l.label}
+          >
+            {l.flag}
+          </button>
+        ))}
+      </div>
+
       <h1 className="logo">BizWork</h1>
       <p className="muted center">{t('login.tagline')}</p>
 
       <button className="btn google" onClick={google} disabled={busy}>{t('login.google')}</button>
       <div className="or">{t('login.or')}</div>
 
-      <div className="tabs">
-        <button className={tab === 'email' ? 'on' : ''} onClick={() => setTab('email')}>{t('login.tabEmail')}</button>
-        <button className={tab === 'phone' ? 'on' : ''} onClick={() => setTab('phone')}>{t('login.tabPhone')}</button>
-      </div>
-
-      {tab === 'email' ? (
-        <form onSubmit={emailSubmit} className="stack">
-          <input
-            type={mode === 'signup' ? 'email' : 'text'}
-            required
-            placeholder={mode === 'signup' ? t('login.email') : t('login.emailOrUsername')}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button className="btn" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
-          <button type="button" className="link" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
-            {mode === 'signup' ? t('login.haveAccount') : t('login.noAccount')}
-          </button>
-          {mode === 'login' && <button type="button" className="link" onClick={forgot}>{t('login.forgot')}</button>}
-        </form>
-      ) : (
-        <form onSubmit={otpSent ? verifyOtp : sendOtp} className="stack">
-          <input type="tel" required placeholder="+27712345678" value={phone} disabled={otpSent} onChange={(e) => setPhone(e.target.value)} />
-          {otpSent && <input inputMode="numeric" required placeholder={t('login.codePlaceholder')} value={otp} onChange={(e) => setOtp(e.target.value)} />}
-          <button className="btn" disabled={busy}>{otpSent ? t('login.verifyCode') : t('login.sendCode')}</button>
-          {otpSent && <button type="button" className="link" onClick={() => { setOtpSent(false); setOtp('') }}>{t('login.changeNumber')}</button>}
-        </form>
-      )}
+      <form onSubmit={emailSubmit} className="stack">
+        <input
+          type={mode === 'signup' ? 'email' : 'text'}
+          required
+          placeholder={mode === 'signup' ? t('login.email') : t('login.emailOrUsername')}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
+        <button className="btn" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
+        <button type="button" className="link" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
+          {mode === 'signup' ? t('login.haveAccount') : t('login.noAccount')}
+        </button>
+        {mode === 'login' && <button type="button" className="link" onClick={forgot}>{t('login.forgot')}</button>}
+      </form>
 
       {msg && <p className="ok">{msg}</p>}
       {error && <p className="error">{error}</p>}
