@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Ndani ya km {n}',
   'feed.geoFail': 'Imeshindikana kutambua mahali ulipo sasa. Angalia ruhusa ya \'location\' kwenye simu yako.',
   'feed.nearbyEmpty': 'Hakuna matangazo yaliyopatikana katika eneo hilo. Jaribu eneo kubwa zaidi.',
+  'chat.options': 'Chaguo',
+  'chat.viewProfile': 'Ona wasifu',
+  'chat.block': '🚫 Zuia mtu huyu',
+  'chat.unblock': 'Ondoa kizuizi',
+  'chat.deleteThread': '🗑️ Futa mazungumzo yote',
+  'chat.confirmDeleteThread': 'Futa mazungumzo yote na mtu huyu?',
+  'chat.confirmBlock': 'Je, unataka kweli kumzuia mtu huyu? Hataweza kukutumia ujumbe.',
+  'chat.blockedNotice': 'Umemzuia mtu huyu. Huwezi kumtumia ujumbe.',
+  'chat.youBlocked': 'Umemzuia mtu huyu. Ondoa kizuizi ili umtumie ujumbe.',
 }

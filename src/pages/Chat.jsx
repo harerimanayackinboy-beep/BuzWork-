@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { useT } from '../i18n'
-import { fetchThread, sendMessage, markThreadRead, deleteMessage } from '../lib/messages'
+import { fetchThread, sendMessage, markThreadRead, deleteMessage, deleteThread } from '../lib/messages'
+import { isBlocked, blockUser, unblockUser } from '../lib/blocks'
 
 export default function Chat() {
   const t = useT()
@@ -16,11 +17,14 @@ export default function Chat() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [blocked, setBlocked] = useState(false)
   const bottomRef = useRef(null)
 
   useEffect(() => {
     supabase.from('public_profiles').select('*').eq('user_id', otherId).maybeSingle().then(({ data }) => setOther(data || null))
-  }, [otherId])
+    isBlocked(user.id, otherId).then(setBlocked).catch(() => {})
+  }, [otherId, user.id])
 
   useEffect(() => {
     let cancelled = false
@@ -48,6 +52,7 @@ export default function Chat() {
     e.preventDefault()
     const body = text.trim()
     if (!body) return
+    if (blocked) return setError(t('chat.youBlocked'))
     setBusy(true)
     setError('')
     const optimistic = { id: `tmp-${Date.now()}`, sender_id: user.id, recipient_id: otherId, body, created_at: new Date().toISOString() }
@@ -69,16 +74,49 @@ export default function Chat() {
     try { await deleteMessage(id) } catch { setError(t('common.deleteFail')) }
   }
 
+  async function removeThread() {
+    if (!confirm(t('chat.confirmDeleteThread'))) return
+    setMenuOpen(false)
+    try {
+      await deleteThread(user.id, otherId)
+      setMessages([])
+    } catch {
+      setError(t('common.deleteFail'))
+    }
+  }
+
+  async function toggleBlock() {
+    setMenuOpen(false)
+    try {
+      if (blocked) { await unblockUser(user.id, otherId); setBlocked(false) }
+      else { if (!confirm(t('chat.confirmBlock'))) return; await blockUser(user.id, otherId); setBlocked(true) }
+    } catch {
+      setError(t('common.saveFail'))
+    }
+  }
+
   return (
     <div className="page narrow chat-page">
       <header className="topbar">
         <button className="link" onClick={() => nav(-1)}>{t('common.back')}</button>
         <span className="strong">{other?.full_name || t('common.user')}</span>
-        <span />
+        <button className="link kebab" aria-label={t('chat.options')} onClick={() => setMenuOpen(true)}>⋮</button>
       </header>
+
+      {menuOpen && (
+        <div className="sheet-overlay" onClick={() => setMenuOpen(false)}>
+          <div className="sheet" onClick={(e) => e.stopPropagation()}>
+            {other && <Link to={`/seller/${other.user_id}`} className="link" onClick={() => setMenuOpen(false)}>{t('chat.viewProfile')}</Link>}
+            <button className="link danger" onClick={toggleBlock}>{blocked ? t('chat.unblock') : t('chat.block')}</button>
+            <button className="link danger" onClick={removeThread}>{t('chat.deleteThread')}</button>
+            <button className="link" onClick={() => setMenuOpen(false)}>{t('common.cancel')}</button>
+          </div>
+        </div>
+      )}
 
       {loading && <p className="muted center">{t('common.loading')}</p>}
       {error && <p className="error center">{error}</p>}
+      {blocked && <p className="muted center small">{t('chat.blockedNotice')}</p>}
 
       {!loading && (
         <>
@@ -87,7 +125,7 @@ export default function Chat() {
               <div key={m.id} className={`bubble ${m.sender_id === user.id ? 'mine' : ''}`}>
                 <p>{m.body}</p>
                 <span className="muted small">{new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                {m.sender_id === user.id && !String(m.id).startsWith('tmp-') && (
+                {!String(m.id).startsWith('tmp-') && (
                   <button className="bubble-del" aria-label={t('common.delete')} onClick={() => removeMessage(m.id)}>✕</button>
                 )}
               </div>
@@ -95,8 +133,8 @@ export default function Chat() {
             <div ref={bottomRef} />
           </div>
           <form onSubmit={submit} className="row chat-input">
-            <input value={text} maxLength={2000} placeholder={t('chat.placeholder')} onChange={(e) => setText(e.target.value)} />
-            <button className="btn small" disabled={busy || !text.trim()}>{t('common.send')}</button>
+            <input value={text} maxLength={2000} placeholder={t('chat.placeholder')} onChange={(e) => setText(e.target.value)} disabled={blocked} />
+            <button className="btn small" disabled={busy || blocked || !text.trim()}>{t('common.send')}</button>
           </form>
         </>
       )}

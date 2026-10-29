@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Na kati ya km {n}',
   'feed.geoFail': 'Ekoki koluka esika na yo sikoyo te. Tala ndingisa ya \'location\' na telefone na yo.',
   'feed.nearbyEmpty': 'Post moko te emonani na mosika wana. Meka mosika monene.',
+  'chat.options': 'Ba options',
+  'chat.viewProfile': 'Tala profil',
+  'chat.block': '🚫 Kanga moto oyo',
+  'chat.unblock': 'Longola kokangama',
+  'chat.deleteThread': '🗑️ Longola masolo nyonso',
+  'chat.confirmDeleteThread': 'Kolongola masolo nyonso na moto oyo?',
+  'chat.confirmBlock': 'Olingi mpenza kokanga moto oyo? Akoki kotindela yo liloba lisusu te.',
+  'chat.blockedNotice': 'Okangi moto oyo. Okoki kotindela ye liloba te.',
+  'chat.youBlocked': 'Okangi moto oyo. Longola kokangama mpo na kotindela ye liloba.',
 }

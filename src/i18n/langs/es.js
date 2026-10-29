@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'En un radio de {n} km',
   'feed.geoFail': 'No se pudo detectar tu ubicación ahora. Revisa el permiso de \'ubicación\' en tu teléfono.',
   'feed.nearbyEmpty': 'No se encontraron publicaciones en ese radio. Prueba un radio mayor.',
+  'chat.options': 'Opciones',
+  'chat.viewProfile': 'Ver perfil',
+  'chat.block': '🚫 Bloquear a esta persona',
+  'chat.unblock': 'Desbloquear',
+  'chat.deleteThread': '🗑️ Eliminar toda la conversación',
+  'chat.confirmDeleteThread': '¿Eliminar toda esta conversación?',
+  'chat.confirmBlock': '¿Realmente quieres bloquear a esta persona? No podrá escribirte.',
+  'chat.blockedNotice': 'Bloqueaste a esta persona. No puedes escribirle.',
+  'chat.youBlocked': 'Bloqueaste a esta persona. Desbloquéala para enviar un mensaje.',
 }

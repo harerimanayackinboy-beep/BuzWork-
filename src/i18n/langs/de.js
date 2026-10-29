@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Im Umkreis von {n} km',
   'feed.geoFail': 'Konnte deinen Standort gerade nicht ermitteln. Prüfe die \'Standort\'-Berechtigung auf deinem Handy.',
   'feed.nearbyEmpty': 'Keine Beiträge in diesem Umkreis gefunden. Versuch einen größeren Umkreis.',
+  'chat.options': 'Optionen',
+  'chat.viewProfile': 'Profil ansehen',
+  'chat.block': '🚫 Diese Person blockieren',
+  'chat.unblock': 'Entsperren',
+  'chat.deleteThread': '🗑️ Ganze Unterhaltung löschen',
+  'chat.confirmDeleteThread': 'Diese ganze Unterhaltung löschen?',
+  'chat.confirmBlock': 'Diese Person wirklich blockieren? Sie kann dir dann nicht mehr schreiben.',
+  'chat.blockedNotice': 'Du hast diese Person blockiert. Du kannst ihr nicht schreiben.',
+  'chat.youBlocked': 'Du hast diese Person blockiert. Entsperre sie, um eine Nachricht zu senden.',
 }

@@ -54,6 +54,15 @@ export async function deleteMessage(id) {
   if (error) throw error
 }
 
+// Gusiba ikiganiro cose hagati y'abantu babiri
+export async function deleteThread(myId, otherId) {
+  const { error } = await supabase
+    .from('messages')
+    .delete()
+    .or(`and(sender_id.eq.${myId},recipient_id.eq.${otherId}),and(sender_id.eq.${otherId},recipient_id.eq.${myId})`)
+  if (error) throw error
+}
+
 export async function markThreadRead(myId, otherId) {
   await supabase
     .from('messages')

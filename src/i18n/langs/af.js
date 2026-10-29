@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Binne {n} km',
   'feed.geoFail': 'Kon nie nou jou ligging bepaal nie. Kyk na die \'ligging\' toestemming op jou foon.',
   'feed.nearbyEmpty': 'Geen plasings in daardie omtrek gevind nie. Probeer \'n groter omtrek.',
+  'chat.options': 'Opsies',
+  'chat.viewProfile': 'Bekyk profiel',
+  'chat.block': '🚫 Blokkeer hierdie persoon',
+  'chat.unblock': 'Ontblokkeer',
+  'chat.deleteThread': '🗑️ Verwyder hele gesprek',
+  'chat.confirmDeleteThread': 'Verwyder hierdie hele gesprek?',
+  'chat.confirmBlock': 'Wil jy regtig hierdie persoon blokkeer? Hulle sal nie vir jou kan boodskap stuur nie.',
+  'chat.blockedNotice': 'Jy het hierdie persoon geblokkeer. Jy kan nie vir hulle boodskap stuur nie.',
+  'chat.youBlocked': 'Jy het hierdie persoon geblokkeer. Ontblokkeer hulle om \'n boodskap te stuur.',
 }

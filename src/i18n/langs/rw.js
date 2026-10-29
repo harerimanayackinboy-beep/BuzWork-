@@ -214,4 +214,13 @@ export default {
   'feed.withinKm': 'Mu ntera ya {n} km',
   'feed.geoFail': 'Ntibyashobotse kumenya aho uri ubu. Reba uruhushya rwa \'location\' kuri telefoni yawe.',
   'feed.nearbyEmpty': 'Nta tangazo ryabonetse muri iyo ntera. Gerageza intera nini.',
+  'chat.options': 'Ibindi',
+  'chat.viewProfile': 'Reba umwirondoro',
+  'chat.block': '🚫 Buza uyu muntu',
+  'chat.unblock': 'Kuraho ibuzwa',
+  'chat.deleteThread': '🗑️ Siba ikiganiro cyose',
+  'chat.confirmDeleteThread': 'Gusiba ikiganiro cyose n\'uyu muntu?',
+  'chat.confirmBlock': 'Urashaka koko kubuza uyu muntu? Ntazashobora kukwandikira.',
+  'chat.blockedNotice': 'Wabuje uyu muntu. Ntushobora kumwandikira.',
+  'chat.youBlocked': 'Wabuje uyu muntu. Kuraho ibuzwa kugira umwandikire.',
 }

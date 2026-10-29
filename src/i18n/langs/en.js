@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Within {n} km',
   'feed.geoFail': 'Could not detect your location right now. Check the \'location\' permission on your phone.',
   'feed.nearbyEmpty': 'No posts found in that range. Try a bigger radius.',
+  'chat.options': 'Options',
+  'chat.viewProfile': 'View profile',
+  'chat.block': '🚫 Block this person',
+  'chat.unblock': 'Unblock',
+  'chat.deleteThread': '🗑️ Delete entire conversation',
+  'chat.confirmDeleteThread': 'Delete this whole conversation?',
+  'chat.confirmBlock': 'Really block this person? They will not be able to message you.',
+  'chat.blockedNotice': 'You blocked this person. You cannot message them.',
+  'chat.youBlocked': 'You blocked this person. Unblock them to send a message.',
 }

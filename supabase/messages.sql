@@ -27,7 +27,8 @@ drop policy if exists "messages: recipient can mark read" on public.messages;
 create policy "messages: recipient can mark read" on public.messages
   for update using (auth.uid() = recipient_id) with check (auth.uid() = recipient_id);
 
--- Kugira uwohereje ashobore gusiba ubutumwa yandikishe
+-- Kugira uwohereje ACAKE n'uwakiriye bashobore gusiba ubutumwa (bivuye mu kiganiro ku bombi)
 drop policy if exists "messages: sender can delete" on public.messages;
-create policy "messages: sender can delete" on public.messages
-  for delete using (auth.uid() = sender_id);
+drop policy if exists "messages: participant can delete" on public.messages;
+create policy "messages: participant can delete" on public.messages
+  for delete using (auth.uid() = sender_id or auth.uid() = recipient_id);

@@ -213,4 +213,13 @@ export default {
   'feed.withinKm': 'Phakathi kwe-km {n}',
   'feed.geoFail': 'Ayikwazanga ukuthola indawo yakho manje. Hlola imvume ye-\'location\' efonini yakho.',
   'feed.nearbyEmpty': 'Azikho izaziso ezitholakele kuleyo bubanzi. Zama ibanga elikhulu.',
+  'chat.options': 'Okukhethwayo',
+  'chat.viewProfile': 'Bona iphrofayela',
+  'chat.block': '🚫 Vimba lo muntu',
+  'chat.unblock': 'Susa ukuvinjelwa',
+  'chat.deleteThread': '🗑️ Susa yonke ingxoxo',
+  'chat.confirmDeleteThread': 'Susa yonke le ngxoxo?',
+  'chat.confirmBlock': 'Ingabe ufuna ngempela ukuvimba lo muntu? Ngeke akwazi ukukuthumela umlayezo.',
+  'chat.blockedNotice': 'Uvimbe lo muntu. Awukwazi ukumthumela umlayezo.',
+  'chat.youBlocked': 'Uvimbe lo muntu. Susa ukuvinjelwa ukuze uthumele umlayezo.',
 }
