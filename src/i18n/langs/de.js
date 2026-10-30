@@ -49,6 +49,8 @@ export default {
   'setup.waBad': 'Die WhatsApp-Nummer ist ungültig (z. B. +25779123456, mit Ländervorwahl).',
   'setup.fullName': 'Vollständiger Name *',
   'setup.phone': 'Telefonnummer *',
+  'phone.searchCountry': 'Land suchen...',
+  'phone.noResults': 'Kein Land gefunden',
   'setup.whatsapp': 'WhatsApp-Nummer (optional)',
   'setup.email': 'E-Mail (optional)',
   'setup.location': 'Dein Standort (Ort) *',

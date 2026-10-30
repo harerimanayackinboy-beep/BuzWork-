@@ -49,6 +49,8 @@ export default {
   'setup.waBad': 'Numero ya WhatsApp ezali malamu te (lokola +25779123456, elongo na code ya mboka).',
   'setup.fullName': 'Kombo mobimba *',
   'setup.phone': 'Numero ya telefone *',
+  'phone.searchCountry': 'Luka mboka...',
+  'phone.noResults': 'Mboka ezwami te',
   'setup.whatsapp': 'Numero ya WhatsApp (ezali na posa te)',
   'setup.email': 'Email (ezali na posa te)',
   'setup.location': 'Esika ozali (location) *',

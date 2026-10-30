@@ -49,6 +49,8 @@ export default {
   'setup.waBad': 'Namba ya WhatsApp si sahihi (kama +25779123456, pamoja na msimbo wa nchi).',
   'setup.fullName': 'Jina kamili *',
   'setup.phone': 'Namba ya simu *',
+  'phone.searchCountry': 'Tafuta nchi...',
+  'phone.noResults': 'Hakuna nchi iliyopatikana',
   'setup.whatsapp': 'Namba ya WhatsApp (si lazima)',
   'setup.email': 'Barua pepe (si lazima)',
   'setup.location': 'Mahali ulipo (eneo) *',

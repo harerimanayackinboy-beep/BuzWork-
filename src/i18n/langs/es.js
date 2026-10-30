@@ -49,6 +49,8 @@ export default {
   'setup.waBad': 'El número de WhatsApp no es válido (ejemplo: +25779123456, con el código de país).',
   'setup.fullName': 'Nombre completo *',
   'setup.phone': 'Número de teléfono *',
+  'phone.searchCountry': 'Buscar país...',
+  'phone.noResults': 'No se encontró ningún país',
   'setup.whatsapp': 'Número de WhatsApp (opcional)',
   'setup.email': 'Correo (opcional)',
   'setup.location': 'Dónde estás (ubicación) *',

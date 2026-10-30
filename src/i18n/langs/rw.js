@@ -50,6 +50,8 @@ export default {
   'setup.waBad': "Numero ya WhatsApp ntiyanditswe neza (urugero +25779123456, hamwe n'ikode y'igihugu).",
   'setup.fullName': 'Amazina yombi *',
   'setup.phone': 'Numero ya telefoni *',
+  'phone.searchCountry': 'Shakisha igihugu...',
+  'phone.noResults': 'Nta gihugu kiboneka',
   'setup.whatsapp': 'Numero ya WhatsApp (si itegeko)',
   'setup.email': 'Imeli (si itegeko)',
   'setup.location': 'Aho uherereye (aho uri) *',

@@ -49,6 +49,8 @@ export default {
   'setup.waBad': 'Inombolo ye-WhatsApp ayilungile (njengo +25779123456, nekhodi yezwe).',
   'setup.fullName': 'Igama eliphelele *',
   'setup.phone': 'Inombolo yocingo *',
+  'phone.searchCountry': 'Sesha izwe...',
+  'phone.noResults': 'Alikho izwe elitholakele',
   'setup.whatsapp': 'Inombolo ye-WhatsApp (akuphoqelekile)',
   'setup.email': 'I-imeyili (akuphoqelekile)',
   'setup.location': 'Lapho ukhona (indawo) *',

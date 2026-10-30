@@ -49,6 +49,8 @@ export default {
   'setup.waBad': "Die WhatsApp-nommer is nie geldig nie (soos +25779123456, met die landkode).",
   'setup.fullName': 'Volle naam *',
   'setup.phone': 'Foonnommer *',
+  'phone.searchCountry': 'Soek land...',
+  'phone.noResults': 'Geen land gevind nie',
   'setup.whatsapp': 'WhatsApp-nommer (opsioneel)',
   'setup.email': 'E-pos (opsioneel)',
   'setup.location': 'Waar jy is (ligging) *',

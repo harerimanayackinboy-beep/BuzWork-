@@ -87,9 +87,9 @@
 }
 
 /* Umwanya w'inomero (country code + ibiharuro) */
-.profile-setup .phone-input select {
+.profile-setup .phone-country-btn {
   box-sizing: border-box;
-  padding: 13px 6px;
+  padding: 13px 10px;
   font-size: 0.92rem;
   color: var(--ps-text);
   background: #f8fbfa;
@@ -97,10 +97,9 @@
   border-radius: 12px;
   outline: none;
 }
-.profile-setup .phone-input select:focus {
+.profile-setup .phone-country-search {
+  color: var(--ps-text);
   background: #fff;
-  border-color: var(--ps-primary);
-  box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15);
 }
 
 /* Checkbox */
