@@ -14,6 +14,7 @@ export const KINDS = {
     fk: 'product_id',
     likeTable: 'product_likes',
     commentTable: 'product_comments',
+    favTable: 'product_favorites',
     bucket: 'product-images',
     maxImages: 500,
     reportType: 'product',
@@ -28,6 +29,7 @@ export const KINDS = {
     fk: 'job_id',
     likeTable: 'job_likes',
     commentTable: 'job_comments',
+    favTable: 'job_favorites',
     bucket: 'job-images',
     maxImages: 2,
     reportType: 'job',
@@ -36,32 +38,38 @@ export const KINDS = {
 }
 
 // Gufata amatangazo (page ya 10) hamwe n'ibijyanye na byo
-export async function fetchPosts(kind, { cursor, ownerId, id } = {}) {
+export async function fetchPosts(kind, { cursor, ownerId, id, ids, category } = {}) {
   const c = KINDS[kind]
-  let q = supabase.from(c.table).select('*').order('created_at', { ascending: false }).limit(PAGE_SIZE)
+  let q = supabase.from(c.table).select('*').order('created_at', { ascending: false })
+  if (!ids) q = q.limit(PAGE_SIZE)
   if (cursor) q = q.lt('created_at', cursor)
   if (ownerId) q = q.eq(c.ownerCol, ownerId)
   if (id) q = q.eq('id', id)
+  if (ids) q = q.in('id', ids)
+  if (category) q = q.eq('category', category)
   const { data: posts, error } = await q
   if (error) throw error
   if (!posts.length) return []
 
-  const ids = posts.map((p) => p.id)
+  const postIds = posts.map((p) => p.id)
   const owners = [...new Set(posts.map((p) => p[c.ownerCol]))]
 
-  const [prof, imgs, likes, comments, wa, geo] = await Promise.all([
+  const [prof, imgs, likes, comments, wa, geo, favs] = await Promise.all([
     supabase.from('public_profiles').select('*').in('user_id', owners),
-    supabase.from(c.imgTable).select('*').in(c.fk, ids).lt('display_order', FEED_IMAGES).order('display_order'),
-    supabase.from(c.likeTable).select(`user_id,${c.fk}`).in(c.fk, ids),
-    supabase.from(c.commentTable).select(`id,${c.fk}`).in(c.fk, ids),
+    supabase.from(c.imgTable).select('*').in(c.fk, postIds).lt('display_order', FEED_IMAGES).order('display_order'),
+    supabase.from(c.likeTable).select(`user_id,${c.fk}`).in(c.fk, postIds),
+    supabase.from(c.commentTable).select(`id,${c.fk}`).in(c.fk, postIds),
     // WhatsApp ni option: nimba view itaraboneka (SQL itarakorwa), nta kibazo, button ntizigaragara
     supabase.from('public_whatsapp').select('user_id,whatsapp_number').in('user_id', owners),
     // Intera (lat/lng) ni option nayo, ikoreshwa na "hafi yanje"
     supabase.from('public_geo').select('user_id,lat,lng').in('user_id', owners),
+    // Ibyashimwe (favorites): RLS ireka uyu mukoresha abona imirongo yiwe bwite gusa
+    supabase.from(c.favTable).select(c.fk).in(c.fk, postIds),
   ])
   for (const r of [prof, imgs, likes, comments]) if (r.error) throw r.error
   const waMap = Object.fromEntries((wa.error ? [] : wa.data).map((w) => [w.user_id, w.whatsapp_number]))
   const geoMap = Object.fromEntries((geo.error ? [] : geo.data).map((g) => [g.user_id, { lat: g.lat, lng: g.lng }]))
+  const favSet = new Set((favs.error ? [] : favs.data).map((f) => f[c.fk]))
 
   const byId = (rows, key) =>
     rows.reduce((m, r) => ((m[r[key]] ||= []).push(r), m), {})
@@ -78,7 +86,25 @@ export async function fetchPosts(kind, { cursor, ownerId, id } = {}) {
     images: imgMap[p.id] || [],
     likes: likeMap[p.id] || [],
     commentCount: (comMap[p.id] || []).length,
+    favorited: favSet.has(p.id),
   }))
+}
+
+// Amatangazo umukoresha yashimye (favorites), haba mu bicuruzwa canke mu
+// kazi -- irakoreshwa ku rupapuro rwa "Ibyashimwe"
+export async function fetchFavorites(userId) {
+  const results = await Promise.all(
+    Object.keys(KINDS).map(async (kind) => {
+      const c = KINDS[kind]
+      const { data, error } = await supabase.from(c.favTable).select(c.fk).eq('user_id', userId)
+      if (error) return []
+      const ids = data.map((r) => r[c.fk])
+      if (!ids.length) return []
+      const posts = await fetchPosts(kind, { ids })
+      return posts.map((p) => ({ kind, post: p }))
+    })
+  )
+  return results.flat().sort((a, b) => new Date(b.post.created_at) - new Date(a.post.created_at))
 }
 
 export async function fetchMoreImages(kind, postId, from) {

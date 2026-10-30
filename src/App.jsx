@@ -11,6 +11,7 @@ import Settings from './pages/Settings'
 import Messages from './pages/Messages'
 import Chat from './pages/Chat'
 import Search from './pages/Search'
+import Favorites from './pages/Favorites'
 
 export default function App() {
   const { session, profile, profileLoaded, recovery, clearRecovery } = useAuth()
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/settings" element={<Settings />} />
       <Route path="/messages" element={<Messages />} />
       <Route path="/search" element={<Search />} />
+      <Route path="/favorites" element={<Favorites />} />
       <Route path="/chat/:id" element={<Chat />} />
       <Route path="/new/:kind" element={<NewPost />} />
       <Route path="/seller/:id" element={<Seller />} />

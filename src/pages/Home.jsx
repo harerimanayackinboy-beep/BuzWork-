@@ -4,6 +4,7 @@ import { useAuth } from '../auth'
 import { Avatar } from '../components/PostCard'
 import { useT } from '../i18n'
 import { countUnread } from '../lib/messages'
+import { supabase } from '../supabase'
 
 export default function Home() {
   const t = useT()
@@ -11,6 +12,7 @@ export default function Home() {
   const { profile } = useAuth()
   const [choosing, setChoosing] = useState(false)
   const [unread, setUnread] = useState(0)
+  const [counts, setCounts] = useState({ product: null, job: null })
 
   useEffect(() => {
     let cancelled = false
@@ -20,6 +22,18 @@ export default function Home() {
     const poll = setInterval(check, 8000)
     return () => { cancelled = true; clearInterval(poll) }
   }, [profile.user_id])
+
+  useEffect(() => {
+    let cancelled = false
+    Promise.all([
+      supabase.from('products').select('id', { count: 'exact', head: true }),
+      supabase.from('jobs').select('id', { count: 'exact', head: true }),
+    ]).then(([p, j]) => {
+      if (cancelled) return
+      setCounts({ product: p.count ?? null, job: j.count ?? null })
+    })
+    return () => { cancelled = true }
+  }, [])
 
   return (
     <div className="page">
@@ -53,15 +67,22 @@ export default function Home() {
         </div>
       )}
 
+      <div className="row home-quicklinks">
+        <Link to={`/seller/${profile.user_id}`} className="link small">📋 {t('home.myPosts')}</Link>
+        <Link to="/favorites" className="link small">⭐ {t('home.favorites')}</Link>
+      </div>
+
       <Link to="/business" className="big-tile teal">
         <span className="emoji">🛒</span>
         <span>{t('home.business')}</span>
         <small>{t('home.businessSub')}</small>
+        {counts.product != null && <small className="tile-count">{t('home.listingCount', { n: counts.product })}</small>}
       </Link>
       <Link to="/jobs" className="big-tile amber">
         <span className="emoji">💼</span>
         <span>{t('home.jobs')}</span>
         <small>{t('home.jobsSub')}</small>
+        {counts.job != null && <small className="tile-count">{t('home.listingCount', { n: counts.job })}</small>}
       </Link>
     </div>
   )

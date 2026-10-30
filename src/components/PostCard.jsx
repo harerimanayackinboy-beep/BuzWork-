@@ -17,6 +17,7 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [images, setImages] = useState(post.images)
   const [moreImages, setMoreImages] = useState(post.images.length >= FEED_IMAGES && c.maxImages > 2)
   const [likes, setLikes] = useState(post.likes)
+  const [favorited, setFavorited] = useState(!!post.favorited)
   const [commentCount, setCommentCount] = useState(post.commentCount)
   const [showComments, setShowComments] = useState(false)
   const [status, setStatus] = useState(post.status)
@@ -49,6 +50,15 @@ export default function PostCard({ kind, post, onDeleted }) {
       const { error } = await supabase.from(c.likeTable).insert({ [c.fk]: post.id, user_id: user.id })
       if (error && error.code !== '23505') setLikes(likes)
     }
+  }
+
+  async function toggleFavorite() {
+    const next = !favorited
+    setFavorited(next)
+    const { error } = next
+      ? await supabase.from(c.favTable).insert({ [c.fk]: post.id, user_id: user.id })
+      : await supabase.from(c.favTable).delete().eq(c.fk, post.id).eq('user_id', user.id)
+    if (error && error.code !== '23505') setFavorited(!next)
   }
 
   async function share() {
@@ -172,6 +182,9 @@ export default function PostCard({ kind, post, onDeleted }) {
       <div className="actions">
         <button className={`act ${liked ? 'on' : ''}`} onClick={toggleLike}>{t('card.like')} {likes.length || ''}</button>
         <button className="act" onClick={() => setShowComments(!showComments)}>{t('card.comment')} {commentCount || ''}</button>
+        <button className={`act ${favorited ? 'on' : ''}`} onClick={toggleFavorite} aria-label={t('card.favorite')} title={t('card.favorite')}>
+          {favorited ? '⭐' : '☆'}
+        </button>
         <button className="act" onClick={share}>{t('card.share')}</button>
         {waHref && (
           <a className="act wa" href={waHref} target="_blank" rel="noopener noreferrer">{t('card.whatsapp')}</a>

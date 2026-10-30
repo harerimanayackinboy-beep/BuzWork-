@@ -4,6 +4,7 @@ import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { KINDS } from '../lib/posts'
 import { compressImage, runPool } from '../lib/image'
+import { CATEGORIES } from '../lib/categories'
 import { useT } from '../i18n'
 
 export default function NewPost() {
@@ -17,6 +18,7 @@ export default function NewPost() {
   const [price, setPrice] = useState('')
   const [currency, setCurrency] = useState('ZAR')
   const [details, setDetails] = useState('')
+  const [category, setCategory] = useState('')
   const [location, setLocation] = useState(profile.location || '')
   const [files, setFiles] = useState([])
   const [progress, setProgress] = useState(null)
@@ -57,6 +59,7 @@ export default function NewPost() {
         row.price = price === '' ? null : Number(price)
         row.currency = price === '' ? null : currency.toUpperCase()
         row.details = details.trim() || null
+        row.category = category || null
       }
       const { data: post, error: pe } = await supabase.from(c.table).insert(row).select().single()
       if (pe) throw pe
@@ -122,6 +125,7 @@ export default function NewPost() {
                 : <img key={previewUrls[i]} src={previewUrls[i]} alt="" />)}
             </div>
           )}
+          {kind === 'product' && category && <span className="badge">{t(`category.${category}`)}</span>}
           <p className="caption">{caption}</p>
           {kind === 'product' && (price !== '' || details) && (
             <p className="muted">
@@ -160,6 +164,13 @@ export default function NewPost() {
               <label>{t('new.currency')}<input maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} /></label>
             </div>
             <label>{t('new.moreDetails')}<textarea maxLength={4000} rows={3} value={details} onChange={(e) => setDetails(e.target.value)} /></label>
+            <label>
+              {t('new.category')}
+              <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                <option value="">{t('category.all')}</option>
+                {CATEGORIES.map((k) => <option key={k} value={k}>{t(`category.${k}`)}</option>)}
+              </select>
+            </label>
           </>
         )}
         <label>{t('new.where')}<input value={location} onChange={(e) => setLocation(e.target.value)} /></label>
