@@ -27,5 +27,13 @@ export async function deleteMyAccount(user) {
   const { error } = await supabase.from('profiles').delete().eq('user_id', user.id)
   if (error) throw error
 
+  // Gusiba konti burundu (auth.users) -- iki gice gisaba "service role",
+  // niyo mpamvu gikorerwa kuri Edge Function "delete-account" aho gukorerwa
+  // hano ku ruhande rwa app. Nta iyi Edge Function, konti ya Supabase Auth
+  // ntiyasibwa -- umukoresha yasangaga ashobora kongera kwinjira nk'aho
+  // "delete my account" yari gusa logout.
+  const { error: fnError } = await supabase.functions.invoke('delete-account')
+  if (fnError) throw fnError
+
   await supabase.auth.signOut()
 }
