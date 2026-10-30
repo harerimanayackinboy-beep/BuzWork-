@@ -25,6 +25,8 @@ export default {
   'login.tabPhone': 'Telefone',
   'login.email': 'Email',
   'login.password': 'Mot de passe',
+  'login.showPassword': 'Monisa mot de passe',
+  'login.hidePassword': 'Bomba mot de passe',
   'login.signup': 'Kofungola compte',
   'login.signin': 'Kokota',
   'login.haveAccount': 'Ozali na compte? Kokota',

@@ -21,6 +21,9 @@ const css = `
 .lg-form{display:flex;flex-direction:column;gap:12px}
 .lg-form input{width:100%;min-height:50px;border:1px solid #d5e3df;border-radius:14px;padding:0 14px;font-size:16px;background:#f9fbfa;color:#123b38}
 .lg-form input:focus{outline:none;border-color:#087568;box-shadow:0 0 0 3px #08756830}
+.lg-pw-wrap{position:relative}
+.lg-pw-wrap input{padding-right:46px}
+.lg-pw-toggle{position:absolute;right:4px;top:0;bottom:0;background:none;border:0;cursor:pointer;font-size:19px;padding:0 10px;color:#7a8f8b;display:flex;align-items:center}
 .lg-submit{min-height:50px;border:0;border-radius:14px;background:#087568;color:#fff;font-size:16px;font-weight:bold;cursor:pointer}
 .lg-submit:disabled,.lg-google:disabled{opacity:.6}
 .lg-link{background:none;border:0;color:#087568;font-size:15px;padding:6px 0;cursor:pointer;text-align:left}
@@ -36,6 +39,7 @@ export default function Login() {
   const [mode, setMode] = useState('login') // login | signup
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPw, setShowPw] = useState(false)
   const [msg, setMsg] = useState('')
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -127,7 +131,25 @@ export default function Login() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <input type="password" required minLength={6} placeholder={t('login.password')} value={password} onChange={(e) => setPassword(e.target.value)} />
+          <div className="lg-pw-wrap">
+            <input
+              type={showPw ? 'text' : 'password'}
+              required
+              minLength={6}
+              placeholder={t('login.password')}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="lg-pw-toggle"
+              onClick={() => setShowPw(!showPw)}
+              aria-label={showPw ? t('login.hidePassword') : t('login.showPassword')}
+              title={showPw ? t('login.hidePassword') : t('login.showPassword')}
+            >
+              {showPw ? '🙈' : '👁️'}
+            </button>
+          </div>
           <button className="lg-submit" disabled={busy}>{mode === 'signup' ? t('login.signup') : t('login.signin')}</button>
           <button type="button" className="lg-link strong" onClick={() => setMode(mode === 'signup' ? 'login' : 'signup')}>
             {mode === 'signup' ? t('login.haveAccount') : t('login.noAccount')}
@@ -145,6 +167,7 @@ export default function Login() {
 export function ResetPassword({ onDone }) {
   const t = useT()
   const [pw, setPw] = useState('')
+  const [showPw, setShowPw] = useState(false)
   const [error, setError] = useState('')
   async function submit(e) {
     e.preventDefault()
@@ -154,12 +177,31 @@ export function ResetPassword({ onDone }) {
   }
   return (
     <div className="page narrow">
+      <style>{`.rp-pw-wrap{position:relative}.rp-pw-wrap input{padding-right:46px}.rp-pw-toggle{position:absolute;right:4px;top:0;bottom:0;background:none;border:0;cursor:pointer;font-size:19px;padding:0 10px;color:var(--muted);display:flex;align-items:center}`}</style>
       <h1>{t('login.resetTitle')}</h1>
       <form onSubmit={submit} className="stack">
-        <input type="password" required minLength={6} value={pw} onChange={(e) => setPw(e.target.value)} placeholder={t('login.newPassword')} />
+        <div className="rp-pw-wrap">
+          <input
+            type={showPw ? 'text' : 'password'}
+            required
+            minLength={6}
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            placeholder={t('login.newPassword')}
+          />
+          <button
+            type="button"
+            className="rp-pw-toggle"
+            onClick={() => setShowPw(!showPw)}
+            aria-label={showPw ? t('login.hidePassword') : t('login.showPassword')}
+            title={showPw ? t('login.hidePassword') : t('login.showPassword')}
+          >
+            {showPw ? '🙈' : '👁️'}
+          </button>
+        </div>
         <button className="btn">{t('common.save')}</button>
         {error && <p className="error">{error}</p>}
       </form>
     </div>
   )
-      }
+}

@@ -26,6 +26,8 @@ export default {
   'login.tabPhone': 'Telefoni',
   'login.email': 'Imeli',
   'login.password': "Ijambobanga",
+  'login.showPassword': 'Erekana ijambobanga',
+  'login.hidePassword': 'Hisha ijambobanga',
   'login.signup': 'Iyandikishe',
   'login.signin': 'Injira',
   'login.haveAccount': 'Usanzwe ufite konti? Injira',

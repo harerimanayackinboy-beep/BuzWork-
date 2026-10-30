@@ -25,6 +25,8 @@ export default {
   'login.tabPhone': 'Foon',
   'login.email': 'E-pos',
   'login.password': 'Wagwoord',
+  'login.showPassword': 'Wys wagwoord',
+  'login.hidePassword': 'Versteek wagwoord',
   'login.signup': 'Registreer',
   'login.signin': 'Teken in',
   'login.haveAccount': "Het jy klaar 'n rekening? Teken in",

@@ -25,6 +25,8 @@ export default {
   'login.tabPhone': 'Simu',
   'login.email': 'Barua pepe',
   'login.password': 'Nenosiri',
+  'login.showPassword': 'Onyesha nenosiri',
+  'login.hidePassword': 'Ficha nenosiri',
   'login.signup': 'Jisajili',
   'login.signin': 'Ingia',
   'login.haveAccount': 'Tayari una akaunti? Ingia',

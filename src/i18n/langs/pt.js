@@ -25,6 +25,8 @@ export default {
   'login.tabPhone': 'Telefone',
   'login.email': 'Email',
   'login.password': 'Senha',
+  'login.showPassword': 'Mostrar senha',
+  'login.hidePassword': 'Ocultar senha',
   'login.signup': 'Criar conta',
   'login.signin': 'Entrar',
   'login.haveAccount': 'Já tem uma conta? Entrar',

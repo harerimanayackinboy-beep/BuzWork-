@@ -25,6 +25,8 @@ export default {
   'login.tabPhone': 'Ucingo',
   'login.email': 'I-imeyili',
   'login.password': 'Iphasiwedi',
+  'login.showPassword': 'Bonisa iphasiwedi',
+  'login.hidePassword': 'Fihla iphasiwedi',
   'login.signup': 'Bhalisa',
   'login.signin': 'Ngena',
   'login.haveAccount': 'Usunayo i-akhawunti? Ngena',
