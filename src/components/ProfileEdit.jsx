@@ -3,6 +3,7 @@ import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { useT } from '../i18n'
 import { getMyPosition } from '../lib/geo'
+import PhoneInput from './PhoneInput'
 
 // Guhindura umwirondoro (amazina, telefone, email, aho uri, kwerekana telefone)
 export default function ProfileEdit() {
@@ -58,7 +59,7 @@ export default function ProfileEdit() {
   return (
     <form onSubmit={save} className="card stack">
       <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
-      <label>{t('setup.phone')}<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
+      <label>{t('setup.phone')}<PhoneInput value={phone} onChange={setPhone} /></label>
       <label>{t('setup.email')}<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
       <label>{t('setup.location')}<input required minLength={2} maxLength={150} value={location} onChange={(e) => setLocation(e.target.value)} /></label>
       <div className="row" style={{ gap: 8, alignItems: 'center' }}>

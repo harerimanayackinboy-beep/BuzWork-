@@ -18,6 +18,9 @@ h1,h2{margin:8px 0}
 label{display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
 label.check{flex-direction:row;align-items:center;gap:8px}
 input,textarea,select{font:inherit;color:var(--text);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;width:100%}
+.phone-input{display:flex;gap:6px}
+.phone-input select{flex:0 0 118px;width:118px;padding:10px 6px}
+.phone-input input{flex:1;min-width:0}
 input[type=checkbox]{width:auto}
 textarea{resize:vertical}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--teal);color:#fff;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none}

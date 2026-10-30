@@ -3,6 +3,7 @@ import { supabase } from '../supabase'
 import { useAuth } from '../auth'
 import { useT } from '../i18n'
 import CameraCapture from '../components/CameraCapture'
+import PhoneInput from '../components/PhoneInput'
 import { compressImage } from '../lib/image'
 import { getMyPosition } from '../lib/geo'
 import './ProfileSetup.css'
@@ -145,7 +146,7 @@ export default function ProfileSetup() {
       {step === 'info' ? (
         <form onSubmit={next} className="stack">
           <label>{t('setup.fullName')}<input required minLength={2} maxLength={100} value={fullName} onChange={(e) => setFullName(e.target.value)} /></label>
-          <label>{t('setup.phone')}<input required type="tel" placeholder="+27712345678" value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
+          <label>{t('setup.phone')}<PhoneInput value={phone} onChange={setPhone} /></label>
           <label>{t('setup.email')}<input type="email" value={email} onChange={(e) => setEmail(e.target.value)} /></label>
 
           <label style={{ position: 'relative', display: 'block' }}>
