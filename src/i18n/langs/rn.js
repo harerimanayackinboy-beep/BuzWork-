@@ -225,6 +225,7 @@ export default {
   'setup.geoFail': 'Ntibishobotse kumenya aho uri. Reba ko wemeye uruhushya rwa \'location\'.',
   'feed.nearby': 'Hafi yanje',
   'feed.withinKm': 'Mu ntera ya {n} km',
+  'feed.worldwide': '🌍 Hose ku isi (hatagira ntera)',
   'feed.geoFail': 'Ntibishobotse kumenya aho uri ubu. Reba uruhushya rwa \'location\' kuri telefone yawe.',
   'feed.geoDenied': 'Iyi urubuga rwabujijwe kuraba aho uri (uruhushya rwarahakanywe). Fungura Chrome → Igenamiterere ry\'urubuga (Site settings) → Aho uri (Location), hanyuma wemere uru rubuga, ugasubira ugerageza.',
   'feed.geoTimeout': 'Vyatwaye igihe kinini kugira haboneke aho uri. Raba ko GPS yawe yaka (ikora) canke ugerageze ahandi hantu hagaragara ijuru neza, hanyuma ugerageze nanone.',

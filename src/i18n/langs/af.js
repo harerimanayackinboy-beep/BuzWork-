@@ -224,6 +224,7 @@ export default {
   'setup.geoFail': 'Kon nie jou ligging bepaal nie. Kyk of jy \'ligging\' toegang toegelaat het.',
   'feed.nearby': 'Naby my',
   'feed.withinKm': 'Binne {n} km',
+  'feed.worldwide': '🌍 Wêreldwyd (geen beperking nie)',
   'feed.geoFail': 'Kon nie nou jou ligging bepaal nie. Kyk na die \'ligging\' toestemming op jou foon.',
   'feed.geoDenied': 'Hierdie werf word geblok om jou ligging te sien (toestemming geweier). Maak Chrome → Werf-instellings → Ligging oop, laat hierdie werf toe, en probeer weer.',
   'feed.geoTimeout': 'Dit het te lank geneem om jou ligging te vind. Maak seker GPS is aan, of probeer op \'n plek met \'n oop uitsig na die lug, en probeer weer.',

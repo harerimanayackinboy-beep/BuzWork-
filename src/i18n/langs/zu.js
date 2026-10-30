@@ -224,6 +224,7 @@ export default {
   'setup.geoFail': 'Ayikwazanga ukuthola indawo yakho. Hlola ukuthi uvumele i-\'location\'.',
   'feed.nearby': 'Eduze nami',
   'feed.withinKm': 'Phakathi kwe-km {n}',
+  'feed.worldwide': '🌍 Emhlabeni wonke (ngaphandle komkhawulo)',
   'feed.geoFail': 'Ayikwazanga ukuthola indawo yakho manje. Hlola imvume ye-\'location\' efonini yakho.',
   'feed.geoDenied': 'Le sayithi ivinjelwe ukubona indawo yakho (imvume inqatshiwe). Vula i-Chrome → Izilungiselelo zesayithi → Indawo, uvumele le sayithi, bese uzama futhi.',
   'feed.geoTimeout': 'Kuthathe isikhathi eside ukuthola indawo yakho. Qinisekisa ukuthi i-GPS ivuliwe, noma uzame endaweni enesibhakabhaka esicacile, bese uzama futhi.',

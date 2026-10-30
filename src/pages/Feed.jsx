@@ -5,7 +5,7 @@ import { distanceKm, getMyPosition } from '../lib/geo'
 import PostCard from '../components/PostCard'
 import { useT } from '../i18n'
 
-const RADII = [5, 10, 25, 50, 100]
+const RADII = [5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000]
 
 export default function Feed({ kind }) {
   const t = useT()
@@ -42,6 +42,7 @@ export default function Feed({ kind }) {
 
   const visiblePosts = useMemo(() => {
     if (!nearbyOn || !myPos) return posts
+    if (radiusKm === 'all') return posts // Hose ku isi: nta ntera igenwa
     return posts.filter((p) => {
       const lat = p.owner?.lat
       const lng = p.owner?.lng
@@ -86,8 +87,13 @@ export default function Feed({ kind }) {
           {geoBusy ? t('common.loading') : `📍 ${t('feed.nearby')}`}
         </button>
         {nearbyOn && (
-          <select value={radiusKm} onChange={(e) => setRadiusKm(Number(e.target.value))} style={{ width: 'auto' }}>
+          <select
+            value={radiusKm}
+            onChange={(e) => setRadiusKm(e.target.value === 'all' ? 'all' : Number(e.target.value))}
+            style={{ width: 'auto' }}
+          >
             {RADII.map((km) => <option key={km} value={km}>{t('feed.withinKm', { n: km })}</option>)}
+            <option value="all">{t('feed.worldwide')}</option>
           </select>
         )}
       </div>

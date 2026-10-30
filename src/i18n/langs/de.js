@@ -224,6 +224,7 @@ export default {
   'setup.geoFail': 'Konnte deinen Standort nicht ermitteln. Prüfe, ob du den Zugriff auf \'Standort\' erlaubt hast.',
   'feed.nearby': 'In meiner Nähe',
   'feed.withinKm': 'Im Umkreis von {n} km',
+  'feed.worldwide': '🌍 Weltweit (ohne Begrenzung)',
   'feed.geoFail': 'Konnte deinen Standort gerade nicht ermitteln. Prüfe die \'Standort\'-Berechtigung auf deinem Handy.',
   'feed.geoDenied': 'Diese Website darf deinen Standort nicht sehen (Berechtigung verweigert). Öffne Chrome → Website-Einstellungen → Standort, erlaube diese Website und versuche es erneut.',
   'feed.geoTimeout': 'Es hat zu lange gedauert, deinen Standort zu finden. Prüfe, ob GPS aktiviert ist, oder versuche es an einem Ort mit freiem Blick zum Himmel, dann versuche es erneut.',

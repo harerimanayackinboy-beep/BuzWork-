@@ -224,6 +224,7 @@ export default {
   'setup.geoFail': 'Não foi possível detetar a tua localização. Verifica se permitiste a \'localização\'.',
   'feed.nearby': 'Perto de mim',
   'feed.withinKm': 'Num raio de {n} km',
+  'feed.worldwide': '🌍 No mundo todo (sem limite)',
   'feed.geoFail': 'Não foi possível detetar a tua localização agora. Verifica a permissão de \'localização\' no telemóvel.',
   'feed.geoDenied': 'Este site está bloqueado de ver a tua localização (permissão negada). Abre o Chrome → Definições do site → Localização, permite este site e tenta novamente.',
   'feed.geoTimeout': 'Demorou muito a encontrar a tua localização. Verifica se o GPS está ligado, ou tenta num local com céu mais aberto, depois tenta novamente.',
