@@ -9,6 +9,7 @@ import ThemeSetting from '../components/ThemeSetting'
 import ProfileEdit from '../components/ProfileEdit'
 import PhotoSetting from '../components/PhotoSetting'
 import LanguageSetting from '../components/LanguageSetting'
+import NotificationSetting from '../components/NotificationSetting'
 import FeedbackForm from '../components/FeedbackForm'
 import AccountDelete from '../components/AccountDelete'
 
@@ -26,6 +27,7 @@ export default function Settings() {
     { key: 'username', label: t('settings.username'), Panel: UsernameSetting },
     { key: 'theme', label: t('settings.theme'), Panel: ThemeSetting },
     { key: 'language', label: t('settings.language'), Panel: LanguageSetting },
+    { key: 'notifications', label: t('settings.notifications'), Panel: NotificationSetting },
     { key: 'feedback', label: t('settings.feedback'), Panel: FeedbackForm },
     { key: 'delete', label: t('settings.deleteAccount'), Panel: AccountDelete },
   ]

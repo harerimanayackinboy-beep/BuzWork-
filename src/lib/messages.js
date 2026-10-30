@@ -1,4 +1,5 @@
 import { supabase } from '../supabase'
+import { sendPushTo } from './push'
 
 export const MSG_PAGE = 300
 
@@ -46,6 +47,22 @@ export async function sendMessage(myId, otherId, body) {
     .select()
     .single()
   if (error) throw error
+
+  // Itangazo (push) ku muntu abonye ubutumwa, n'iyo app yiwe itafunguye.
+  // Ntidutegereza (fire-and-forget): niba push itagenze, ubutumwa bwarungitswe.
+  supabase
+    .from('public_profiles')
+    .select('full_name')
+    .eq('user_id', myId)
+    .maybeSingle()
+    .then(({ data: me }) => {
+      sendPushTo(otherId, {
+        title: me?.full_name || 'BizWork',
+        body: body.slice(0, 120),
+        url: `/#/chat/${myId}`,
+      })
+    })
+
   return data
 }
 

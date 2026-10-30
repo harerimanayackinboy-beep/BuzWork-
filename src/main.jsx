@@ -9,6 +9,12 @@ import { initTheme } from './lib/theme'
 
 initTheme()
 
+// Yandikisha service worker kare (kugira amatangazo abashe gukora vuba
+// uyu mukoresha amaze kuyemera muri Settings)
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {})
+}
+
 createRoot(document.getElementById('root')).render(
   <HashRouter>
     <I18nProvider>
