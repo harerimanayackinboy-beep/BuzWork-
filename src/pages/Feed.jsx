@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchPosts, KINDS, PAGE_SIZE } from '../lib/posts'
 import { distanceKm, getMyPosition } from '../lib/geo'
+import { CATEGORIES } from '../lib/categories'
 import PostCard from '../components/PostCard'
 import { useT } from '../i18n'
 
@@ -22,6 +23,7 @@ export default function Feed({ kind }) {
   const [myPos, setMyPos] = useState(null)
   const [geoBusy, setGeoBusy] = useState(false)
   const [geoError, setGeoError] = useState('')
+  const [category, setCategory] = useState('')
 
   async function toggleNearby() {
     if (nearbyOn) { setNearbyOn(false); return }
@@ -58,7 +60,7 @@ export default function Feed({ kind }) {
     setError('')
     try {
       const cursor = reset || !posts.length ? undefined : posts[posts.length - 1].created_at
-      const page = await fetchPosts(kind, { cursor })
+      const page = await fetchPosts(kind, { cursor, category: kind === 'product' ? category || undefined : undefined })
       setPosts(reset ? page : [...posts, ...page])
       setMore(page.length === PAGE_SIZE)
     } catch {
@@ -68,7 +70,7 @@ export default function Feed({ kind }) {
     loadingRef.current = false
   }
 
-  useEffect(() => { load(true) }, [kind])
+  useEffect(() => { load(true) }, [kind, category])
 
   return (
     <div className="page">
@@ -98,6 +100,17 @@ export default function Feed({ kind }) {
         )}
       </div>
       {geoError && <p className="error small">{geoError}</p>}
+
+      {kind === 'product' && (
+        <div className="chip-row">
+          <button className={`chip ${!category ? 'on' : ''}`} onClick={() => setCategory('')}>{t('category.all')}</button>
+          {CATEGORIES.map((k) => (
+            <button key={k} className={`chip ${category === k ? 'on' : ''}`} onClick={() => setCategory(k)}>
+              {t(`category.${k}`)}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="feed-full">
         {visiblePosts.map((p) => (
