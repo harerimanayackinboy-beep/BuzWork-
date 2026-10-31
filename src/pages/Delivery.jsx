@@ -49,6 +49,7 @@ function DeliveryInner({ supabase, user, onBack }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [pins, setPins] = useState({});
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     supabase.from("store_categories").select("*").eq("is_active", true).order("sort_order")
@@ -101,7 +102,7 @@ function DeliveryInner({ supabase, user, onBack }) {
   }, [view, orders.length]);
 
   const openStore = async (r) => {
-    setStore(r); setCart({}); setError("");
+    setStore(r); setCart({}); setError(""); setEditId(null);
     const { data } = await supabase.from("store_items").select("*")
       .eq("store_id", r.id).eq("is_available", true).order("category").order("name");
     setMenu(data || []);
@@ -132,8 +133,7 @@ function DeliveryInner({ supabase, user, onBack }) {
       return;
     }
     setBusy(true);
-    const { error: e } = await supabase.rpc("place_store_order", {
-      p_store: store.id,
+    const args = {
       p_items: lines.map((l) => ({ menu_item_id: l.id, quantity: l.qty })),
       p_fulfillment: fulfillment,
       p_payment: payment,
@@ -141,12 +141,41 @@ function DeliveryInner({ supabase, user, onBack }) {
       p_lat: coords?.lat ?? null,
       p_lng: coords?.lng ?? null,
       p_notes: notes.trim() || null,
-    });
+    };
+    const { error: e } = editId
+      ? await supabase.rpc("update_store_order", { p_order: editId, ...args })
+      : await supabase.rpc("place_store_order", { p_store: store.id, ...args });
     setBusy(false);
     if (e) { setError(e.message); return; }
     setCart({});
+    setEditId(null);
     await loadOrders();
     setView("orders");
+  };
+
+  const cancelOrder = async (o) => {
+    if (!window.confirm("Cancel this order?")) return;
+    const { data, error: e } = await supabase.rpc("cancel_store_order", { p_order: o.id });
+    if (e || !data) alert(e?.message || "This order can no longer be cancelled.");
+    loadOrders();
+  };
+
+  const startEdit = async (o) => {
+    const r = stores.find((x) => x.id === o.store_id);
+    if (!r) return;
+    const { data } = await supabase.from("store_items").select("*")
+      .eq("store_id", r.id).eq("is_available", true).order("category").order("name");
+    setStore(r);
+    setMenu(data || []);
+    setCart(Object.fromEntries((o.store_order_items || []).filter((i) => i.menu_item_id).map((i) => [i.menu_item_id, i.quantity])));
+    setFulfillment(o.fulfillment);
+    setPayment(o.payment_method);
+    setAddress(o.delivery_address || "");
+    setCoords(o.delivery_lat != null ? { lat: o.delivery_lat, lng: o.delivery_lng } : null);
+    setNotes(o.notes || "");
+    setError("");
+    setEditId(o.id);
+    setView("menu");
   };
 
   const setStatus = async (o, status) => {
@@ -189,6 +218,12 @@ function DeliveryInner({ supabase, user, onBack }) {
       )}
       {staff && o.fulfillment === "delivery" && <div style={{ fontSize: 13, marginTop: 4 }}>📍 {o.delivery_address}</div>}
       {staff && o.notes && <div style={{ fontSize: 13, marginTop: 4 }}>📝 {o.notes}</div>}
+      {!staff && ["placed", "accepted"].includes(o.status) && (
+        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          {o.status === "placed" && <button style={s.small} onClick={() => startEdit(o)}>Edit order</button>}
+          <button style={{ ...s.small, background: "#6b7280" }} onClick={() => cancelOrder(o)}>Cancel order</button>
+        </div>
+      )}
       {staff && (
         <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
           {o.status === "placed" && <>
@@ -205,6 +240,7 @@ function DeliveryInner({ supabase, user, onBack }) {
   if (view === "orders") return (
     <div style={s.page}>
       <Header title="My orders" back={() => setView("stores")} />
+      {error && <p style={{ color: RED }}>{error}</p>}
       {orders.length === 0 && <p>No orders yet.</p>}
       {orders.map((o) => <OrderCard key={o.id} o={o} />)}
     </div>
@@ -223,7 +259,7 @@ function DeliveryInner({ supabase, user, onBack }) {
     const groups = menu.reduce((a, m) => { (a[m.category || "Menu"] ||= []).push(m); return a; }, {});
     return (
       <div style={s.page}>
-        <Header title={store.name} back={() => setView("stores")} />
+        <Header title={editId ? `Edit order · ${store.name}` : store.name} back={() => { if (editId) { setEditId(null); setCart({}); setView("orders"); } else setView("stores"); }} />
         {Object.entries(groups).map(([cat, items]) => (
           <div key={cat}>
             <h4 style={{ margin: "12px 0 6px" }}>{cat}</h4>
@@ -259,7 +295,7 @@ function DeliveryInner({ supabase, user, onBack }) {
 
   if (view === "checkout") return (
     <div style={s.page}>
-      <Header title="Confirm order" back={() => setView("menu")} />
+      <Header title={editId ? "Update order" : "Confirm order"} back={() => setView("menu")} />
       <div style={s.card}>
         {lines.map((l) => (
           <div key={l.id} style={s.row}><span>{l.qty}× {l.name}</span><span>{money(l.price * l.qty, l.currency)}</span></div>
@@ -290,7 +326,7 @@ function DeliveryInner({ supabase, user, onBack }) {
       {error && <p style={{ color: RED }}>{error}</p>}
       <div style={s.bar}>
         <button style={{ ...s.btn, opacity: busy ? 0.6 : 1 }} disabled={busy} onClick={place}>
-          {busy ? "Sending..." : `Confirm order · ${money(total)}`}
+          {busy ? "Sending..." : `${editId ? "Save changes" : "Confirm order"} · ${money(total)}`}
         </button>
       </div>
     </div>
