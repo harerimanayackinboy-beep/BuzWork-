@@ -5,12 +5,14 @@ import { Avatar } from '../components/PostCard'
 import { useT } from '../i18n'
 import { countUnread } from '../lib/messages'
 import { supabase } from '../supabase'
+import Delivery from './Delivery'
 
 export default function Home() {
   const t = useT()
   const nav = useNavigate()
   const { profile } = useAuth()
   const [choosing, setChoosing] = useState(false)
+  const [showDelivery, setShowDelivery] = useState(false)
   const [unread, setUnread] = useState(0)
   const [counts, setCounts] = useState({ product: null, job: null })
 
@@ -34,6 +36,16 @@ export default function Home() {
     })
     return () => { cancelled = true }
   }, [])
+
+  if (showDelivery) {
+    return (
+      <Delivery
+        supabase={supabase}
+        user={{ id: profile.user_id }}
+        onBack={() => setShowDelivery(false)}
+      />
+    )
+  }
 
   return (
     <div className="page">
@@ -84,6 +96,15 @@ export default function Home() {
         <small>{t('home.jobsSub')}</small>
         {counts.job != null && <small className="tile-count">{t('home.listingCount', { n: counts.job })}</small>}
       </Link>
-    </div>
-  )
-}
+      <div
+        role="button"
+        tabIndex={0}
+        className="big-tile"
+        style={{ background: '#b91c1c', color: '#fff', cursor: 'pointer' }}
+        onClick={() => setShowDelivery(true)}
+        onKeyDown={(e) => { if (e.key === 'Enter') setShowDelivery(true) }}
+      >
+        <span className="emoji">🛍️</span>
+        <span>Order &amp; Delivery</span>
+        <small>Food, groceries and more</small>
+      </div>
