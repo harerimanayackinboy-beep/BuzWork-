@@ -1,12 +1,19 @@
 {
+  "id": "/",
   "name": "BizWork",
   "short_name": "BizWork",
+  "description": "BizWork: gura, ugurishe, ushake akazi n'abakozi, kandi utumize ibiribwa.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
+  "lang": "rw",
+  "dir": "ltr",
   "background_color": "#f4f6f6",
   "theme_color": "#0f766e",
+  "categories": ["business", "shopping", "productivity"],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
   ]
 }
