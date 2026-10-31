@@ -108,3 +108,6 @@ export default function Home() {
         <span>Order &amp; Delivery</span>
         <small>Food, groceries and more</small>
       </div>
+    </div>
+  )
+        }
