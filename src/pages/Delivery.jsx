@@ -15,6 +15,49 @@ const DELIVERY_LABEL = {
 };
 const money = (n, c = "ZAR") => `${c === "ZAR" ? "R" : c + " "}${Number(n || 0).toFixed(2)}`;
 
+const stepsFor = (o, ds) => {
+  const del = o.fulfillment === "delivery";
+  const steps = del ? ["Placed", "Accepted", "Preparing", "Ready", "Picked up", "Delivered"] : ["Placed", "Accepted", "Preparing", "Ready", "Collected"];
+  let i = { placed: 0, accepted: 1, preparing: 2, ready: 3, out_for_delivery: 4, completed: steps.length - 1 }[o.status] ?? 0;
+  if (del && (ds === "picked_up" || ds === "in_transit")) i = 4;
+  if (del && ds === "delivered") i = 5;
+  return { steps, i };
+};
+
+const statusMessage = (o, ds) => {
+  if (o.status === "cancelled") return "This order was cancelled.";
+  if (o.status === "rejected") return "The store could not accept this order.";
+  if (o.fulfillment !== "delivery") {
+    return {
+      placed: "Waiting for the store to accept your order.",
+      accepted: "The store accepted your order and will start preparing it.",
+      preparing: "The store is preparing your order.",
+      ready: "Your order is ready. You can pick it up now.",
+      completed: "Order completed. Enjoy!",
+    }[o.status] || "";
+  }
+  if (ds === "delivered" || o.status === "completed") return "✅ Delivered. Enjoy!";
+  if (ds === "picked_up" || ds === "in_transit") return "✅ The driver has picked up your order and is on the way to you.";
+  if (ds === "driver_assigned" || ds === "driver_arriving") {
+    return o.status === "ready"
+      ? "The driver is at the store to collect your order."
+      : "Your driver is heading to the store. The store has not handed over the order yet.";
+  }
+  if (ds === "searching") return "Finding a driver for your order...";
+  return {
+    placed: "Waiting for the store to accept your order.",
+    accepted: "The store accepted your order and will start preparing it.",
+    preparing: "The store is preparing your order.",
+    ready: "Your order is ready. Waiting for a driver.",
+  }[o.status] || "";
+};
+
+const ago = (iso) => {
+  if (!iso) return "";
+  const sec = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
+  return sec < 60 ? `${sec}s ago` : `${Math.round(sec / 60)} min ago`;
+};
+
 const s = {
   page: { padding: 16, maxWidth: 560, margin: "0 auto", paddingBottom: 110 },
   card: { background: "#fff", borderRadius: 14, padding: 14, marginBottom: 10, boxShadow: "0 1px 3px rgba(0,0,0,.12)" },
@@ -50,6 +93,8 @@ function DeliveryInner({ supabase, user, onBack }) {
   const [error, setError] = useState("");
   const [pins, setPins] = useState({});
   const [editId, setEditId] = useState(null);
+  const [detailId, setDetailId] = useState(null);
+  const [track, setTrack] = useState(null);
 
   useEffect(() => {
     supabase.from("store_categories").select("*").eq("is_active", true).order("sort_order")
@@ -100,6 +145,18 @@ function DeliveryInner({ supabase, user, onBack }) {
     const t = setInterval(sync, 15000);
     return () => clearInterval(t);
   }, [view, orders.length]);
+
+  useEffect(() => {
+    if (view !== "detail" || !detailId) return;
+    let off = false;
+    const pull = () => supabase.functions.invoke("buzrider-delivery", { body: { action: "track", order_id: detailId } })
+      .then(({ data }) => { if (!off && data && !data.error) { setTrack(data); loadOrders(); } });
+    pull();
+    const t = setInterval(pull, 10000);
+    return () => { off = true; clearInterval(t); };
+  }, [view, detailId]);
+
+  const openDetail = (o) => { setTrack(null); setDetailId(o.id); setView("detail"); };
 
   const openStore = async (r) => {
     setStore(r); setCart({}); setError(""); setEditId(null);
@@ -197,10 +254,10 @@ function DeliveryInner({ supabase, user, onBack }) {
   );
 
   const OrderCard = ({ o, staff }) => (
-    <div style={s.card}>
+    <div style={{ ...s.card, cursor: staff ? "default" : "pointer" }} onClick={staff ? undefined : () => openDetail(o)}>
       <div style={s.row}>
         <strong>{staff ? new Date(o.created_at).toLocaleTimeString() : o.stores?.name}</strong>
-        <span style={s.badge(o.status === "rejected" || o.status === "cancelled" ? "#6b7280" : RED)}>{LABEL[o.status]}</span>
+        <span style={s.badge(o.status === "rejected" || o.status === "cancelled" ? "#6b7280" : RED)}>{LABEL[o.status]}{staff ? "" : " ›"}</span>
       </div>
       <div style={{ fontSize: 14, color: "#4b5563", margin: "6px 0" }}>
         {(o.store_order_items || []).map((i) => `${i.quantity}× ${i.name}`).join(", ")}
@@ -220,8 +277,8 @@ function DeliveryInner({ supabase, user, onBack }) {
       {staff && o.notes && <div style={{ fontSize: 13, marginTop: 4 }}>📝 {o.notes}</div>}
       {!staff && ["placed", "accepted"].includes(o.status) && (
         <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-          {o.status === "placed" && <button style={s.small} onClick={() => startEdit(o)}>Edit order</button>}
-          <button style={{ ...s.small, background: "#6b7280" }} onClick={() => cancelOrder(o)}>Cancel order</button>
+          {o.status === "placed" && <button style={s.small} onClick={(e) => { e.stopPropagation(); startEdit(o); }}>Edit order</button>}
+          <button style={{ ...s.small, background: "#6b7280" }} onClick={(e) => { e.stopPropagation(); cancelOrder(o); }}>Cancel order</button>
         </div>
       )}
       {staff && (
@@ -236,6 +293,94 @@ function DeliveryInner({ supabase, user, onBack }) {
       )}
     </div>
   );
+
+  if (view === "detail") {
+    const o = orders.find((x) => x.id === detailId);
+    if (!o) return (<div style={s.page}><Header title="Order" back={() => setView("orders")} /><p>Loading...</p></div>);
+    const ds = track?.delivery_status ?? o.delivery_status;
+    const { steps, i } = stepsFor(o, ds);
+    const d = track?.driver;
+    const loc = track?.location;
+    const st = track?.store;
+    const delivering = o.fulfillment === "delivery";
+    const bad = ["cancelled", "rejected"].includes(o.status);
+    const bbox = loc ? [loc.lng - 0.01, loc.lat - 0.006, loc.lng + 0.01, loc.lat + 0.006].join("%2C") : "";
+    return (
+      <div style={s.page}>
+        <Header title={o.stores?.name || "Order"} back={() => setView("orders")} />
+        <div style={{ ...s.card, background: bad ? "#f3f4f6" : "#fef3c7" }}>{statusMessage(o, ds)}</div>
+
+        {!bad && (
+          <div style={s.card}>
+            {steps.map((label, n) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "5px 0", opacity: n <= i ? 1 : 0.4 }}>
+                <span style={{ width: 22, height: 22, borderRadius: 11, background: n <= i ? RED : "#d1d5db", color: "#fff", fontSize: 13, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{n <= i ? "✓" : n + 1}</span>
+                <span style={{ fontWeight: n === i ? 700 : 400 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {delivering && d && (
+          <div style={s.card}>
+            <strong>Your driver</strong>
+            <div style={{ display: "flex", gap: 12, alignItems: "center", marginTop: 8 }}>
+              {d.photo_url && /^https?:/.test(d.photo_url)
+                ? <img src={d.photo_url} alt="" style={{ width: 56, height: 56, borderRadius: 28, objectFit: "cover" }} />
+                : <div style={{ width: 56, height: 56, borderRadius: 28, background: RED, color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>{(d.name || "?").slice(0, 1).toUpperCase()}</div>}
+              <div style={{ flex: 1 }}>
+                <div><strong>{d.name || "Driver"}</strong></div>
+                <div style={{ fontSize: 14, color: "#4b5563" }}>
+                  {d.rating > 0 ? `⭐ ${d.rating.toFixed(1)} (${d.rating_count})` : "New driver"}
+                </div>
+                <div style={{ fontSize: 14, color: "#4b5563" }}>
+                  🏍️ {d.vehicle_type}{d.registration_number ? ` · ${d.registration_number}` : ""}
+                </div>
+              </div>
+            </div>
+            {d.phone && <a href={`tel:${d.phone}`} style={{ ...s.small, display: "inline-block", marginTop: 10, textDecoration: "none" }}>📞 Call driver</a>}
+          </div>
+        )}
+
+        {delivering && ds && !d && ds === "searching" && <div style={s.card}>🔎 Looking for a driver near the store...</div>}
+
+        {delivering && d && ["driver_assigned", "driver_arriving", "picked_up", "in_transit"].includes(ds) && (
+          <div style={s.card}>
+            <strong>Driver location</strong>
+            {loc ? (
+              <>
+                <iframe
+                  title="map" loading="lazy"
+                  style={{ width: "100%", height: 220, border: 0, borderRadius: 10, marginTop: 8 }}
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${loc.lat}%2C${loc.lng}`}
+                />
+                <div style={{ ...s.row, marginTop: 6, fontSize: 13, color: "#6b7280" }}>
+                  <span>Updated {ago(loc.updated_at)}</span>
+                  <a style={{ color: RED }} href={`https://www.google.com/maps?q=${loc.lat},${loc.lng}`} target="_blank" rel="noreferrer">Open in Maps</a>
+                </div>
+              </>
+            ) : <div style={{ marginTop: 6, color: "#6b7280" }}>Location not available yet.</div>}
+          </div>
+        )}
+
+        {pins[o.id] && !["completed", "cancelled", "rejected"].includes(o.status) && (
+          <div style={{ ...s.card, background: "#fef3c7" }}>
+            🔐 Give this PIN to the driver when you receive your order: <strong style={{ fontSize: 20 }}>{pins[o.id]}</strong>
+          </div>
+        )}
+
+        <div style={s.card}>
+          {(o.store_order_items || []).map((it) => (
+            <div key={it.id} style={s.row}><span>{it.quantity}× {it.name}</span><span>{money(it.unit_price * it.quantity, o.currency)}</span></div>
+          ))}
+          {Number(o.delivery_fee) > 0 && <div style={s.row}><span>Delivery</span><span>{money(o.delivery_fee, o.currency)}</span></div>}
+          <hr />
+          <div style={s.row}><strong>Total</strong><strong>{money(o.total, o.currency)}</strong></div>
+          {delivering && o.delivery_address && <div style={{ fontSize: 13, marginTop: 6 }}>📍 {o.delivery_address}</div>}
+        </div>
+      </div>
+    );
+  }
 
   if (view === "orders") return (
     <div style={s.page}>
