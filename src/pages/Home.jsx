@@ -96,18 +96,10 @@ export default function Home() {
         <small>{t('home.jobsSub')}</small>
         {counts.job != null && <small className="tile-count">{t('home.listingCount', { n: counts.job })}</small>}
       </Link>
-      <div
-        role="button"
-        tabIndex={0}
-        className="big-tile"
-        style={{ background: '#b91c1c', color: '#fff', cursor: 'pointer' }}
-        onClick={() => setShowDelivery(true)}
-        onKeyDown={(e) => { if (e.key === 'Enter') setShowDelivery(true) }}
-      >
-        <span className="emoji">🛍️</span>
-        <span>Order &amp; Delivery</span>
-        <small>Food, groceries and more</small>
-      </div>
+      {/* Order & Delivery: igice kiraruhuka gato kugeza BuzRider, BuzWork
+          Manager, na BizWork store bihujwe neza. Kugarura: subiramwo iki
+          gice cahanaguwe hano (kiraboneka muri git history, commit yabanje
+          kuri iyi). */}
     </div>
   )
         }
