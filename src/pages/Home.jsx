@@ -33,7 +33,7 @@ export default function Home() {
     ]).then(([p, j]) => {
       if (cancelled) return
       setCounts({ product: p.count ?? null, job: j.count ?? null })
-    })
+    }).catch(() => {})
     return () => { cancelled = true }
   }, [])
 
