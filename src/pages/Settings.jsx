@@ -12,6 +12,8 @@ import LanguageSetting from '../components/LanguageSetting'
 import NotificationSetting from '../components/NotificationSetting'
 import FeedbackForm from '../components/FeedbackForm'
 import AccountDelete from '../components/AccountDelete'
+import ShareApp from '../components/ShareApp'
+import DataUsage from '../components/DataUsage'
 
 // Hano hari gusa ibikora.
 export default function Settings() {
@@ -28,6 +30,8 @@ export default function Settings() {
     { key: 'theme', label: t('settings.theme'), Panel: ThemeSetting },
     { key: 'language', label: t('settings.language'), Panel: LanguageSetting },
     { key: 'notifications', label: t('settings.notifications'), Panel: NotificationSetting },
+    { key: 'share', label: t('settings.share'), Panel: ShareApp },
+    { key: 'dataUsage', label: t('settings.dataUsage'), Panel: DataUsage },
     { key: 'feedback', label: t('settings.feedback'), Panel: FeedbackForm },
     { key: 'delete', label: t('settings.deleteAccount'), Panel: AccountDelete },
   ]

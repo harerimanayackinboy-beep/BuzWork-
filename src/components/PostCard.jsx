@@ -7,6 +7,7 @@ import Comments from './Comments'
 import ReportButton from './ReportButton'
 import { whatsappLink } from '../lib/whatsapp'
 import { useT } from '../i18n'
+import { getDataSaver } from '../lib/dataSaver'
 
 export default function PostCard({ kind, post, onDeleted }) {
   const t = useT()
@@ -131,7 +132,7 @@ export default function PostCard({ kind, post, onDeleted }) {
         <div className={`gallery g${Math.min(images.length, 4)}`}>
           {images.map((im) => (
             im.media_type === 'video'
-              ? <video key={im.id} src={publicUrl(c.bucket, im.storage_path)} controls />
+              ? <video key={im.id} src={publicUrl(c.bucket, im.storage_path)} controls preload={getDataSaver() ? 'none' : 'metadata'} />
               : <img key={im.id} loading="lazy" src={publicUrl(c.bucket, im.storage_path)} alt="" />
           ))}
         </div>
