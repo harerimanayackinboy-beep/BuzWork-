@@ -72,6 +72,16 @@ textarea{resize:vertical}
 .gallery img,.gallery video{width:100%;height:100%;object-fit:cover;aspect-ratio:1;background:#000}
 .gallery.g1{grid-template-columns:1fr}.gallery.g1 img,.gallery.g1 video{aspect-ratio:4/3}
 .gallery.g2,.gallery.g4,.gallery.g3{grid-template-columns:1fr 1fr}
+
+.photo-upload{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px dashed var(--teal);border-radius:16px;background:color-mix(in srgb,var(--teal) 8%,transparent);padding:26px 14px;text-align:center;cursor:pointer}
+.photo-upload-ic{font-size:30px;color:var(--teal);line-height:1}
+.photo-upload strong{font-size:16px}
+.photo-upload p{margin:0}
+.photo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.photo-thumb{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;background:var(--line)}
+.photo-thumb img,.photo-thumb video{width:100%;height:100%;object-fit:cover}
+.photo-remove{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:15px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+
 .caption{white-space:pre-wrap;margin:6px 0}
 .caption.clamp,.clamp{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
 .actions{display:flex;gap:6px;border-top:1px solid var(--line);padding-top:8px}

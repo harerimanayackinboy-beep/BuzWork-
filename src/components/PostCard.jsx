@@ -32,6 +32,7 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [price, setPrice] = useState(post.price ?? '')
   const [currency, setCurrency] = useState(post.currency || 'ZAR')
   const [details, setDetails] = useState(post.details || '')
+  const [businessName, setBusinessName] = useState(post.business_name || '')
   const [editBusy, setEditBusy] = useState(false)
 
   const liked = likes.some((l) => l.user_id === user.id)
@@ -92,12 +93,13 @@ export default function PostCard({ kind, post, onDeleted }) {
       row.price = price === '' ? null : Number(price)
       row.currency = price === '' ? null : currency.toUpperCase()
       row.details = details.trim() || null
+      row.business_name = businessName.trim() || null
     }
     const { error } = await supabase.from(c.table).update(row).eq('id', post.id)
     setEditBusy(false)
     if (error) return setMsg(t('card.editFail'))
     post.caption = row.caption
-    if (kind === 'product') { post.price = row.price; post.currency = row.currency; post.details = row.details }
+    if (kind === 'product') { post.price = row.price; post.currency = row.currency; post.details = row.details; post.business_name = row.business_name }
     setEditing(false)
   }
 
@@ -141,6 +143,9 @@ export default function PostCard({ kind, post, onDeleted }) {
 
       {editing ? (
         <div className="stack edit-box">
+          {kind === 'product' && (
+            <input placeholder={t('new.businessNamePh')} value={businessName} maxLength={120} onChange={(e) => setBusinessName(e.target.value)} />
+          )}
           <textarea rows={3} maxLength={2000} value={caption} onChange={(e) => setCaption(e.target.value)} />
           {kind === 'product' && (
             <>

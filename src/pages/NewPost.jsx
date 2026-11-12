@@ -19,6 +19,7 @@ export default function NewPost() {
   const [currency, setCurrency] = useState('ZAR')
   const [details, setDetails] = useState('')
   const [category, setCategory] = useState('')
+  const [businessName, setBusinessName] = useState('')
   const [location, setLocation] = useState(profile.location || '')
   const [files, setFiles] = useState([])
   const [progress, setProgress] = useState(null)
@@ -38,6 +39,11 @@ export default function NewPost() {
     if (chosen.length > c.maxImages) setError(t('new.maxImages', { n: c.maxImages }))
     else setError('')
     setFiles(chosen.slice(0, c.maxImages))
+  }
+
+  function removePhoto(index) {
+    setFiles((prev) => prev.filter((_, i) => i !== index))
+    setError('')
   }
 
   // Intambwe ya 1: ntishira kuri internet, ireba akarorero gusa
@@ -60,6 +66,7 @@ export default function NewPost() {
         row.currency = price === '' ? null : currency.toUpperCase()
         row.details = details.trim() || null
         row.category = category || null
+        row.business_name = businessName.trim() || null
       }
       const { data: post, error: pe } = await supabase.from(c.table).insert(row).select().single()
       if (pe) throw pe
@@ -125,6 +132,7 @@ export default function NewPost() {
                 : <img key={previewUrls[i]} src={previewUrls[i]} alt="" />)}
             </div>
           )}
+          {kind === 'product' && businessName && <p className="strong">🏪 {businessName}</p>}
           {kind === 'product' && category && <span className="badge">{t(`category.${category}`)}</span>}
           <p className="caption">{caption}</p>
           {kind === 'product' && (price !== '' || details) && (
@@ -154,33 +162,67 @@ export default function NewPost() {
         <span />
       </header>
       <form onSubmit={reviewFirst} className="stack">
-        <label>{kind === 'product' ? t('new.describeProduct') : t('new.describeJob')}
-          <textarea required maxLength={2000} rows={4} value={caption} onChange={(e) => setCaption(e.target.value)} />
+        <label className="photo-upload">
+          <div className="photo-upload-ic">▧ ＋</div>
+          <strong>{t('new.addPhotosTitle')}</strong>
+          <p className="muted small">
+            {t('new.addPhotosHint')}{kind === 'job' ? ` ${t('new.photosJob')}` : ''} — {t('new.mediaHint')}
+          </p>
+          <input type="file" accept="image/*,video/*" multiple onChange={pick} hidden />
         </label>
-        {kind === 'product' && (
-          <>
-            <div className="row">
-              <label className="grow">{t('new.price')}<input type="number" min="0" step="0.01" value={price} onChange={(e) => setPrice(e.target.value)} /></label>
-              <label>{t('new.currency')}<input maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} /></label>
-            </div>
-            <label>{t('new.moreDetails')}<textarea maxLength={4000} rows={3} value={details} onChange={(e) => setDetails(e.target.value)} /></label>
-            <label>
-              {t('new.category')}
-              <select value={category} onChange={(e) => setCategory(e.target.value)}>
-                <option value="">{t('category.all')}</option>
-                {CATEGORIES.map((k) => <option key={k} value={k}>{t(`category.${k}`)}</option>)}
-              </select>
-            </label>
-          </>
+
+        {previewUrls.length > 0 && (
+          <div className="photo-grid">
+            {files.map((f, i) => (
+              <div className="photo-thumb" key={previewUrls[i]}>
+                {f.type.startsWith('video/')
+                  ? <video src={previewUrls[i]} muted />
+                  : <img src={previewUrls[i]} alt="" />}
+                <button type="button" className="photo-remove" aria-label={t('new.removePhoto')} onClick={() => removePhoto(i)}>×</button>
+              </div>
+            ))}
+          </div>
         )}
-        <label>{t('new.where')}<input value={location} onChange={(e) => setLocation(e.target.value)} /></label>
-        <label>
-          {t('new.photos')} {kind === 'job' ? t('new.photosJob') : ''} — {t('new.mediaHint')}
-          <input type="file" accept="image/*,video/*" multiple onChange={pick} />
-        </label>
         {files.length > 0 && <p className="muted small">{t('new.picked', { n: files.length })}</p>}
-        <button className="btn">{t('new.previewTitle')}</button>
+
+        {kind === 'product' && (
+          <label>{t('new.businessName')}<input value={businessName} maxLength={120} placeholder={t('new.businessNamePh')} onChange={(e) => setBusinessName(e.target.value)} /></label>
+        )}
+
+        {kind === 'product' && (
+          <label>
+            {t('new.category')}
+            <select value={category} onChange={(e) => setCategory(e.target.value)}>
+              <option value="">{t('new.categoryChoose')}</option>
+              {CATEGORIES.map((k) => <option key={k} value={k}>{t(`category.${k}`)}</option>)}
+            </select>
+          </label>
+        )}
+
+        {kind === 'product' && (
+          <div className="row">
+            <label className="grow">{t('new.price')}<input type="number" min="0" step="0.01" placeholder={t('new.pricePh')} value={price} onChange={(e) => setPrice(e.target.value)} /></label>
+            <label>{t('new.currency')}<input maxLength={3} value={currency} onChange={(e) => setCurrency(e.target.value)} /></label>
+          </div>
+        )}
+
+        <label>{t('new.where')}<input value={location} placeholder={kind === 'product' ? t('new.locationPh') : ''} onChange={(e) => setLocation(e.target.value)} /></label>
+
+        <label>{kind === 'product' ? t('new.describeProduct') : t('new.describeJob')}
+          <textarea
+            required maxLength={2000} rows={4} value={caption}
+            placeholder={kind === 'product' ? t('new.descriptionPhProduct') : ''}
+            onChange={(e) => setCaption(e.target.value)}
+          />
+        </label>
+
+        {kind === 'product' && (
+          <label>{t('new.moreDetails')}<textarea maxLength={4000} rows={3} value={details} onChange={(e) => setDetails(e.target.value)} /></label>
+        )}
+
+        <button className="btn">{t('new.continueBtn')}</button>
         {error && <p className="error">{error}</p>}
+        <p className="muted small center">ⓘ {t('new.reviewNotice')}</p>
       </form>
     </div>
   )
