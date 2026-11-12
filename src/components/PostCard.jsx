@@ -24,6 +24,7 @@ export default function PostCard({ kind, post, onDeleted }) {
   const [status, setStatus] = useState(post.status)
   const [msg, setMsg] = useState('')
   const [editing, setEditing] = useState(false)
+  const [zoomUrl, setZoomUrl] = useState(null)
   const [expanded, setExpanded] = useState(false)
   const isLongCaption = post.caption.length > 90 || post.caption.includes('\n')
   const [detailsExpanded, setDetailsExpanded] = useState(false)
@@ -132,14 +133,29 @@ export default function PostCard({ kind, post, onDeleted }) {
 
       {images.length > 0 && (
         <div className={`gallery g${Math.min(images.length, 4)}`}>
-          {images.map((im) => (
-            im.media_type === 'video'
-              ? <video key={im.id} src={publicUrl(c.bucket, im.storage_path)} controls preload={getDataSaver() ? 'none' : 'metadata'} />
-              : <img key={im.id} loading="lazy" src={publicUrl(c.bucket, im.storage_path)} alt="" />
-          ))}
+          {images.map((im) => {
+            const url = publicUrl(c.bucket, im.storage_path)
+            return im.media_type === 'video'
+              ? <video key={im.id} src={url} controls preload={getDataSaver() ? 'none' : 'metadata'} />
+              : (
+                <img
+                  key={im.id}
+                  loading="lazy"
+                  src={url}
+                  alt=""
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => setZoomUrl(url)}
+                />
+              )
+          })}
         </div>
       )}
       {moreImages && <button className="link" onClick={loadMore}>{t('card.moreImages')}</button>}
+      {zoomUrl && (
+        <div className="lightbox" onClick={() => setZoomUrl(null)}>
+          <img src={zoomUrl} alt="" />
+        </div>
+      )}
 
       {editing ? (
         <div className="stack edit-box">
