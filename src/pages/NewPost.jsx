@@ -5,6 +5,7 @@ import { useAuth } from '../auth'
 import { KINDS } from '../lib/posts'
 import { compressImage, runPool } from '../lib/image'
 import { CATEGORIES } from '../lib/categories'
+import ImageEditor from '../components/ImageEditor'
 import { useT } from '../i18n'
 
 export default function NewPost() {
@@ -22,6 +23,7 @@ export default function NewPost() {
   const [businessName, setBusinessName] = useState('')
   const [location, setLocation] = useState(profile.location || '')
   const [files, setFiles] = useState([])
+  const [editIndex, setEditIndex] = useState(null)
   const [progress, setProgress] = useState(null)
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
@@ -33,17 +35,24 @@ export default function NewPost() {
 
   function pick(e) {
     const chosen = [...e.target.files]
-    const videos = chosen.filter((f) => f.type.startsWith('video/'))
+    e.target.value = '' // kugira umukoresha ashobore guhitamo rimwe na rimwe iyo foto nyene
+    const combined = [...files, ...chosen]
+    const videos = combined.filter((f) => f.type.startsWith('video/'))
     if (videos.length > 1) return setError(t('new.oneVideo'))
     if (videos.some((f) => f.size > 50 * 1024 * 1024)) return setError(t('new.videoTooBig'))
-    if (chosen.length > c.maxImages) setError(t('new.maxImages', { n: c.maxImages }))
+    if (combined.length > c.maxImages) setError(t('new.maxImages', { n: c.maxImages }))
     else setError('')
-    setFiles(chosen.slice(0, c.maxImages))
+    setFiles(combined.slice(0, c.maxImages))
   }
 
   function removePhoto(index) {
     setFiles((prev) => prev.filter((_, i) => i !== index))
     setError('')
+  }
+
+  function savePhoto(newFile) {
+    setFiles((prev) => prev.map((f, i) => (i === editIndex ? newFile : f)))
+    setEditIndex(null)
   }
 
   // Intambwe ya 1: ntishira kuri internet, ireba akarorero gusa
@@ -162,25 +171,34 @@ export default function NewPost() {
         <span />
       </header>
       <form onSubmit={reviewFirst} className="stack">
-        <label className="photo-upload">
-          <div className="photo-upload-ic">▧ ＋</div>
-          <strong>{t('new.addPhotosTitle')}</strong>
-          <p className="muted small">
-            {t('new.addPhotosHint')}{kind === 'job' ? ` ${t('new.photosJob')}` : ''} — {t('new.mediaHint')}
-          </p>
-          <input type="file" accept="image/*,video/*" multiple onChange={pick} hidden />
-        </label>
-
-        {previewUrls.length > 0 && (
+        {files.length === 0 ? (
+          <label className="photo-upload">
+            <div className="photo-upload-ic">▧ ＋</div>
+            <strong>{t('new.addPhotosTitle')}</strong>
+            <p className="muted small">
+              {t('new.addPhotosHint')}{kind === 'job' ? ` ${t('new.photosJob')}` : ''} — {t('new.mediaHint')}
+            </p>
+            <input type="file" accept="image/*,video/*" multiple onChange={pick} hidden />
+          </label>
+        ) : (
           <div className="photo-grid">
             {files.map((f, i) => (
               <div className="photo-thumb" key={previewUrls[i]}>
                 {f.type.startsWith('video/')
                   ? <video src={previewUrls[i]} muted />
                   : <img src={previewUrls[i]} alt="" />}
+                {!f.type.startsWith('video/') && (
+                  <button type="button" className="photo-edit" aria-label={t('new.editPhoto')} onClick={() => setEditIndex(i)}>✏️</button>
+                )}
                 <button type="button" className="photo-remove" aria-label={t('new.removePhoto')} onClick={() => removePhoto(i)}>×</button>
               </div>
             ))}
+            {files.length < c.maxImages && (
+              <label className="photo-add-tile">
+                <span>＋</span>
+                <input type="file" accept="image/*,video/*" multiple onChange={pick} hidden />
+              </label>
+            )}
           </div>
         )}
         {files.length > 0 && <p className="muted small">{t('new.picked', { n: files.length })}</p>}
@@ -224,6 +242,9 @@ export default function NewPost() {
         {error && <p className="error">{error}</p>}
         <p className="muted small center">ⓘ {t('new.reviewNotice')}</p>
       </form>
+      {editIndex !== null && (
+        <ImageEditor file={files[editIndex]} onCancel={() => setEditIndex(null)} onSave={savePhoto} />
+      )}
     </div>
   )
 }
